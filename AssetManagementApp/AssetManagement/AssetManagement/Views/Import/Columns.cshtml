@@ -1,0 +1,32 @@
+﻿@model SelectionViewModel
+
+<div class="container mt-4 mb-5">
+
+    <h2>Select Columns from "@Model.TableName"</h2>
+
+    <form asp-action="Import" method="post">
+
+        <input type="hidden" asp-for="TableName" />
+        <input type="hidden" asp-for="FilePath" />
+
+        <div>
+            @foreach (var col in Model.Columns)
+            {
+                <div>
+                    <input type="checkbox"
+                           name="SelectedColumns"
+                           value="@col.ColumnName" />
+
+                    <label>@col.ColumnName (@col.DataType)</label>
+                </div>
+            }
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">
+            Import Data
+        </button>
+    </form>
+
+</div>

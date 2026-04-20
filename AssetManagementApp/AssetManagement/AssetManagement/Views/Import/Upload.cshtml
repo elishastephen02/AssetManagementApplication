@@ -1,0 +1,18 @@
+﻿@model DbUploadViewModel
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2 class="mb-3 text-primary">Upload SQLite Database</h2>
+
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <input type="file" asp-for="DbFile" class="form-control" />
+                <span asp-validation-for="DbFile" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Upload File
+            </button>
+        </form>
+    </div>
+</div>

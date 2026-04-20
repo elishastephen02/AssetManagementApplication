@@ -1,0 +1,19 @@
+﻿@model List<string>
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2 class="text-success mb-3">Select a Table</h2>
+
+        <div class="list-group">
+            @foreach (var table in Model)
+            {
+                <a class="list-group-item list-group-item-action"
+                       asp-action="Columns"
+                       asp-route-tableName="@table"
+                       asp-route-filePath="@ViewBag.FilePath">
+                    @table
+                </a>
+            }
+        </div>
+    </div>
+</div>
