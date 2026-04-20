@@ -24,14 +24,14 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Import" asp-action="Upload">Upload Data File</a>
-                            </li>
                         }
                         @if (User.IsInRole("PrimaryUser"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Admin" asp-action="PendingUsers">User Approvals</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Import" asp-action="Upload">Upload Data File</a>
                             </li>
                         }
                     </ul>
