@@ -1,0 +1,260 @@
+﻿@{
+    ViewData["Title"] = "Infrastructure Map";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<style>
+
+    .infra-container {
+        padding: 20px 15px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .infra-panel {
+        background: #fff;
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .infra-row {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .infra-col {
+        flex: 1;
+        min-width: 280px;
+    }
+
+    .infra-title {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .infra-input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 70%;
+        margin-right: 10px;
+    }
+
+    .infra-btn {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 8px;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+        .infra-btn:hover {
+            background: #0056b3;
+        }
+
+    #map {
+        height: 420px;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .infra-accordion-item {
+        margin-bottom: 10px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #e0e0e0;
+    }
+
+    .infra-accordion-header {
+        background: #007bff;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .infra-accordion-content {
+        display: none;
+        padding: 12px;
+        background: #f9fbfd;
+    }
+</style>
+
+<div class="infra-container">
+    <div class="infra-row">
+        <div class="infra-panel infra-col">
+            <h3 class="infra-title">Upload GeoJSON</h3>
+            <input type="file" id="geoFile" class="infra-input" />
+            <button class="infra-btn" onclick="uploadGeo()">Upload</button>
+            <div id="uploadStatus"></div>
+        </div>
+
+        <div class="infra-panel infra-col">
+            <h3 class="infra-title">Search Pipes</h3>
+            <input type="text" id="searchBox" class="infra-input" placeholder="Search..." />
+            <button class="infra-btn" onclick="search()">Search</button>
+            <div id="searchResults"></div>
+        </div>
+
+    </div>
+
+    <div class="infra-panel">
+        <h3 class="infra-title">Infrastructure Map</h3>
+        <div id="map"></div>
+    </div>
+
+    <div class="infra-row">
+        <div class="infra-panel infra-col">
+            <h3 class="infra-title">Inspection Details</h3>
+            <div id="accordion"></div>
+        </div>
+        <div class="infra-panel infra-col">
+            <h3 class="infra-title">Pipe Summary</h3>
+            <div id="summaryTable"></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // ---------------- MAP INIT ----------------
+    var map = L.map('map', {
+    minZoom: 11,
+    maxZoom: 18
+    }).setView([-29.8587, 31.0218], 12);
+
+    var bounds = L.latLngBounds(
+    L.latLng(-30.2, 30.6),
+    L.latLng(-29.5, 31.5)
+    );
+
+    map.setMaxBounds(bounds);
+
+    map.on('drag', function () {
+    map.panInsideBounds(bounds, { animate: false });
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    setTimeout(() => {
+    map.invalidateSize();
+    }, 200);
+
+    var pipeLayer = L.layerGroup().addTo(map);
+    let pipeColors = {};
+
+    function drawMap(data) {
+    pipeLayer.clearLayers();
+
+    if (!data.sections) return;
+
+    data.sections.forEach(s => {
+
+    let geo = wktToGeoJSON(s.geometry);
+    if (!geo) return;
+
+    let color = pipeColors[s.OBJ_PK] || "blue";
+
+    let layer = L.geoJSON(geo, {
+    style: {
+    color: color,
+    weight: 5
+    }
+    });
+
+    layer.addTo(pipeLayer);
+    });
+
+    try {
+    map.fitBounds(pipeLayer.getBounds(), {
+    padding: [20, 20]
+    });
+    } catch {}
+    }
+
+    function wktToGeoJSON(wkt) {
+    if (!wkt) return null;
+
+    if (wkt.startsWith("LINESTRING")) {
+    let coords = wkt
+    .replace("LINESTRING(", "")
+    .replace(")", "")
+    .split(",")
+    .map(p => {
+    let [x, y] = p.trim().split(" ");
+    return [parseFloat(x), parseFloat(y)];
+    });
+
+    return { type: "LineString", coordinates: coords };
+    }
+
+    return null;
+    }
+
+    function uploadGeo() {
+
+    var fileInput = document.getElementById("geoFile");
+
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+    alert("Please select a file first.");
+    return;
+    }
+
+    var file = fileInput.files[0];
+
+    var formData = new FormData();
+    formData.append("file", file);
+
+    document.getElementById("uploadStatus").innerText = "Uploading...";
+
+    fetch("/Map/UploadGeoJson", {
+    method: "POST",
+    body: formData
+    })
+    .then(response => {
+    if (!response.ok) {
+    throw new Error("Upload failed");
+    }
+    return response.json();
+    })
+    .then(data => {
+
+    document.getElementById("uploadStatus").innerText = "Upload successful";
+
+    pipeColors = {};
+
+    if (data.summary) {
+    data.summary.forEach(x => {
+    let condition = (x.condition || "").toLowerCase();
+
+    if (condition.includes("good")) pipeColors[x.id] = "green";
+    else if (condition.includes("fair")) pipeColors[x.id] = "orange";
+    else if (condition.includes("poor")) pipeColors[x.id] = "red";
+    else pipeColors[x.id] = "blue";
+    });
+
+    renderAccordion(data.summary);
+    }
+
+    drawMap(data);
+
+    })
+    .catch(err => {
+    console.error(err);
+    document.getElementById("uploadStatus").innerText = "Upload failed";
+    });
+    }
+</script>

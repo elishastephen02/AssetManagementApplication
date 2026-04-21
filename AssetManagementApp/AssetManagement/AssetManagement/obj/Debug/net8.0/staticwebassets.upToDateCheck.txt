@@ -1,5 +1,6 @@
-wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\Images\avatar.png
+wwwroot\Images\bootstrap-solid.svg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
@@ -59,3 +60,4 @@ wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
 wwwroot\uploads\RedHill 1_2025-01-07.db3
+wwwroot\css\site.css

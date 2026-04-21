@@ -20,6 +20,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
+builder.Services.AddScoped<DataService>();
+builder.Services.AddScoped<MapService>();
+//builder.Services.AddScoped<SQLService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

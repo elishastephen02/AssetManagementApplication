@@ -1,42 +1,36 @@
-﻿@model SelectionViewModel
+﻿@model List<AssetManagement.Models.ApplicationUser>
 
-<div class="container mt-4">
-    <div class="card shadow p-4">
+<h2>Pending User Approvals</h2>
 
-        <h2 class="text-info mb-3">
-            Select Columns from "@Model.TableName"
-        </h2>
-
-        <form asp-action="Import" method="post">
-
-            <input type="hidden" asp-for="TableName" />
-            <input type="hidden" asp-for="FilePath" />
-
-            <div class="row">
-                @foreach (var col in Model.Columns)
-                {
-                    <div class="col-md-4">
-                        <div class="form-check">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="SelectedColumns"
-                                   value="@col.ColumnName" />
-
-                            <label class="form-check-label">
-                                @col.ColumnName
-                                <small class="text-muted">(@col.DataType)</small>
-                            </label>
-                        </div>
-                    </div>
-                }
-            </div>
-
-            <br />
-
-            <button type="submit" class="btn btn-success">
-                Import Selected Data
-            </button>
-        </form>
-
-    </div>
-</div>
+@if (!Model.Any())
+{
+    <p>No users awaiting approval.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Approve</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>
+                        <form asp-action="Approve" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-success">
+                                Approve
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm custom-navbar navbar-dark mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand">AssetManagement</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -24,6 +24,9 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Map" asp-action="Index">Pipe Data</a>
+                            </li>
                         }
                         @if (User.IsInRole("PrimaryUser"))
                         {
@@ -46,9 +49,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - AssetManagement
+    <footer class="border-top footer py-2">
+        <div class="container d-flex justify-content-between align-items-start flex-wrap">
+            <div class="small text-white pe-3" style="flex:1;">
+                &copy; 2026 - AssetManagement
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

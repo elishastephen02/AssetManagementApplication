@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.72, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.25, )"
@@ -85,6 +89,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[8.0.23, )"
+            },
+            "NetTopologySuite": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            },
+            "NetTopologySuite.IO.GeoJSON": {
+              "target": "Package",
+              "version": "[4.0.0, )"
             }
           },
           "imports": [

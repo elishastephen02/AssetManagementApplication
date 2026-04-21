@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Dapper/2.1.72": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Dapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Dapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer/2.14.1": {
         "type": "package",
         "dependencies": {
@@ -2084,6 +2097,53 @@
           "lib/netcoreapp3.1/Mono.TextTemplating.dll": {}
         }
       },
+      "NetTopologySuite/2.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/NetTopologySuite.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/NetTopologySuite.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "NetTopologySuite.Features/2.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NetTopologySuite": "[2.0.0, 3.0.0-A)"
+        },
+        "compile": {
+          "lib/netstandard2.0/NetTopologySuite.Features.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NetTopologySuite.Features.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "NetTopologySuite.IO.GeoJSON/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NetTopologySuite": "[2.0.0, 3.0.0-A)",
+          "NetTopologySuite.Features": "[2.0.0, 3.0.0-A)",
+          "Newtonsoft.Json": "13.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/NetTopologySuite.IO.GeoJSON.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NetTopologySuite.IO.GeoJSON.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -2729,6 +2789,27 @@
     }
   },
   "libraries": {
+    "Dapper/2.1.72": {
+      "sha512": "ns4mGqQd9a/MhP8m6w556vVlZIa0/MfUu03zrxjZC/jlr1uVCsUac8bkdB+Fs98Llbd56rRSo1eZH5VVmeGZyw==",
+      "type": "package",
+      "path": "dapper/2.1.72",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Dapper.png",
+        "dapper.2.1.72.nupkg.sha512",
+        "dapper.nuspec",
+        "lib/net10.0/Dapper.dll",
+        "lib/net10.0/Dapper.xml",
+        "lib/net461/Dapper.dll",
+        "lib/net461/Dapper.xml",
+        "lib/net8.0/Dapper.dll",
+        "lib/net8.0/Dapper.xml",
+        "lib/netstandard2.0/Dapper.dll",
+        "lib/netstandard2.0/Dapper.xml",
+        "readme.md"
+      ]
+    },
     "Humanizer/2.14.1": {
       "sha512": "/FUTD3cEceAAmJSCPN9+J+VhGwmL/C12jvwlyM1DFXShEMsBzvLzLqSrJ2rb+k/W2znKw7JyflZgZpyE+tI7lA==",
       "type": "package",
@@ -6336,6 +6417,49 @@
         "readme.md"
       ]
     },
+    "NetTopologySuite/2.6.0": {
+      "sha512": "1B1OTacTd4QtFyBeuIOcThwSSLUdRZU3bSFIwM8vk36XiZlBMi3K36u74e4OqwwHRHUuJC1PhbDx4hyI266X1Q==",
+      "type": "package",
+      "path": "nettopologysuite/2.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/NetTopologySuite.dll",
+        "lib/netstandard2.0/NetTopologySuite.xml",
+        "lib/netstandard2.1/NetTopologySuite.dll",
+        "lib/netstandard2.1/NetTopologySuite.xml",
+        "nettopologysuite.2.6.0.nupkg.sha512",
+        "nettopologysuite.nuspec"
+      ]
+    },
+    "NetTopologySuite.Features/2.0.0": {
+      "sha512": "RDbEpujDL0bsAyTMHlbKj36KIPhUrtSGUaO/jUjMnsLcixrJFwoDJ8p717FdgMHpQDrcEJAKF+QsAlYsSULkew==",
+      "type": "package",
+      "path": "nettopologysuite.features/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/NetTopologySuite.Features.dll",
+        "lib/netstandard2.0/NetTopologySuite.Features.xml",
+        "nettopologysuite.features.2.0.0.nupkg.sha512",
+        "nettopologysuite.features.nuspec"
+      ]
+    },
+    "NetTopologySuite.IO.GeoJSON/4.0.0": {
+      "sha512": "AWpcRwPAIrUZfghQat7bXK9dAckhuAxKF/Yvp+DoctLpct7pilj0Y+VCiof/8NlaclGlrISSfgnu3Tbvq6T2ug==",
+      "type": "package",
+      "path": "nettopologysuite.io.geojson/4.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/NetTopologySuite.IO.GeoJSON.dll",
+        "lib/netstandard2.0/NetTopologySuite.IO.GeoJSON.xml",
+        "nettopologysuite.io.geojson.4.0.0.nupkg.sha512",
+        "nettopologysuite.io.geojson.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -7264,6 +7388,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Dapper >= 2.1.72",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 8.0.25",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.25",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.25",
@@ -7272,7 +7397,9 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.26",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.25",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.25",
-      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.23"
+      "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.23",
+      "NetTopologySuite >= 2.6.0",
+      "NetTopologySuite.IO.GeoJSON >= 4.0.0"
     ]
   },
   "packageFolders": {
@@ -7325,6 +7452,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Dapper": {
+            "target": "Package",
+            "version": "[2.1.72, )"
+          },
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
             "target": "Package",
             "version": "[8.0.25, )"
@@ -7360,6 +7491,14 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[8.0.23, )"
+          },
+          "NetTopologySuite": {
+            "target": "Package",
+            "version": "[2.6.0, )"
+          },
+          "NetTopologySuite.IO.GeoJSON": {
+            "target": "Package",
+            "version": "[4.0.0, )"
           }
         },
         "imports": [
