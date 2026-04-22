@@ -1959,6 +1959,64 @@
           }
         }
       },
+      "Microsoft.SqlServer.Types/170.1000.7": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.SqlServer.Server": "1.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.SqlServer.Types.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.SqlServer.Types.dll": {}
+        },
+        "resource": {
+          "lib/netstandard2.0/de/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.0/es/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/fr/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/it/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.0/ja/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.0/ko/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.0/pt-BR/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/ru/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.0/zh-Hans/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.0/zh-Hant/Microsoft.SqlServer.Types.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/SqlServerSpatial170.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/SqlServerSpatial170.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/SqlServerSpatial170.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
       "Microsoft.VisualStudio.Web.CodeGeneration/8.0.23": {
         "type": "package",
         "dependencies": {
@@ -5913,6 +5971,44 @@
         "microsoft.sqlserver.server.nuspec"
       ]
     },
+    "Microsoft.SqlServer.Types/170.1000.7": {
+      "sha512": "sHpJ8rg9WvBc9q8FZrWGEgcfp/7ZERVhkL8ry9lMzjzhtrdP663RaDpMqG7EyBPxvSrSqI+biDOLqTPLlne1Dg==",
+      "type": "package",
+      "path": "microsoft.sqlserver.types/170.1000.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net472/Microsoft.SqlServer.Types.props",
+        "lib/net472/Microsoft.SqlServer.Types.dll",
+        "lib/net472/de/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/es/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/fr/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/it/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/ja/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/ko/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/pt/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/ru/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/zh-Hans/Microsoft.SqlServer.Types.resources.dll",
+        "lib/net472/zh-Hant/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/Microsoft.SqlServer.Types.dll",
+        "lib/netstandard2.0/de/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/es/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/fr/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/it/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/ja/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/ko/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/pt-BR/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/ru/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/zh-Hans/Microsoft.SqlServer.Types.resources.dll",
+        "lib/netstandard2.0/zh-Hant/Microsoft.SqlServer.Types.resources.dll",
+        "license.md",
+        "microsoft.sqlserver.types.170.1000.7.nupkg.sha512",
+        "microsoft.sqlserver.types.nuspec",
+        "runtimes/win-arm64/native/SqlServerSpatial170.dll",
+        "runtimes/win-x64/native/SqlServerSpatial170.dll",
+        "runtimes/win-x86/native/SqlServerSpatial170.dll"
+      ]
+    },
     "Microsoft.VisualStudio.Web.CodeGeneration/8.0.23": {
       "sha512": "D1cEu383KFt4r8vVnzPuHAHgBwX82nCBzNxo7Erbluns17xpzIpDWQJ1XOHAEJm1emrrmNLckIjgQnNBFNaD4w==",
       "type": "package",
@@ -7397,6 +7493,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.26",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.25",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.25",
+      "Microsoft.SqlServer.Types >= 170.1000.7",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.23",
       "NetTopologySuite >= 2.6.0",
       "NetTopologySuite.IO.GeoJSON >= 4.0.0"
@@ -7488,6 +7585,10 @@
             "target": "Package",
             "version": "[8.0.25, )"
           },
+          "Microsoft.SqlServer.Types": {
+            "target": "Package",
+            "version": "[170.1000.7, )"
+          },
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[8.0.23, )"
@@ -7523,5 +7624,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
+    }
+  ]
 }

@@ -86,6 +86,10 @@
               "target": "Package",
               "version": "[8.0.25, )"
             },
+            "Microsoft.SqlServer.Types": {
+              "target": "Package",
+              "version": "[170.1000.7, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[8.0.23, )"

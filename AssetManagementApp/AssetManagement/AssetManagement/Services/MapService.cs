@@ -1,5 +1,8 @@
-﻿using NetTopologySuite.Features;
+﻿using Microsoft.SqlServer.Types;
+using NetTopologySuite;
+using NetTopologySuite.Features;
 using NetTopologySuite.IO;
+using Newtonsoft.Json;
 
 namespace AssetManagement.Services
 {
@@ -17,65 +20,157 @@ namespace AssetManagement.Services
             var reader = new GeoJsonReader();
             var featureCollection = reader.Read<FeatureCollection>(geoJson);
 
-            var area = featureCollection.First().Geometry;
-
-            var sections = _db.Query(@"
+            // Load ALL inspections per section (not just one)
+            var dbSections = _db.Query(@"
                 SELECT 
-                    OBJ_PK,
-                    Geometry.STAsText() AS Geometry
-                FROM SECTION
-                WHERE Geometry.STIntersects(geometry::STGeomFromText(@area, 4326)) = 1",
-                new { area = area.AsText() });
+                    s.OBJ_PK       AS Id,
+                    s.OBJ_Key      AS SegId,
+                    s.OBJ_Size1    AS Size,
+                    s.OBJ_Material AS Material,
+                    s.OBJ_Spare4   AS Status,
 
-            var sectionIds = sections
-                .Select(s => (int)s.OBJ_PK)
-                .Distinct()
-                .ToList();
+                    si.INS_PK              AS InspectionId,
+                    si.INS_StartDate       AS LastInspection,
+                    si.INS_InspectedLength AS InspectedLength,
 
-            var summary = GetDynamicSectionSummary(sectionIds);
-
-            return new
-            {
-                sections,
-                summary
-            };
-        }
-
-        public object GetDynamicSectionSummary(List<int> sectionIds)
-        {
-            if (sectionIds == null || sectionIds.Count == 0)
-                return new List<object>();
-
-            string idList = string.Join(",", sectionIds);
-
-            string sql = $@"
-                SELECT 
-                    s.OBJ_PK AS Id,
-                    s.OBJ_Size1 AS Name,
-                    s.OBJ_Spare4 AS Address,
-
-                    si.INS_SatrtDate AS LastInspection,
-                    so.OBS_Observation AS Observation,
                     ss.STA_TotalScore AS TotalScore,
-                    ss.STA_HighestGrade AS Condition
+                    ss.STA_PeakScore  AS PeakScore
 
                 FROM SECTION s
-                LEFT JOIN SECINSP si 
-                    ON s.OBJ_PK = si.INS_Section_FK
+                LEFT JOIN SECINSP si ON s.OBJ_PK = si.INS_Section_FK
+                LEFT JOIN SECSTAT ss ON si.INS_PK = ss.STA_Inspection_FK
+            ").ToList();
 
-                LEFT JOIN SECOBS so 
-                    ON si.INS_PK = so.OBS_Inspection_FK
+            // Lookup: SegId -> list of inspection rows
+            var dbLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
+            foreach (var row in dbSections)
+            {
+                var key = row.SegId as string;
+                if (string.IsNullOrEmpty(key)) continue;
+                if (!dbLookup.ContainsKey(key)) dbLookup[key] = new List<dynamic>();
+                dbLookup[key].Add(row);
+            }
 
-                LEFT JOIN SECOBSMM sm 
-                    ON so.OBS_PK = sm.OMM_Observation_FK
+            // Load all observations
+            var inspectionIds = dbSections
+                .Select(p => p.InspectionId?.ToString())
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Distinct().ToList();
 
-                LEFT JOIN SECSTAT ss 
-                    ON si.INS_PK = ss.STA_Inspection_FK
+            List<dynamic> observations = new();
+            List<dynamic> media = new();
 
-                WHERE s.OBJ_PK IN ({idList})
-            ";
+            if (inspectionIds.Any())
+            {
+                string insIdList = string.Join(",", inspectionIds.Select(id => $"'{id}'"));
 
-            return _db.Query(sql);
+                observations = _db.Query($@"
+                    SELECT 
+                        OBS_PK            AS ObsId,
+                        OBS_Inspection_FK AS InspectionId,
+                        OBS_Distance      AS Distance,
+                        OBS_Observation   AS Observation,
+                        OBS_GradeS        AS Grade,
+                        OBS_ScoreS        AS Score
+                    FROM SECOBS
+                    WHERE OBS_Inspection_FK IN ({insIdList})
+                ").ToList();
+
+                var obsIds = observations
+                    .Select(o => o.ObsId?.ToString())
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .Distinct().ToList();
+
+                if (obsIds.Any())
+                {
+                    string obsIdList = string.Join(",", obsIds.Select(id => $"'{id}'"));
+                    media = _db.Query($@"
+                        SELECT 
+                            OMM_Observation_FK AS ObsId,
+                            OMM_FileName       AS FileName,
+                            OMM_FileType       AS FileType
+                        FROM SECOBSMM
+                        WHERE OMM_Observation_FK IN ({obsIdList})
+                    ").ToList();
+                }
+            }
+
+            var sections = new List<object>();
+            var summary = new List<object>();
+
+            foreach (var feature in featureCollection)
+            {
+                var segId = feature.Attributes["SEGID"]?.ToString();
+                if (string.IsNullOrEmpty(segId)) continue;
+
+                var wktWriter = new WKTWriter();
+                var wkt = wktWriter.Write(feature.Geometry);
+                sections.Add(new { OBJ_PK = segId, Geometry = wkt });
+
+                dbLookup.TryGetValue(segId, out var dbRows);
+                var firstRow = dbRows?.FirstOrDefault();
+
+                // Build inspections list — one entry per INS_PK
+                var inspections = new List<object>();
+                if (dbRows != null)
+                {
+                    int inspNum = 1;
+                    foreach (var insp in dbRows.Where(r => r.InspectionId != null))
+                    {
+                        var insId = insp.InspectionId?.ToString();
+
+                        var pipeObs = !string.IsNullOrEmpty(insId)
+                            ? observations.Where(o => o.InspectionId?.ToString() == insId).ToList()
+                            : new List<dynamic>();
+
+                        var obsWithMedia = pipeObs.Select(o =>
+                        {
+                            var obsId = o.ObsId?.ToString();
+                            var obsMedia = !string.IsNullOrEmpty(obsId)
+                                ? media.Where(m => m.ObsId?.ToString() == obsId).ToList()
+                                : new List<dynamic>();
+
+                            return new
+                            {
+                                o.Distance,
+                                o.Observation,
+                                o.Grade,
+                                o.Score,
+                                Media = obsMedia.Select(m => new { m.FileName, m.FileType })
+                            };
+                        }).ToList();
+
+                        inspections.Add(new
+                        {
+                            InspectionNumber = inspNum++,
+                            InspectionDate = insp.LastInspection,
+                            InspectedLength = insp.InspectedLength,
+                            TotalScore = insp.TotalScore,
+                            PeakScore = insp.PeakScore,
+                            Observations = obsWithMedia
+                        });
+                    }
+                }
+
+                bool hasInspection = firstRow?.InspectionId != null;
+                string condition = hasInspection ? "Inspected" : "Uninspected";
+
+                summary.Add(new
+                {
+                    Id = segId,
+                    Name = firstRow?.SegId as string ?? segId,
+                    Material = firstRow?.Material as string ?? feature.Attributes["MATERIAL"]?.ToString(),
+                    Address = firstRow?.Address as string ?? feature.Attributes["RoadName"]?.ToString(),
+                    LastInspection = firstRow?.LastInspection,
+                    InspectedLength = firstRow?.InspectedLength ?? feature.Attributes["InspectedL"],
+                    Condition = condition,
+                    TotalScore = firstRow?.TotalScore ?? feature.Attributes["STR_SCORE"],
+                    PeakScore = firstRow?.PeakScore ?? feature.Attributes["SER_SCORE"],
+                    Inspections = inspections   // <-- now a list, not flat observations
+                });
+            }
+
+            return new { sections, summary };
         }
 
         public object GetSectionDetails(int id)
@@ -86,7 +181,7 @@ namespace AssetManagement.Services
                     s.OBJ_Size1 AS Name,
                     s.OBJ_Spare4 AS Address,
 
-                    si.INS_SatrtDate AS LastInspection,
+                    si.INS_StartDate AS LastInspection,
                     so.OBS_Observation AS Observation,
                     ss.STA_TotalScore AS TotalScore,
                     ss.STA_HighestGrade AS Condition
@@ -110,20 +205,28 @@ namespace AssetManagement.Services
         {
             var q = "%" + query + "%";
 
-            var sections = _db.Query(@"
+            var result = _db.Query(@"
                 SELECT 
-                    OBJ_PK AS Id,
-                    OBJ_Size1 AS Name,
-                    OBJ_Spare4 AS Address
-                FROM SECTION
-                WHERE OBJ_Size1 LIKE @q 
-                   OR OBJ_Spare4 LIKE @q",
-                new { q });
+                    s.OBJ_Key       AS Id,
+                    s.OBJ_Key      AS Name,
+                    s.OBJ_Size1    AS Size,
+                    s.OBJ_Material AS Material,
+                    s.OBJ_Spare4   AS Status,
 
-            return new
-            {
-                sections
-            };
+                    si.INS_StartDate       AS LastInspection,
+                    si.INS_InspectedLength AS InspectedLength,
+
+                    ss.STA_TotalScore AS TotalScore,
+                    ss.STA_PeakScore  AS PeakScore
+
+                FROM SECTION s
+                LEFT JOIN SECINSP si ON s.OBJ_PK = si.INS_Section_FK
+                LEFT JOIN SECSTAT ss ON si.INS_PK = ss.STA_Inspection_FK
+
+                WHERE s.OBJ_Key LIKE @q
+            ", new { q }).ToList();
+
+            return new { pipes = result };
         }
     }
 }
