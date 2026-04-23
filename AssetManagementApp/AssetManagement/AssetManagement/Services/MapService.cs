@@ -33,6 +33,8 @@ namespace AssetManagement.Services
                     si.INS_StartDate       AS LastInspection,
                     si.INS_InspectedLength AS InspectedLength,
 
+                    ss.STA_Type           AS StaType,
+                    ss.STA_HighestGrade   AS HighestGrade, 
                     ss.STA_TotalScore AS TotalScore,
                     ss.STA_PeakScore  AS PeakScore
 
@@ -108,7 +110,9 @@ namespace AssetManagement.Services
                 sections.Add(new { OBJ_PK = segId, Geometry = wkt });
 
                 dbLookup.TryGetValue(segId, out var dbRows);
-                var firstRow = dbRows?.FirstOrDefault();
+                var firstRow = dbRows?
+                    .OrderByDescending(x => x.LastInspection)
+                    .FirstOrDefault();
 
                 // Build inspections list — one entry per INS_PK
                 var inspections = new List<object>();
@@ -159,14 +163,44 @@ namespace AssetManagement.Services
                 {
                     Id = segId,
                     Name = firstRow?.SegId as string ?? segId,
-                    Material = firstRow?.Material as string ?? feature.Attributes["MATERIAL"]?.ToString(),
-                    Address = firstRow?.Address as string ?? feature.Attributes["RoadName"]?.ToString(),
+
+                    Material = firstRow?.Material as string
+               ?? (feature.Attributes.Exists("MATERIAL")
+                   ? feature.Attributes["MATERIAL"]?.ToString()
+                   : null),
+
+                    Address = firstRow?.Address as string
+              ?? (feature.Attributes.Exists("RoadName")
+                  ? feature.Attributes["RoadName"]?.ToString()
+                  : null),
+
                     LastInspection = firstRow?.LastInspection,
-                    InspectedLength = firstRow?.InspectedLength ?? feature.Attributes["InspectedL"],
+
+                    PipeDiameter = firstRow?.Size
+                   ?? (feature.Attributes.Exists("Size")
+                       ? feature.Attributes["Size"]
+                       : null),
+
+                    InspectedLength = firstRow?.InspectedLength
+                      ?? (feature.Attributes.Exists("InspectedL")
+                          ? feature.Attributes["InspectedL"]
+                          : null),
+
+                    StaType = firstRow?.StaType,
+                    HighestGrade = firstRow?.HighestGrade,
+
                     Condition = condition,
-                    TotalScore = firstRow?.TotalScore ?? feature.Attributes["STR_SCORE"],
-                    PeakScore = firstRow?.PeakScore ?? feature.Attributes["SER_SCORE"],
-                    Inspections = inspections   // <-- now a list, not flat observations
+                    TotalScore = firstRow?.TotalScore
+                 ?? (feature.Attributes.Exists("STR_SCORE")
+                     ? feature.Attributes["STR_SCORE"]
+                     : null),
+
+                    PeakScore = firstRow?.PeakScore
+                ?? (feature.Attributes.Exists("SER_SCORE")
+                    ? feature.Attributes["SER_SCORE"]
+                    : null),
+
+                    Inspections = inspections
                 });
             }
 
@@ -199,34 +233,6 @@ namespace AssetManagement.Services
                     ).FirstOrDefault();
 
             return new { details = result };
-        }
-
-        public object SearchInfrastructure(string query)
-        {
-            var q = "%" + query + "%";
-
-            var result = _db.Query(@"
-                SELECT 
-                    s.OBJ_Key       AS Id,
-                    s.OBJ_Key      AS Name,
-                    s.OBJ_Size1    AS Size,
-                    s.OBJ_Material AS Material,
-                    s.OBJ_Spare4   AS Status,
-
-                    si.INS_StartDate       AS LastInspection,
-                    si.INS_InspectedLength AS InspectedLength,
-
-                    ss.STA_TotalScore AS TotalScore,
-                    ss.STA_PeakScore  AS PeakScore
-
-                FROM SECTION s
-                LEFT JOIN SECINSP si ON s.OBJ_PK = si.INS_Section_FK
-                LEFT JOIN SECSTAT ss ON si.INS_PK = ss.STA_Inspection_FK
-
-                WHERE s.OBJ_Key LIKE @q
-            ", new { q }).ToList();
-
-            return new { pipes = result };
         }
     }
 }

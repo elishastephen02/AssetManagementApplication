@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <style>
-
     .infra-container {
         padding: 20px 15px;
         max-width: 1200px;
@@ -186,9 +185,46 @@
         .pipe-tooltip::before {
             border-top-color: rgba(0,0,0,0.75);
         }
+
+    #summaryTable p.placeholder {
+        color: #999;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    /* Hidden until upload succeeds; margin-bottom clears the site footer */
+    #inspectionPanel {
+        display: none;
+        margin-bottom: 80px;
+    }
+
+    #mapPanel {
+        transition: all 0.3s ease;
+        flex: 1;
+    }
+
+    #summaryPanel {
+        transition: all 0.3s ease;
+        display: none;
+    }
+
+    .map-full {
+        flex: 1 1 100%;
+    }
+
+    .map-split {
+        flex: 2;
+    }
+
+    .summary-visible {
+        display: block !important;
+        flex: 1;
+    }
 </style>
 
 <div class="infra-container">
+
+    <!-- Top row: upload + search -->
     <div class="infra-row">
         <div class="infra-panel infra-col">
             <h3 class="infra-title">Upload GeoJSON</h3>
@@ -203,43 +239,48 @@
             <button class="infra-btn" onclick="search()">Search</button>
             <div id="searchResults"></div>
         </div>
-
     </div>
 
-    <div class="infra-panel">
-        <h3 class="infra-title">Infrastructure Map</h3>
+    <!-- Middle row: map LEFT, summary RIGHT -->
+    <div class="infra-row" id="mapRow" style="align-items: flex-start;">
 
-        <div class="map-stats">
-            <span class="map-stat-chip" id="statTotal">🔢 Pipes: —</span>
-            <span class="map-stat-chip" id="statInspected"
-                  style="background:#e8f0fe;color:#1a56db;border-color:#c3d9ff;">
-                🔵 Inspected: —
-            </span>
-            <span class="map-stat-chip" id="statUninspected"
-                  style="background:#f5f5f5;color:#666;border-color:#ddd;">
-                ⚪ Uninspected: —
-            </span>
+        <div class="infra-panel" id="mapPanel" style="flex: 1;">
+            <h3 class="infra-title">Infrastructure Map</h3>
+
+            <div class="map-stats">
+                <span class="map-stat-chip" id="statTotal">🔢 Pipes: —</span>
+                <span class="map-stat-chip" id="statInspected"
+                      style="background:#e8f0fe;color:#1a56db;border-color:#c3d9ff;">
+                    🔵 Inspected: —
+                </span>
+                <span class="map-stat-chip" id="statUninspected"
+                      style="background:#f5f5f5;color:#666;border-color:#ddd;">
+                    ⚪ Uninspected: —
+                </span>
+            </div>
+
+            <div class="map-controls">
+                <button class="map-control-btn active" onclick="filterPipes('all', this)">All Pipes</button>
+                <button class="map-control-btn" onclick="filterPipes('inspected', this)">Inspected</button>
+                <button class="map-control-btn" onclick="filterPipes('uninspected', this)">Uninspected</button>
+                <button class="map-control-btn" onclick="resetMapView()" style="margin-left:auto;">🔍 Reset View</button>
+            </div>
+
+            <div id="map"></div>
         </div>
 
-        <div class="map-controls">
-            <button class="map-control-btn active" onclick="filterPipes('all', this)">All Pipes</button>
-            <button class="map-control-btn" onclick="filterPipes('inspected', this)">Inspected</button>
-            <button class="map-control-btn" onclick="filterPipes('uninspected', this)">Uninspected</button>
-            <button class="map-control-btn" onclick="resetMapView()" style="margin-left:auto;">🔍 Reset View</button>
-        </div>
-
-        <div id="map"></div>
-    </div>
-
-    <div class="infra-row">
-        <div class="infra-panel infra-col">
-            <h3 class="infra-title">Inspection Details</h3>
-            <div id="accordion"></div>
-        </div>
-@*         <div class="infra-panel infra-col">
+        <div class="infra-panel" id="summaryPanel" style="display:none; flex: 1; min-width: 220px;">
             <h3 class="infra-title">Pipe Summary</h3>
-            <div id="summaryTable"></div>
-        </div> *@
+            <div id="summaryTable">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom: scrollable accordion — hidden until GeoJSON is uploaded -->
+    <div class="infra-panel" id="inspectionPanel">
+        <h3 class="infra-title">Inspection Details</h3>
+        <div id="accordion" style="max-height: 450px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 
 </div>
@@ -249,15 +290,15 @@
 <script>
     // ---------------- MAP INIT ----------------
     var eThekwiniBounds = L.latLngBounds(
-    L.latLng(-30.1500, 30.6500),  // SW corner
-    L.latLng(-29.5500, 31.2000)   // NE corner
+    L.latLng(-30.1500, 30.6500),
+    L.latLng(-29.5500, 31.2000)
     );
 
     var map = L.map('map', {
     minZoom: 11,
-    maxZoom: 18,
+    maxZoom: 19,
     maxBounds: eThekwiniBounds,
-    maxBoundsViscosity: 1.0  // fully locks to bounds — user cannot pan outside
+    maxBoundsViscosity: 1.0
     }).setView([-29.8587, 31.0218], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -265,7 +306,7 @@
     }).addTo(map);
 
     var legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function() {
+    legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'map-legend');
     div.innerHTML = `
     <h4>🗺️ Pipe Status</h4>
@@ -276,8 +317,7 @@
     <div class="legend-item">
     <div class="legend-line" style="background:none;border-top:2px dashed #95a5a6;"></div>
     <span class="legend-label">Uninspected</span>
-    </div>
-    `;
+    </div>`;
     return div;
     };
     legend.addTo(map);
@@ -285,9 +325,9 @@
     setTimeout(() => map.invalidateSize(), 200);
 
     var pipeLayer = L.layerGroup().addTo(map);
-    let pipeColors = {};
+    let pipeColors  = {};
     let pipeObjects = [];
-    let allSummary = [];
+    let allSummary  = [];
 
     // ---------------- FILTER PIPES ----------------
     function filterPipes(filter, btn) {
@@ -295,7 +335,7 @@
     btn.classList.add('active');
 
     pipeObjects.forEach(p => {
-    let c = (p.data.Condition || "").toLowerCase();
+    let c    = (p.data.Condition || "").toLowerCase();
     let show = filter === 'all'
     || (filter === 'inspected'   && c === 'inspected')
     || (filter === 'uninspected' && c === 'uninspected');
@@ -315,15 +355,15 @@
     map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] });
     else
     map.setView([-29.8587, 31.0218], 12);
-    } catch(e) {
+    } catch (e) {
     map.setView([-29.8587, 31.0218], 12);
     }
     }
 
     // ---------------- UPDATE STATS ----------------
     function updateStats(summary) {
-    let inspected   = summary.filter(x => (x.Condition||"").toLowerCase() === 'inspected').length;
-    let uninspected = summary.filter(x => (x.Condition||"").toLowerCase() === 'uninspected').length;
+    let inspected   = summary.filter(x => (x.Condition || "").toLowerCase() === 'inspected').length;
+    let uninspected = summary.filter(x => (x.Condition || "").toLowerCase() === 'uninspected').length;
 
     document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
     document.getElementById('statInspected').textContent   = `🔵 Inspected: ${inspected}`;
@@ -340,140 +380,131 @@
     return;
     }
 
-    console.log("Total sections:", data.sections.length);
-    console.log("Sample section keys:", Object.keys(data.sections[0]));
-    console.log("First section geometry:", data.sections[0]?.Geometry);
-    console.log("All sections:", data.sections);
-
     data.sections.forEach(s => {
     let geo = wktToGeoJSON(s.Geometry);
-    if (!geo) {
-    console.warn("Could not parse WKT:", s.Geometry);
-    return;
-    }
+    if (!geo) { console.warn("Could not parse WKT:", s.Geometry); return; }
 
-    let id = s.OBJ_PK;
-    let color = pipeColors[id] || "blue";
+    let id          = s.OBJ_PK;
+    let color       = pipeColors[id] || "blue";
     let summaryItem = allSummary.find(x => x.Id === id);
-
-    // Inside drawMap forEach, replace the layer creation:
-    let weight    = color === '#95a5a6' ? 3 : 5;
-    let dashArray = color === '#95a5a6' ? '6, 4' : null;
+    let weight      = color === '#95a5a6' ? 3 : 5;
+    let dashArray   = color === '#95a5a6' ? '6, 4' : null;
 
     let layer = L.geoJSON(geo, {
-    style: {
-    color: color,
-    weight: weight,
-    opacity: 0.9,
-    dashArray: dashArray
-    },
-    onEachFeature: function(feature, featureLayer) {
-    // Tooltip on hover
+    style: { color, weight, opacity: 0.9, dashArray },
+    onEachFeature: function (feature, featureLayer) {
     featureLayer.bindTooltip(
     `<b>${summaryItem?.Address || id}</b><br>
     Size: ${summaryItem?.Name || 'N/A'}mm<br>
     Condition: ${summaryItem?.Condition || 'Uninspected'}`,
     { sticky: true, className: 'pipe-tooltip' }
     );
-    featureLayer.on("click", function() {
-    highlightPipe(id);
-    });
+    featureLayer.on("click", function () { highlightPipe(id); });
     }
     }).addTo(pipeLayer);
 
-    pipeObjects.push({ id: id, data: summaryItem || s, layer: layer });
+    pipeObjects.push({ id, data: summaryItem || s, layer });
     });
 
-    try {
-    map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] });
-    } catch (e) {}
+    try { map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] }); } catch (e) {}
     }
 
-    // ---------------- Highlight pipe ----------------
+    // ---------------- HIGHLIGHT PIPE ----------------
     function highlightPipe(id) {
     pipeObjects.forEach(p => {
-    let orig = pipeColors[p.id] || "blue";
-    p.layer.setStyle({ color: orig, weight: 3 });
+    p.layer.setStyle({ color: pipeColors[p.id] || "blue", weight: 3 });
     });
 
     let target = pipeObjects.find(p => p.id === id);
     if (target) {
     target.layer.setStyle({ color: "yellow", weight: 5 });
-    try { map.fitBounds(target.layer.getBounds(), { padding: [40, 40] }); } catch(e) {}
+    try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 19 }); } catch (e) {}
+    if (target.data) showPipeDetails(target.data);
     }
 
-    // Expand matching accordion item
     document.querySelectorAll(".infra-accordion-item").forEach(item => {
-    let header = item.querySelector(".infra-accordion-header");
+    let header  = item.querySelector(".infra-accordion-header");
     let content = item.querySelector(".infra-accordion-content");
+    let icon    = item.querySelector(".accordion-icon");
     if (header && header.dataset.id == id) {
     content.style.display = "block";
+    if (icon) icon.textContent = "−";
     item.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } else {
     content.style.display = "none";
+    if (icon) icon.textContent = "+";
     }
     });
     }
 
-    // ---------------- SHOW DETAILS ----------------
+    // ---------------- SHOW PIPE DETAILS ----------------
     function showPipeDetails(pipe) {
-    let obsHtml = "";
 
-    if (pipe.Observations && pipe.Observations.length > 0) {
-        pipe.Observations.forEach(o => {
-            let mediaHtml = "";
-            if (o.Media && o.Media.length > 0) {
-                mediaHtml = o.Media.map(m =>
-                    `<span style="display:inline-block;margin:2px 4px;padding:2px 6px;
-                     background:#e8f0fe;border-radius:4px;font-size:12px;">
-                     📎 ${m.FileName} (${m.FileType})</span>`
-                ).join("");
-            }
+    // ⭐ SHOW summary + resize layout
+    const summaryPanel = document.getElementById("summaryPanel");
+    const mapPanel = document.getElementById("mapPanel");
 
-            obsHtml += `
-                <div style="border-left:3px solid #007bff;padding:6px 10px;margin:6px 0;background:#f0f6ff;border-radius:4px;">
-                    <b>${o.Distance}m</b> — ${o.Observation || "N/A"}
-                    &nbsp;<span style="color:#e67e22;">Grade: ${o.Grade || "N/A"}</span>
-                    &nbsp;<span style="color:#27ae60;">Score: ${o.Score || "N/A"}</span>
-                    ${mediaHtml ? `<div style="margin-top:4px;">${mediaHtml}</div>` : ""}
-                </div>`;
-        });
-    } else {
-        obsHtml = "<p style='color:#999;'>No observations recorded.</p>";
-    }
+    summaryPanel.classList.add("summary-visible");
+    mapPanel.classList.remove("map-full");
+    mapPanel.classList.add("map-split");
+
+    // ⭐ IMPORTANT: fix Leaflet rendering after resize
+    setTimeout(() => {
+    map.invalidateSize();
+    }, 300);
 
     document.getElementById("summaryTable").innerHTML = `
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-            <tr><td style="padding:6px;color:#666;width:45%"><b>ID</b></td>
-                <td style="padding:6px;">${pipe.Id || "N/A"}</td></tr>
-            <tr style="background:#f5f5f5;">
-                <td style="padding:6px;"><b>Name / Size</b></td>
-                <td style="padding:6px;">${pipe.Name || "N/A"}</td></tr>
-            <tr><td style="padding:6px;"><b>Material</b></td>
-                <td style="padding:6px;">${pipe.Material || "N/A"}</td></tr>
-            <tr style="background:#f5f5f5;">
-                <td style="padding:6px;"><b>Address</b></td>
-                <td style="padding:6px;">${pipe.Address || "N/A"}</td></tr>
-            <tr><td style="padding:6px;"><b>Last Inspection</b></td>
-                <td style="padding:6px;">${pipe.LastInspection ? new Date(pipe.LastInspection).toLocaleDateString() : "N/A"}</td></tr>
-            <tr style="background:#f5f5f5;">
-                <td style="padding:6px;"><b>Inspected Length</b></td>
-                <td style="padding:6px;">${pipe.InspectedLength ?? "N/A"}</td></tr>
-            <tr><td style="padding:6px;"><b>Condition</b></td>
-                <td style="padding:6px;">${pipe.Condition || "N/A"}</td></tr>
-            <tr style="background:#f5f5f5;">
-                <td style="padding:6px;"><b>Total Score</b></td>
-                <td style="padding:6px;">${pipe.TotalScore ?? "N/A"}</td></tr>
-            <tr><td style="padding:6px;"><b>Peak Score</b></td>
-                <td style="padding:6px;">${pipe.PeakScore ?? "N/A"}</td></tr>
-        </table>
-        <div style="margin-top:12px;">
-            <b style="font-size:14px;">Observations</b>
-            ${obsHtml}
-        </div>
-    `;
-}
-
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr>
+    <td style="padding:6px;color:#666;width:45%"><b>ID</b></td>
+    <td style="padding:6px;">${pipe.Id || "N/A"}</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Name</b></td>
+    <td style="padding:6px;">${pipe.Name || "N/A"}</td>
+    </tr>
+    <tr>
+    <td style="padding:6px;"><b>Pipe Diameter</b></td>
+    <td style="padding:6px;">${pipe.PipeDiameter ?? "N/A"} mm</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Material</b></td>
+    <td style="padding:6px;">${pipe.Material || "N/A"}</td>
+    </tr>
+    <tr>
+    <td style="padding:6px;"><b>Address</b></td>
+    <td style="padding:6px;">${pipe.Address || "N/A"}</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Last Inspection</b></td>
+    <td style="padding:6px;">${pipe.LastInspection ? new Date(pipe.LastInspection).toLocaleDateString() : "N/A"}</td>
+    </tr>
+    <tr>
+    <td style="padding:6px;"><b>Inspected Length</b></td>
+    <td style="padding:6px;">${pipe.InspectedLength ?? "N/A"}</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Condition</b></td>
+    <td style="padding:6px;">${pipe.Condition || "N/A"}</td>
+    </tr>
+    <tr>
+    <td style="padding:6px;"><b>STA Type</b></td>
+    <td style="padding:6px;">${pipe.StaType ?? "N/A"}</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Highest Grade</b></td>
+    <td style="padding:6px;">${pipe.HighestGrade ?? "N/A"}</td>
+    </tr>
+    <tr>
+    <td style="padding:6px;"><b>Total Score</b></td>
+    <td style="padding:6px;">${pipe.TotalScore ?? "N/A"}</td>
+    </tr>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Peak Score</b></td>
+    <td style="padding:6px;">${pipe.PeakScore ?? "N/A"}</td>
+    </tr>
+    </table>`;
+    }
 
     // ---------------- WKT CONVERSION ----------------
     function wktToGeoJSON(wkt) {
@@ -489,7 +520,7 @@
 
     let coords = inner.split(",").map(p => {
     let parts = p.trim().split(/\s+/);
-    return [parseFloat(parts[0]), parseFloat(parts[1])]; 
+    return [parseFloat(parts[0]), parseFloat(parts[1])];
     });
 
     return { type: "Feature", geometry: { type: "LineString", coordinates: coords } };
@@ -526,6 +557,9 @@
     updateStats(allSummary);
     renderAccordion(allSummary);
     drawMap(data);
+
+    // Reveal the accordion panel now that data is loaded
+    document.getElementById("inspectionPanel").style.display = "block";
     })
     .catch(err => {
     console.error(err);
@@ -535,65 +569,56 @@
 
     // ---------------- SEARCH ----------------
     function search() {
-    let query = document.getElementById("searchBox").value.trim();
+    let query      = document.getElementById("searchBox").value.trim().toLowerCase();
     let resultsDiv = document.getElementById("searchResults");
-
-    //console.log("Geo SEGID:", segId);
-    console.log("DB Keys:", allSummary.map(x => x.Id));
 
     resultsDiv.innerHTML = "Searching...";
 
-    if (!query) {
+    if (!query) { resultsDiv.innerHTML = ""; return; }
+
+    let results = allSummary.filter(x =>
+    (x.Id       && x.Id.toLowerCase().includes(query)) ||
+    (x.Name     && x.Name.toLowerCase().includes(query)) ||
+    (x.Material && x.Material.toLowerCase().includes(query)) ||
+    (x.Address  && x.Address.toLowerCase().includes(query))
+    );
+
     resultsDiv.innerHTML = "";
-    return;
-    }
 
-    fetch(`/Map/Search?query=${encodeURIComponent(query)}`)
-    .then(res => res.json())
-    .then(data => {
-
-    resultsDiv.innerHTML = "";
-
-    if (!data.pipes || data.pipes.length === 0) {
+    if (results.length === 0) {
     resultsDiv.innerHTML = "<p style='color:#999;'>No results found.</p>";
     return;
     }
 
-    data.pipes.forEach(pipe => {
-
+    results.forEach(pipe => {
     let div = document.createElement("div");
     div.innerHTML = `
     <p style="cursor:pointer;color:#007bff;margin:6px 0;">
     📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}
-    </p>
-    `;
+    </p>`;
 
     div.onclick = () => {
+    let mapPipe  = pipeObjects.find(p => p.data?.Name === pipe.Name || p.id === pipe.Id);
+    let targetId = mapPipe?.id || pipe.Id;
 
-    // 1. Find pipe on map
-    let mapPipe = pipeObjects.find(p => p.id == pipe.Id);
+    if (mapPipe) highlightPipe(targetId);
 
-    if (mapPipe) {
-    highlightPipe(pipe.Id);
-    }
-
-    // 2. Show details (IMPORTANT)
-    showPipeDetails(pipe);
-
-    // 3. Open accordion
-    document.querySelectorAll(".infra-accordion-header").forEach(h => {
-    if (h.dataset.id == pipe.Id) {
-    toggleAccordion(h, pipe.Id);
+    document.querySelectorAll(".infra-accordion-item").forEach(item => {
+    let header  = item.querySelector(".infra-accordion-header");
+    let content = item.querySelector(".infra-accordion-content");
+    let icon    = item.querySelector(".accordion-icon");
+    if (header && header.dataset.id == targetId) {
+    content.style.display = "block";
+    if (icon) icon.textContent = "−";
+    item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } else {
+    content.style.display = "none";
+    if (icon) icon.textContent = "+";
     }
     });
     };
 
     resultsDiv.appendChild(div);
-    });
-    })
-    .catch(err => {
-    console.error(err);
-    resultsDiv.innerHTML = "Search failed.";
     });
     }
 
@@ -603,9 +628,9 @@
     container.innerHTML = "";
 
     summary.forEach(item => {
-    let condColor = (item.Condition || "").toLowerCase().includes("poor") ? "#e74c3c"
-    : (item.Condition || "").toLowerCase().includes("fair") ? "#e67e22"
-    : (item.Condition || "").toLowerCase().includes("good") ? "#27ae60"
+    let condColor = (item.Condition || "").toLowerCase().includes("poor")  ? "#e74c3c"
+    : (item.Condition || "").toLowerCase().includes("fair")  ? "#e67e22"
+    : (item.Condition || "").toLowerCase().includes("good")  ? "#27ae60"
     : "#95a5a6";
 
     let inspectionsHtml = "";
@@ -618,30 +643,20 @@
     let obsHtml = "";
     if (insp.Observations && insp.Observations.length > 0) {
     insp.Observations.forEach(o => {
-
     let mediaHtml = "";
     if (o.Media && o.Media.length > 0) {
     mediaHtml = o.Media.map(m => {
-    let ext = (m.FileType || m.FileName || "").toLowerCase();
-    let isImage = ext.includes("jpg") || ext.includes("jpeg")
-    || ext.includes("png") || ext.includes("gif")
-    || ext.includes("bmp") || ext.includes("webp");
-    let isJpg = (m.FileType || "").toLowerCase().includes("jpg") ||
+    let isJpg = (m.FileType || "").toLowerCase().includes("jpg")  ||
     (m.FileType || "").toLowerCase().includes("jpeg") ||
-    (m.FileName || "").toLowerCase().endsWith(".jpg") ||
+    (m.FileName || "").toLowerCase().endsWith(".jpg")  ||
     (m.FileName || "").toLowerCase().endsWith(".jpeg");
-
-    if (isJpg) {
-    return `<div style="margin-top:6px;">
+    return isJpg ? `<div style="margin-top:6px;">
     <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
     alt="${m.FileName}"
     style="width:100%;max-width:300px;border-radius:6px;
     border:1px solid #ddd;display:block;"
     onerror="this.style.display='none'" />
-    </div>`;
-    } else {
-    return ""; 
-    }
+    </div>` : "";
     }).join("");
     }
 
@@ -652,15 +667,9 @@
     border-radius:10px;font-size:12px;white-space:nowrap;flex-shrink:0;">
     📍 ${o.Distance ?? "?"}m
     </span>
-    <span style="color:#444;flex:1;">
-    ${o.Observation || "No description"}
-    </span>
-    <span style="color:#e67e22;font-size:12px;white-space:nowrap;">
-    Grade: ${o.Grade || "N/A"}
-    </span>
-    <span style="color:#27ae60;font-size:12px;white-space:nowrap;">
-    Score: ${o.Score || "N/A"}
-    </span>
+    <span style="color:#444;flex:1;">${o.Observation || "No description"}</span>
+    <span style="color:#e67e22;font-size:12px;white-space:nowrap;">Grade: ${o.Grade || "N/A"}</span>
+    <span style="color:#27ae60;font-size:12px;white-space:nowrap;">Score: ${o.Score || "N/A"}</span>
     </div>
     ${mediaHtml ? `<div style="margin-top:6px;">${mediaHtml}</div>` : ""}
     </div>`;
@@ -681,9 +690,7 @@
     🔧 Length: <b>${insp.InspectedLength ?? "N/A"}m</b>
     </span>
     </div>
-    <div style="padding:8px 12px;background:#fff;">
-    ${obsHtml}
-    </div>
+    <div style="padding:8px 12px;background:#fff;">${obsHtml}</div>
     </div>`;
     });
     } else {
@@ -696,23 +703,19 @@
     <div class="infra-accordion-header" data-id="${item.Id}"
     onclick="toggleAccordion(this, '${item.Id}')"
     style="display:flex;align-items:center;gap:10px;user-select:none;">
-
     <span class="accordion-icon"
     style="font-size:18px;font-weight:700;color:white;width:22px;text-align:center;flex-shrink:0;">+</span>
-
     <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-    📍 ${item.Id} — 
+    📍 ${item.Id} —
     <span style="font-size:11px;color:#cce0ff;margin-left:8px;">
     🗓️ ${item.LastInspection ? new Date(item.LastInspection).toLocaleDateString() : "N/A"}
     </span>
     </span>
-
     <span style="font-size:12px;background:${condColor};padding:2px 8px;
     border-radius:10px;white-space:nowrap;flex-shrink:0;">
     ${item.Condition || "Uninspected"}
     </span>
     </div>
-
     <div class="infra-accordion-content">
     <p style="margin:0 0 10px;font-size:13px;color:#555;
     padding-bottom:8px;border-bottom:1px solid #eee;">
@@ -725,7 +728,6 @@
     container.appendChild(div);
     });
 
-    // Auto-open first item
     if (summary.length > 0) {
     let firstContent = container.querySelector(".infra-accordion-content");
     let firstIcon    = container.querySelector(".accordion-icon");
@@ -739,11 +741,8 @@
     let icon    = header.querySelector(".accordion-icon");
     let isOpen  = content.style.display === "block";
 
-    // Close all
-    document.querySelectorAll(".infra-accordion-content")
-    .forEach(c => c.style.display = "none");
-    document.querySelectorAll(".accordion-icon")
-    .forEach(i => i.textContent = "+");
+    document.querySelectorAll(".infra-accordion-content").forEach(c => c.style.display = "none");
+    document.querySelectorAll(".accordion-icon").forEach(i => i.textContent = "+");
 
     if (!isOpen) {
     content.style.display = "block";

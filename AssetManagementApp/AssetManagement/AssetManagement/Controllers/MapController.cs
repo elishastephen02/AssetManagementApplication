@@ -51,17 +51,6 @@ namespace AssetManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult Search(string query)
-        {
-            if (string.IsNullOrEmpty(query))
-                return Json(new { });
-
-            var result = _mapService.SearchInfrastructure(query);
-
-            return Json(result);
-        }
-
-        [HttpGet]
         public IActionResult GetImage(string fileName)
         {
             // Adjust this path to wherever images are stored on disk
