@@ -187,9 +187,9 @@ namespace AssetManagement.Services
                           : null),
 
                     StaType = firstRow?.StaType,
-                    HighestGrade = firstRow?.HighestGrade,
-
+                    
                     Condition = condition,
+                    HighestGrade = firstRow?.HighestGrade,
                     TotalScore = firstRow?.TotalScore
                     ?? (feature.Attributes.Exists("STR_SCORE")
                      ? feature.Attributes["STR_SCORE"]

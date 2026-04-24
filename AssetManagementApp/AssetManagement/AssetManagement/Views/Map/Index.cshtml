@@ -502,51 +502,46 @@
 
     document.getElementById("summaryTable").innerHTML = `
     <table style="width:100%;border-collapse:collapse;font-size:14px;">
-    <tr>
-    <td style="padding:6px;color:#666;width:45%"><b>ID</b></td>
-    <td style="padding:6px;">${pipe.Id || "N/A"}</td>
-    </tr>
-    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Name</b></td>
     <td style="padding:6px;">${pipe.Name || "N/A"}</td>
     </tr>
     <tr>
+    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Pipe Diameter</b></td>
     <td style="padding:6px;">${pipe.PipeDiameter ?? "N/A"} mm</td>
     </tr>
-    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Material</b></td>
     <td style="padding:6px;">${pipe.Material || "N/A"}</td>
     </tr>
     <tr>
+    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Address</b></td>
     <td style="padding:6px;">${pipe.Address || "N/A"}</td>
     </tr>
-    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Last Inspection</b></td>
     <td style="padding:6px;">${pipe.LastInspection ? new Date(pipe.LastInspection).toLocaleDateString() : "N/A"}</td>
     </tr>
     <tr>
+    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Inspected Length</b></td>
     <td style="padding:6px;">${pipe.InspectedLength ?? "N/A"}</td>
     </tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Condition</b></td>
+    <td style="padding:6px;"><b>Condition (Inspected/ Uninspected)</b></td>
     <td style="padding:6px;">${pipe.Condition || "N/A"}</td>
     </tr>
     <tr>
-    <td style="padding:6px;"><b>STA Type</b></td>
+    <tr style="background:#f5f5f5;">
+    <td style="padding:6px;"><b>Type (STR/OPE)</b></td>
     <td style="padding:6px;">${pipe.StaType ?? "N/A"}</td>
     </tr>
-    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Highest Grade</b></td>
     <td style="padding:6px;">${pipe.HighestGrade ?? "N/A"}</td>
     </tr>
     <tr>
+    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Total Score</b></td>
     <td style="padding:6px;">${pipe.TotalScore ?? "N/A"}</td>
     </tr>
-    <tr style="background:#f5f5f5;">
     <td style="padding:6px;"><b>Peak Score</b></td>
     <td style="padding:6px;">${pipe.PeakScore ?? "N/A"}</td>
     </tr>
@@ -779,8 +774,6 @@
     📍 ${o.Distance ?? "?"}m
     </span>
     <span style="color:#444;flex:1;">${o.Observation || "No description"}</span>
-    <span style="color:#e67e22;font-size:12px;white-space:nowrap;">Grade: ${o.Grade || "N/A"}</span>
-    <span style="color:#27ae60;font-size:12px;white-space:nowrap;">Score: ${o.Score || "N/A"}</span>
     </div>
     ${mediaHtml ? `<div style="margin-top:6px;">${mediaHtml}</div>` : ""}
     </div>`;
