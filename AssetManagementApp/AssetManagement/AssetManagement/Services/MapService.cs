@@ -165,19 +165,19 @@ namespace AssetManagement.Services
                     Name = firstRow?.SegId as string ?? segId,
 
                     Material = firstRow?.Material as string
-               ?? (feature.Attributes.Exists("MATERIAL")
-                   ? feature.Attributes["MATERIAL"]?.ToString()
-                   : null),
+                    ?? (feature.Attributes.Exists("MATERIAL")
+                    ? feature.Attributes["MATERIAL"]?.ToString()
+                    : null),
 
                     Address = firstRow?.Address as string
-              ?? (feature.Attributes.Exists("RoadName")
-                  ? feature.Attributes["RoadName"]?.ToString()
-                  : null),
+                    ?? (feature.Attributes.Exists("RoadName")
+                    ? feature.Attributes["RoadName"]?.ToString()
+                    : null),
 
                     LastInspection = firstRow?.LastInspection,
 
                     PipeDiameter = firstRow?.Size
-                   ?? (feature.Attributes.Exists("Size")
+                    ?? (feature.Attributes.Exists("Size")
                        ? feature.Attributes["Size"]
                        : null),
 
@@ -191,12 +191,12 @@ namespace AssetManagement.Services
 
                     Condition = condition,
                     TotalScore = firstRow?.TotalScore
-                 ?? (feature.Attributes.Exists("STR_SCORE")
+                    ?? (feature.Attributes.Exists("STR_SCORE")
                      ? feature.Attributes["STR_SCORE"]
                      : null),
 
                     PeakScore = firstRow?.PeakScore
-                ?? (feature.Attributes.Exists("SER_SCORE")
+                    ?? (feature.Attributes.Exists("SER_SCORE")
                     ? feature.Attributes["SER_SCORE"]
                     : null),
 
@@ -213,7 +213,7 @@ namespace AssetManagement.Services
                 SELECT 
                     s.OBJ_PK AS Id,
                     s.OBJ_Size1 AS Name,
-                    s.OBJ_Spare4 AS Address,
+                    s.OBJ_Spare4 AS Status,
 
                     si.INS_StartDate AS LastInspection,
                     so.OBS_Observation AS Observation,

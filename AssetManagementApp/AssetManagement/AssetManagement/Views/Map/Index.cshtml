@@ -191,6 +191,20 @@
         font-size: 13px;
         margin: 0;
     }
+    #searchResults {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 220px;
+        overflow-y: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        z-index: 1000;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+    }
 
     /* Hidden until upload succeeds; margin-bottom clears the site footer */
     #inspectionPanel {
@@ -233,11 +247,11 @@
             <div id="uploadStatus"></div>
         </div>
 
-        <div class="infra-panel infra-col">
+        <div class="infra-panel infra-col" style="position: relative;">
             <h3 class="infra-title">Search Pipes</h3>
-            <input type="text" id="searchBox" class="infra-input" placeholder="Search..." />
+            <input type="text" id="searchBox" class="infra-input" placeholder="Search" />
             <button class="infra-btn" onclick="search()">Search</button>
-            <div id="searchResults"></div>
+            <div id="searchResults" style="position:absolute;"></div>
         </div>
     </div>
 
@@ -269,7 +283,7 @@
             <div id="map"></div>
         </div>
 
-        <div class="infra-panel" id="summaryPanel" style="display:none; flex: 1; min-width: 220px;">
+        <div class="infra-panel" id="summaryPanel" style="display:none; flex: 1; min-width: 220px; margin-top:80px">
             <h3 class="infra-title">Pipe Summary</h3>
             <div id="summaryTable">
             </div>
@@ -437,6 +451,39 @@
     });
     }
 
+    // ---------------- HIGHLIGHT PIPE ----------------
+    function highlightMultiplePipes(pipeList) {
+
+    // Reset styles first
+    pipeObjects.forEach(p => {
+    p.layer.setStyle({
+    color: pipeColors[p.id] || "blue",
+    weight: 3
+    });
+    });
+
+    let layersToZoom = [];
+
+    pipeList.forEach(pipe => {
+    let mapPipe = pipeObjects.find(p => p.id === pipe.Id);
+
+    if (mapPipe) {
+    mapPipe.layer.setStyle({
+    color: "orange",
+    weight: 6
+    });
+
+    layersToZoom.push(mapPipe.layer);
+    }
+    });
+
+    // Zoom to all selected pipes
+    if (layersToZoom.length > 0) {
+    let group = L.featureGroup(layersToZoom);
+    map.fitBounds(group.getBounds(), { padding: [20, 20] });
+    }
+    }
+
     // ---------------- SHOW PIPE DETAILS ----------------
     function showPipeDetails(pipe) {
 
@@ -569,57 +616,121 @@
 
     // ---------------- SEARCH ----------------
     function search() {
-    let query      = document.getElementById("searchBox").value.trim().toLowerCase();
+    let query = document.getElementById("searchBox").value.trim().toLowerCase();
     let resultsDiv = document.getElementById("searchResults");
 
     resultsDiv.innerHTML = "Searching...";
 
-    if (!query) { resultsDiv.innerHTML = ""; return; }
+    if (!query) {
+    resultsDiv.innerHTML = "";
+    return;
+    }
 
-    let results = allSummary.filter(x =>
-    (x.Id       && x.Id.toLowerCase().includes(query)) ||
-    (x.Name     && x.Name.toLowerCase().includes(query)) ||
-    (x.Material && x.Material.toLowerCase().includes(query)) ||
-    (x.Address  && x.Address.toLowerCase().includes(query))
+    // Match pipes normally
+    let pipeResults = allSummary.filter(x =>
+    (x.Id && x.Id.toLowerCase().includes(query)) ||
+    (x.Name && x.Name.toLowerCase().includes(query)) ||
+    (x.Material && x.Material.toLowerCase().includes(query))
+    );
+
+    // Match roads (Address)
+    let roadResults = allSummary.filter(x =>
+    normalizeRoad(x.Address).includes(normalizeRoad(query))
     );
 
     resultsDiv.innerHTML = "";
 
-    if (results.length === 0) {
-    resultsDiv.innerHTML = "<p style='color:#999;'>No results found.</p>";
-    return;
+    // ---------------- ROAD RESULTS ----------------
+    if (roadResults.length > 0) {
+    let roadName = roadResults[0].Address || "Selected Road";
+    let isExpanded = false;
+
+    let roadDiv = document.createElement("div");
+    roadDiv.style.cssText = "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
+
+    roadDiv.innerHTML = `
+    <div id="roadHeader" style="display:flex;align-items:center;justify-content:space-between;
+    background:#d4edda;padding:8px 12px;cursor:pointer;">
+    <span style="font-weight:600;color:#28a745;font-size:13px;">
+    🛣️ ${roadName}
+    <span style="font-weight:400;color:#555;margin-left:6px;">(${roadResults.length} pipes)</span>
+    </span>
+    <div style="display:flex;align-items:center;gap:8px;">
+    <span style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;"
+    id="zoomAllBtn">Zoom All</span>
+    <span id="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
+    </div>
+    </div>
+    <div id="pipeList" style="max-height:160px;overflow-y:auto;display:block;background:#fff;">
+    </div>`;
+
+    // Zoom All button
+    roadDiv.querySelector("#zoomAllBtn").onclick = (e) => {
+    e.stopPropagation();
+    highlightMultiplePipes(roadResults);
+    };
+
+    // Toggle collapse
+    const pipeList   = roadDiv.querySelector("#pipeList");
+    const toggleIcon = roadDiv.querySelector("#toggleIcon");
+    roadDiv.querySelector("#roadHeader").onclick = (e) => {
+    if (e.target.id === "zoomAllBtn") return;
+    isExpanded = !isExpanded;
+    pipeList.style.display   = isExpanded ? "none" : "block";
+    toggleIcon.textContent   = isExpanded ? "▸" : "▾";
+    };
+
+    // Populate pipe rows
+    roadResults.forEach(pipe => {
+    let row = document.createElement("div");
+    row.style.cssText = "display:flex;align-items:center;justify-content:space-between;" +
+    "padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;" +
+    "font-size:13px;transition:background 0.15s;";
+    row.innerHTML = `
+    <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
+    <span style="color:#999;font-size:11px;">${pipe.Condition || "Uninspected"}</span>`;
+    row.onmouseenter = () => row.style.background = "#f0f7ff";
+    row.onmouseleave = () => row.style.background = "";
+    row.onclick = () => highlightPipe(pipe.Id);
+    pipeList.appendChild(row);
+    });
+
+    resultsDiv.appendChild(roadDiv);
     }
 
-    results.forEach(pipe => {
+    // ---------------- PIPE RESULTS ----------------
+    pipeResults.forEach(pipe => {
     let div = document.createElement("div");
+
     div.innerHTML = `
     <p style="cursor:pointer;color:#007bff;margin:6px 0;">
     📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}
     </p>`;
 
     div.onclick = () => {
-    let mapPipe  = pipeObjects.find(p => p.data?.Name === pipe.Name || p.id === pipe.Id);
-    let targetId = mapPipe?.id || pipe.Id;
-
-    if (mapPipe) highlightPipe(targetId);
-
-    document.querySelectorAll(".infra-accordion-item").forEach(item => {
-    let header  = item.querySelector(".infra-accordion-header");
-    let content = item.querySelector(".infra-accordion-content");
-    let icon    = item.querySelector(".accordion-icon");
-    if (header && header.dataset.id == targetId) {
-    content.style.display = "block";
-    if (icon) icon.textContent = "−";
-    item.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    } else {
-    content.style.display = "none";
-    if (icon) icon.textContent = "+";
-    }
-    });
+    let mapPipe = pipeObjects.find(p => p.id === pipe.Id);
+    if (mapPipe) highlightPipe(pipe.Id);
     };
 
     resultsDiv.appendChild(div);
     });
+
+    // ---------------- NO RESULTS ----------------
+    if (pipeResults.length === 0 && roadResults.length === 0) {
+    resultsDiv.innerHTML = "<p style='color:#999;'>No results found.</p>";
+    }
+    }
+
+    function normalizeRoad(text) {
+    return (text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, " ")
+    .replace(/\broad\b/g, "rd") 
+    .replace(/\bstreet\b/g, "st")
+    .replace(/\bavenue\b/g, "ave")
+    .replace(/\bdrive\b/g, "dr")
+    .replace(/\bclose\b/g, "cl");
     }
 
     // ---------------- ACCORDION ----------------

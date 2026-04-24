@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AssetManagement")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f21e34cb5715b32824c042568de5eb46308d9877")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c8ceb63b34cf050a7df58ab57431b1f47a94501")]
 [assembly: System.Reflection.AssemblyProductAttribute("AssetManagement")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AssetManagement")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
