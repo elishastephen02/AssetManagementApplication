@@ -132,7 +132,10 @@ namespace AssetManagement.Services
                         var pipeObs = !string.IsNullOrEmpty(insId)
                             ? observations
                                 .Where(o => Convert.ToString(o.InspectionId ?? "") == insId)
-                                .OrderBy(o => o.Distance)
+                                .OrderBy(o => {
+                                    decimal d;
+                                    return decimal.TryParse(Convert.ToString(o.Distance ?? ""), out d) ? d : decimal.MaxValue;
+                                })
                                 .ToList()
                             : new List<dynamic>();
 
