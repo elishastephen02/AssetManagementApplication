@@ -193,16 +193,23 @@
     }
 
     #searchResults {
-        position: relative;
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
         width: 100%;
         max-height: 260px;
         overflow-y: auto;
-        margin-top: 10px;
         background: white;
         border: 1px solid #e0e0e0;
         border-radius: 8px;
-        box-shadow: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         display: none;
+        z-index: 9999;
+    }
+
+    .search-panel {
+        position: relative;
+        z-index: 10000;
     }
 
     #inspectionPanel {
@@ -236,11 +243,11 @@
 
 <div class="infra-container">
     <div class="infra-row">
-        <div class="infra-panel infra-col" style="position: relative;">
+        <div class="infra-panel infra-col search-panel">
             <h3 class="infra-title">Search Pipes</h3>
             <input type="text" id="searchBox" class="infra-input" placeholder="Search" />
             <button class="infra-btn" onclick="search()">Search</button>
-            <div id="searchResults" style="position:absolute;"></div>
+            <div id="searchResults"></div>
         </div>
     </div>
 
