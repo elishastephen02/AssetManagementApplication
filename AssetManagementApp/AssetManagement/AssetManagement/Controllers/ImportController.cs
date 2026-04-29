@@ -1,10 +1,12 @@
 ﻿using AssetManagement.Adapter;
-using Microsoft.AspNetCore.Mvc;
 using AssetManagement.Models;
 using AssetManagement.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManagement.Controllers
 {
+    [Authorize(Roles = "PrimaryUser")]
     public class ImportController : Controller
     {
         private readonly IWebHostEnvironment _env;

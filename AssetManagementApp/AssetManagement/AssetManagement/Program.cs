@@ -22,7 +22,7 @@ builder.Services.AddSession();
 
 builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<MapService>();
-//builder.Services.AddScoped<SQLService>();
+builder.Services.AddScoped<ImportService>();
 
 var app = builder.Build();
 

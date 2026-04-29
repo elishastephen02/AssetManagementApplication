@@ -206,7 +206,6 @@
         border: 1px solid #e0e0e0;
     }
 
-    /* Hidden until upload succeeds; margin-bottom clears the site footer */
     #inspectionPanel {
         display: none;
         margin-bottom: 80px;
@@ -237,30 +236,36 @@
 </style>
 
 <div class="infra-container">
+    <div class="infra-panel" style="width:100%; position:relative; margin-bottom:15px;">
+        <h3 class="infra-title">Search Pipes</h3>
+        <div style="display:flex; gap:10px; width:100%;">
+            <input type="text"
+                   id="searchBox"
+                   class="infra-input"
+                   placeholder="Search pipes or roads..."
+                   style="flex:1; width:100%;" />
 
-    <!-- Top row: upload + search -->
-    <div class="infra-row">
-        <div class="infra-panel infra-col">
-            <h3 class="infra-title">Upload GeoJSON</h3>
-            <input type="file" id="geoFile" class="infra-input" />
-            <button class="infra-btn" onclick="uploadGeo()">Upload</button>
-            <div id="uploadStatus"></div>
+            <button class="infra-btn" onclick="search()">
+                Search
+            </button>
         </div>
-
-        <div class="infra-panel infra-col" style="position: relative;">
-            <h3 class="infra-title">Search Pipes</h3>
-            <input type="text" id="searchBox" class="infra-input" placeholder="Search" />
-            <button class="infra-btn" onclick="search()">Search</button>
-            <div id="searchResults" style="position:absolute;"></div>
+        <div id="searchResults"
+             style="
+                position:relative;
+                width:100%;
+                max-height:260px;
+                overflow-y:auto;
+                margin-top:10px;
+                background:white;
+                border:1px solid #e0e0e0;
+                border-radius:8px;
+                box-shadow:none;
+             ">
         </div>
     </div>
-
-    <!-- Middle row: map LEFT, summary RIGHT -->
     <div class="infra-row" id="mapRow" style="align-items: flex-start;">
-
         <div class="infra-panel" id="mapPanel" style="flex: 1;">
             <h3 class="infra-title">Infrastructure Map</h3>
-
             <div class="map-stats">
                 <span class="map-stat-chip" id="statTotal">🔢 Pipes: —</span>
                 <span class="map-stat-chip" id="statInspected"
@@ -272,575 +277,587 @@
                     ⚪ Uninspected: —
                 </span>
             </div>
-
             <div class="map-controls">
                 <button class="map-control-btn active" onclick="filterPipes('all', this)">All Pipes</button>
                 <button class="map-control-btn" onclick="filterPipes('inspected', this)">Inspected</button>
                 <button class="map-control-btn" onclick="filterPipes('uninspected', this)">Uninspected</button>
                 <button class="map-control-btn" onclick="resetMapView()" style="margin-left:auto;">🔍 Reset View</button>
             </div>
-
             <div id="map"></div>
         </div>
-
         <div class="infra-panel" id="summaryPanel" style="display:none; flex: 1; min-width: 220px; margin-top:80px">
             <h3 class="infra-title">Pipe Summary</h3>
-            <div id="summaryTable">
-            </div>
+            <div id="summaryTable"></div>
         </div>
-
     </div>
-
-    <!-- Bottom: scrollable accordion — hidden until GeoJSON is uploaded -->
     <div class="infra-panel" id="inspectionPanel">
         <h3 class="infra-title">Inspection Details</h3>
         <div id="accordion" style="max-height: 450px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
-
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    // ---------------- MAP INIT ----------------
-    var eThekwiniBounds = L.latLngBounds(
+
+// MAP INIT
+var eThekwiniBounds = L.latLngBounds(
     L.latLng(-30.1500, 30.6500),
     L.latLng(-29.5500, 31.2000)
-    );
+);
 
-    var map = L.map('map', {
-    minZoom: 11,
-    maxZoom: 19,
+var map = L.map('map', {
+    minZoom: 11, maxZoom: 19,
     maxBounds: eThekwiniBounds,
     maxBoundsViscosity: 1.0
-    }).setView([-29.8587, 31.0218], 12);
+}).setView([-29.8587, 31.0218], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+}).addTo(map);
 
-    var legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function () {
+var legend = L.control({ position: 'bottomright' });
+legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'map-legend');
     div.innerHTML = `
-    <h4>🗺️ Pipe Status</h4>
-    <div class="legend-item">
-    <div class="legend-line" style="background:#1a56db;height:5px;"></div>
-    <span class="legend-label">Inspected</span>
-    </div>
-    <div class="legend-item">
-    <div class="legend-line" style="background:none;border-top:2px dashed #95a5a6;"></div>
-    <span class="legend-label">Uninspected</span>
-    </div>`;
+        <h4>🗺️ Pipe Status</h4>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#1a56db;height:5px;"></div>
+            <span class="legend-label">Inspected</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:none;border-top:2px dashed #95a5a6;"></div>
+            <span class="legend-label">Uninspected</span>
+        </div>`;
     return div;
-    };
-    legend.addTo(map);
+};
+legend.addTo(map);
+setTimeout(() => map.invalidateSize(), 200);
 
-    setTimeout(() => map.invalidateSize(), 200);
+var pipeLayer = L.featureGroup().addTo(map);
+let pipeColors  = {};
+let pipeObjects = [];
+let allSummary  = [];
 
-    var pipeLayer = L.layerGroup().addTo(map);
-    let pipeColors  = {};
-    let pipeObjects = [];
-    let allSummary  = [];
+// LOAD DATA ON PAGE OPEN
+function loadMapData() {
+   fetch("/Map/GetMapData")
+    .then(async res => {
+        if (!res.ok) {
+            let text = await res.text();
+            console.error("SERVER ERROR:", text);
+            return;
+        }
+        return res.json();
+    })
+    .then(data => {
+    allSummary = data.summary || [];
 
-    // ---------------- FILTER PIPES ----------------
-    function filterPipes(filter, btn) {
-    document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    // TEMP DEBUG - remove after confirming
+    console.log("Total summary items:", allSummary.length);
+    console.log("Inspected:", allSummary.filter(x => x.Condition === "Inspected").length);
+    console.log("Sample item:", allSummary[0]);
+    console.log("Total sections:", data.sections?.length);
+    console.log("Sample section:", data.sections?.[0]);
 
-    pipeObjects.forEach(p => {
-    let c    = (p.data.Condition || "").toLowerCase();
-    let show = filter === 'all'
-    || (filter === 'inspected'   && c === 'inspected')
-    || (filter === 'uninspected' && c === 'uninspected');
+        pipeColors = {};
+        allSummary.forEach(x => {
+            pipeColors[x.Id] = (x.Condition || "").toLowerCase() === "inspected"
+                ? "#1a56db" : "#95a5a6";
+        });
 
-    if (show) {
-    if (!map.hasLayer(p.layer)) pipeLayer.addLayer(p.layer);
-    } else {
-    pipeLayer.removeLayer(p.layer);
+        updateStats(allSummary);
+        renderAccordion(allSummary);
+        drawMap(data);
+
+        document.getElementById("inspectionPanel").style.display = "block";
+    })
+    .catch(err => console.error("Map data load failed:", err));
+}
+
+window.onload = loadMapData;
+
+// WKT → GeoJSON
+function wktToGeoJSON(wkt) {
+    if (!wkt) return null;
+
+    wkt = wkt.trim()
+              .replace(/^SRID=\d+;/i, "")
+              .replace(/\bZ\b/i, "")
+              .trim();
+
+    const type = wkt.match(/^([A-Z]+)\s*\(/i)?.[1]?.toUpperCase();
+    if (!type) { console.warn("Cannot detect WKT type:", wkt); return null; }
+
+    function parsePoints(str) {
+        return str.trim().split(",").map(p => {
+            const parts = p.trim().split(/\s+/);
+            const lng = parseFloat(parts[0]);
+            const lat = parseFloat(parts[1]);
+            return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
+        }).filter(Boolean);
     }
-    });
+
+    if (type === "LINESTRING") {
+        const inner = wkt.replace(/^LINESTRING\s*\(/i, "").replace(/\)\s*$/, "");
+        return {
+            type: "Feature",
+            geometry: { type: "LineString", coordinates: parsePoints(inner) }
+        };
     }
 
-    // ---------------- RESET VIEW ----------------
-    function resetMapView() {
-    try {
-    if (pipeLayer.getLayers().length > 0)
-    map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] });
-    else
-    map.setView([-29.8587, 31.0218], 12);
-    } catch (e) {
-    map.setView([-29.8587, 31.0218], 12);
-    }
+    if (type === "MULTILINESTRING") {
+        const inner = wkt.replace(/^MULTILINESTRING\s*\(\s*\(/i, "").replace(/\)\s*\)\s*$/, "");
+        const lines = inner.split(/\)\s*,\s*\(/).map(part => parsePoints(part));
+        return {
+            type: "Feature",
+            geometry: { type: "MultiLineString", coordinates: lines }
+        };
     }
 
-    // ---------------- UPDATE STATS ----------------
-    function updateStats(summary) {
-    let inspected   = summary.filter(x => (x.Condition || "").toLowerCase() === 'inspected').length;
-    let uninspected = summary.filter(x => (x.Condition || "").toLowerCase() === 'uninspected').length;
+    console.warn("Unsupported WKT type:", type, wkt);
+    return null;
+}
 
-    document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
-    document.getElementById('statInspected').textContent   = `🔵 Inspected: ${inspected}`;
-    document.getElementById('statUninspected').textContent = `⚪ Uninspected: ${uninspected}`;
-    }
-
-    // ---------------- DRAW MAP ----------------
-    function drawMap(data) {
+// DRAW MAP
+function drawMap(data) {
     pipeLayer.clearLayers();
     pipeObjects = [];
 
-    if (!data.sections || data.sections.length === 0) {
-    console.warn("No sections found in data");
-    return;
-    }
+    console.log("sections count:", data.sections?.length);
+    if (data.sections?.length) console.log("first section sample:", data.sections[0]);
+
+    if (!data.sections || !data.sections.length) return;
 
     data.sections.forEach(s => {
-    let geo = wktToGeoJSON(s.Geometry);
-    if (!geo) { console.warn("Could not parse WKT:", s.Geometry); return; }
+        let id = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+        let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
 
-    let id          = s.OBJ_PK;
-    let color       = pipeColors[id] || "blue";
-    let summaryItem = allSummary.find(x => x.Id === id);
-    let weight      = color === '#95a5a6' ? 3 : 5;
-    let dashArray   = color === '#95a5a6' ? '6, 4' : null;
+        if (!id || !wkt) {
+            console.warn("Skipping invalid pipe record:", s);
+            return;
+        }
 
-    let layer = L.geoJSON(geo, {
-    style: { color, weight, opacity: 0.9, dashArray },
-    onEachFeature: function (feature, featureLayer) {
-    featureLayer.bindTooltip(
-    `<b>${summaryItem?.Address || id}</b><br>
-    Size: ${summaryItem?.Name || 'N/A'}mm<br>
-    Condition: ${summaryItem?.Condition || 'Uninspected'}`,
-    { sticky: true, className: 'pipe-tooltip' }
-    );
-    featureLayer.on("click", function () { highlightPipe(id); });
-    }
-    }).addTo(pipeLayer);
+        let geo = wktToGeoJSON(wkt);
 
-    pipeObjects.push({ id, data: summaryItem || s, layer });
+        if (!geo) {
+            console.warn("Invalid geometry:", id, wkt);
+            return;
+        }
+
+        let color = pipeColors[id] || "#95a5a6";
+        let summaryItem = allSummary.find(x => x.Id === id);
+        let isInspected = color === "#1a56db";
+
+        let layer = L.geoJSON(geo, {
+            style: {
+                color,
+                weight: isInspected ? 5 : 3,
+                opacity: 0.9,
+                dashArray: isInspected ? "" : "6,4"
+            },
+            onEachFeature: function (feature, fl) {
+                fl.bindTooltip(
+                    `<b>${summaryItem?.Name || id}</b><br>
+                     Road: ${summaryItem?.Address || 'N/A'}<br>
+                     Condition: ${summaryItem?.Condition || 'Uninspected'}`,
+                    { sticky: true, className: 'pipe-tooltip' }
+                );
+
+                fl.on("click", () => highlightPipe(id));
+            }
+        }).addTo(pipeLayer);
+
+        pipeObjects.push({ id, data: summaryItem || s, layer });
+
+        console.log("drawing pipe:", id, geo);
     });
 
-    try { map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] }); } catch (e) {}
-    }
+    setTimeout(() => {
+        if (pipeLayer.getLayers().length > 0) {
+            let bounds = pipeLayer.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [20, 20] });
+            }
+        }
 
-    // ---------------- HIGHLIGHT PIPE ----------------
-    function highlightPipe(id) {
+        console.log("Pipe layers:", pipeLayer.getLayers().length);
+        console.log("Bounds valid:", pipeLayer.getBounds().isValid());
+    }, 200);
+}
+
+// HIGHLIGHT SINGLE PIPE
+function highlightPipe(id) {
+    // Reset all styles
     pipeObjects.forEach(p => {
-    p.layer.setStyle({ color: pipeColors[p.id] || "blue", weight: 3 });
+        let isInsp = (pipeColors[p.id] || "") === "#1a56db";
+        p.layer.setStyle({
+            color:     pipeColors[p.id] || "#95a5a6",
+            weight:    isInsp ? 5 : 3,
+            dashArray: isInsp ? null : '6,4'
+        });
     });
 
     let target = pipeObjects.find(p => p.id === id);
     if (target) {
-    target.layer.setStyle({ color: "yellow", weight: 5 });
-    try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 19 }); } catch (e) {}
-    if (target.data) showPipeDetails(target.data);
+        target.layer.setStyle({ color: "yellow", weight: 6, dashArray: null });
+        try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 19 }); } catch (e) {}
+        if (target.data) showPipeDetails(target.data);
     }
 
+    // Accordion: open matching, close others
     document.querySelectorAll(".infra-accordion-item").forEach(item => {
-    let header  = item.querySelector(".infra-accordion-header");
-    let content = item.querySelector(".infra-accordion-content");
-    let icon    = item.querySelector(".accordion-icon");
-    if (header && header.dataset.id == id) {
-    content.style.display = "block";
-    if (icon) icon.textContent = "−";
-    item.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    } else {
-    content.style.display = "none";
-    if (icon) icon.textContent = "+";
-    }
+        let header  = item.querySelector(".infra-accordion-header");
+        let content = item.querySelector(".infra-accordion-content");
+        let icon    = item.querySelector(".accordion-icon");
+        if (header && header.dataset.id === id) {
+            content.style.display = "block";
+            if (icon) icon.textContent = "−";
+            item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        } else {
+            content.style.display = "none";
+            if (icon) icon.textContent = "+";
+        }
     });
-    }
+}
 
-    // ---------------- HIGHLIGHT PIPE ----------------
-    function highlightMultiplePipes(pipeList) {
-
-    // Reset styles first
+// HIGHLIGHT MULTIPLE PIPES (road search)
+function highlightMultiplePipes(pipeList) {
     pipeObjects.forEach(p => {
-    p.layer.setStyle({
-    color: pipeColors[p.id] || "blue",
-    weight: 3
-    });
+        let isInsp = (pipeColors[p.id] || "") === "#1a56db";
+        p.layer.setStyle({ color: pipeColors[p.id] || "#95a5a6", weight: isInsp ? 5 : 3 });
     });
 
-    let layersToZoom = [];
-
+    let layers = [];
     pipeList.forEach(pipe => {
-    let mapPipe = pipeObjects.find(p => p.id === pipe.Id);
-
-    if (mapPipe) {
-    mapPipe.layer.setStyle({
-    color: "orange",
-    weight: 6
+        let mp = pipeObjects.find(p => p.id === pipe.Id);
+        if (mp) { mp.layer.setStyle({ color: "orange", weight: 6 }); layers.push(mp.layer); }
     });
 
-    layersToZoom.push(mapPipe.layer);
+    if (layers.length) {
+        map.fitBounds(L.featureGroup(layers).getBounds(), { padding: [20, 20] });
     }
+}
+
+// SHOW PIPE DETAILS (summary panel)
+function showPipeDetails(pipe) {
+    document.getElementById("summaryPanel").classList.add("summary-visible");
+    document.getElementById("mapPanel").classList.add("map-split");
+    setTimeout(() => map.invalidateSize(), 300);
+
+    let fmt = v => (v != null && v !== "") ? v : "N/A";
+    let fmtDate = v => v ? new Date(v).toLocaleDateString() : "N/A";
+
+    let rows = [
+        ["Name",                        fmt(pipe.Name)],
+        ["Pipe Diameter",               fmt(pipe.PipeDiameter) + (pipe.PipeDiameter != null ? " mm" : "")],
+        ["Material",                    fmt(pipe.Material)],
+        ["Road / Address",              fmt(pipe.Address)],
+        ["Last Inspection",             fmtDate(pipe.LastInspection)],
+        ["Inspected Length",            fmt(pipe.InspectedLength)],
+        ["Condition",                   fmt(pipe.Condition)],
+        ["Highest Grade",               fmt(pipe.HighestGrade)],
+        ["Total Score",                 fmt(pipe.TotalScore)],
+        ["Peak Score",                  fmt(pipe.PeakScore)],
+    ];
+
+    let html = `<table style="width:100%;border-collapse:collapse;font-size:14px;">`;
+    rows.forEach(([label, val], i) => {
+        let bg = i % 2 === 0 ? "#fff" : "#f5f5f5";
+        html += `<tr style="background:${bg};">
+            <td style="padding:7px 8px;font-weight:600;white-space:nowrap;">${label}</td>
+            <td style="padding:7px 8px;">${val}</td>
+        </tr>`;
     });
+    html += `</table>`;
+    document.getElementById("summaryTable").innerHTML = html;
+}
 
-    // Zoom to all selected pipes
-    if (layersToZoom.length > 0) {
-    let group = L.featureGroup(layersToZoom);
-    map.fitBounds(group.getBounds(), { padding: [20, 20] });
-    }
-    }
-
-    // ---------------- SHOW PIPE DETAILS ----------------
-    function showPipeDetails(pipe) {
-
-    // ⭐ SHOW summary + resize layout
-    const summaryPanel = document.getElementById("summaryPanel");
-    const mapPanel = document.getElementById("mapPanel");
-
-    summaryPanel.classList.add("summary-visible");
-    mapPanel.classList.remove("map-full");
-    mapPanel.classList.add("map-split");
-
-    // ⭐ IMPORTANT: fix Leaflet rendering after resize
-    setTimeout(() => {
-    map.invalidateSize();
-    }, 300);
-
-    document.getElementById("summaryTable").innerHTML = `
-    <table style="width:100%;border-collapse:collapse;font-size:14px;">
-    <td style="padding:6px;"><b>Name</b></td>
-    <td style="padding:6px;">${pipe.Name || "N/A"}</td>
-    </tr>
-    <tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Pipe Diameter</b></td>
-    <td style="padding:6px;">${pipe.PipeDiameter ?? "N/A"} mm</td>
-    </tr>
-    <td style="padding:6px;"><b>Material</b></td>
-    <td style="padding:6px;">${pipe.Material || "N/A"}</td>
-    </tr>
-    <tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Address</b></td>
-    <td style="padding:6px;">${pipe.Address || "N/A"}</td>
-    </tr>
-    <td style="padding:6px;"><b>Last Inspection</b></td>
-    <td style="padding:6px;">${pipe.LastInspection ? new Date(pipe.LastInspection).toLocaleDateString() : "N/A"}</td>
-    </tr>
-    <tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Inspected Length</b></td>
-    <td style="padding:6px;">${pipe.InspectedLength ?? "N/A"}</td>
-    </tr>
-    <td style="padding:6px;"><b>Condition (Inspected/ Uninspected)</b></td>
-    <td style="padding:6px;">${pipe.Condition || "N/A"}</td>
-    </tr>
-    <tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Type (STR/OPE)</b></td>
-    <td style="padding:6px;">${pipe.StaType ?? "N/A"}</td>
-    </tr>
-    <td style="padding:6px;"><b>Highest Grade</b></td>
-    <td style="padding:6px;">${pipe.HighestGrade ?? "N/A"}</td>
-    </tr>
-    <tr>
-    <tr style="background:#f5f5f5;">
-    <td style="padding:6px;"><b>Total Score</b></td>
-    <td style="padding:6px;">${pipe.TotalScore ?? "N/A"}</td>
-    </tr>
-    <td style="padding:6px;"><b>Peak Score</b></td>
-    <td style="padding:6px;">${pipe.PeakScore ?? "N/A"}</td>
-    </tr>
-    </table>`;
-    }
-
-    // ---------------- WKT CONVERSION ----------------
-    function wktToGeoJSON(wkt) {
-    if (!wkt) return null;
-    wkt = wkt.trim();
-
-    if (wkt.toUpperCase().startsWith("LINESTRING")) {
-    let inner = wkt
-    .replace(/LINESTRING\s*Z?\s*/i, "")
-    .replace(/^\(/, "")
-    .replace(/\)$/, "")
-    .trim();
-
-    let coords = inner.split(",").map(p => {
-    let parts = p.trim().split(/\s+/);
-    return [parseFloat(parts[0]), parseFloat(parts[1])];
+// FILTER PIPES
+function filterPipes(filter, btn) {
+    document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    pipeObjects.forEach(p => {
+        let c    = (p.data.Condition || "").toLowerCase();
+        let show = filter === 'all'
+                || (filter === 'inspected'   && c === 'inspected')
+                || (filter === 'uninspected' && c === 'uninspected');
+        show ? pipeLayer.addLayer(p.layer) : pipeLayer.removeLayer(p.layer);
     });
+}
 
-    return { type: "Feature", geometry: { type: "LineString", coordinates: coords } };
-    }
+// RESET VIEW
+function resetMapView() {
+    try { map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] }); }
+    catch { map.setView([-29.8587, 31.0218], 12); }
+}
 
-    console.warn("Unsupported WKT:", wkt);
-    return null;
-    }
+// STATS
+function updateStats(summary) {
+    let ins   = summary.filter(x => (x.Condition || "").toLowerCase() === 'inspected').length;
+    let unins = summary.filter(x => (x.Condition || "").toLowerCase() === 'uninspected').length;
+    document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
+    document.getElementById('statInspected').textContent   = `🔵 Inspected: ${ins}`;
+    document.getElementById('statUninspected').textContent = `⚪ Uninspected: ${unins}`;
+}
 
-    // ---------------- UPLOAD ----------------
-    function uploadGeo() {
-    var fileInput = document.getElementById("geoFile");
-    if (!fileInput.files.length) { alert("Please select a file first."); return; }
+// SEARCH
+function normalizeRoad(text) {
+    return (text || "").toLowerCase().trim()
+        .replace(/\s+/g, " ")
+        .replace(/\broad\b/g, "rd")
+        .replace(/\bstreet\b/g, "st")
+        .replace(/\bavenue\b/g, "ave")
+        .replace(/\bdrive\b/g, "dr")
+        .replace(/\bclose\b/g, "cl");
+}
 
-    var formData = new FormData();
-    formData.append("file", fileInput.files[0]);
-    document.getElementById("uploadStatus").innerText = "Uploading...";
-
-    fetch("/Map/UploadGeoJson", { method: "POST", body: formData })
-    .then(async response => {
-    if (!response.ok) { let t = await response.text(); throw new Error(t); }
-    return response.json();
-    })
-    .then(data => {
-    document.getElementById("uploadStatus").innerText = "Upload successful";
-    allSummary = data.summary || [];
-    pipeColors = {};
-
-    allSummary.forEach(x => {
-    let c = (x.Condition || "").toLowerCase();
-    pipeColors[x.Id] = c === 'inspected' ? "#1a56db" : "#95a5a6";
-    });
-
-    updateStats(allSummary);
-    renderAccordion(allSummary);
-    drawMap(data);
-
-    // Reveal the accordion panel now that data is loaded
-    document.getElementById("inspectionPanel").style.display = "block";
-    })
-    .catch(err => {
-    console.error(err);
-    document.getElementById("uploadStatus").innerText = "Upload failed: " + err.message;
-    });
-    }
-
-    // ---------------- SEARCH ----------------
-    function search() {
-    let query = document.getElementById("searchBox").value.trim().toLowerCase();
+function search() {
+    let query      = (document.getElementById("searchBox").value || "").trim().toLowerCase();
     let resultsDiv = document.getElementById("searchResults");
 
-    resultsDiv.innerHTML = "Searching...";
+    if (!query) { resultsDiv.style.display = "none"; resultsDiv.innerHTML = ""; return; }
 
-    if (!query) {
-    resultsDiv.innerHTML = "";
-    return;
-    }
-
-    // Match pipes normally
+    // Pipe name / ID match
     let pipeResults = allSummary.filter(x =>
-    (x.Id && x.Id.toLowerCase().includes(query)) ||
-    (x.Name && x.Name.toLowerCase().includes(query)) ||
-    (x.Material && x.Material.toLowerCase().includes(query))
+        (x.Id       && x.Id.toLowerCase().includes(query)) ||
+        (x.Name     && x.Name.toLowerCase().includes(query)) ||
+        (x.Material && x.Material.toLowerCase().includes(query))
     );
 
-    // Match roads (Address)
+    // Road / address match
     let roadResults = allSummary.filter(x =>
-    normalizeRoad(x.Address).includes(normalizeRoad(query))
+        normalizeRoad(x.Address).includes(normalizeRoad(query))
     );
 
     resultsDiv.innerHTML = "";
+    resultsDiv.style.display = "block";
 
-    // ---------------- ROAD RESULTS ----------------
+    // ── Road group ──
     if (roadResults.length > 0) {
-    let roadName = roadResults[0].Address || "Selected Road";
-    let isExpanded = false;
+        let roadName   = roadResults[0].Address || "Selected Road";
+        let isExpanded = false;
 
-    let roadDiv = document.createElement("div");
-    roadDiv.style.cssText = "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
+        let roadDiv = document.createElement("div");
+        roadDiv.style.cssText = "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
+        roadDiv.innerHTML = `
+            <div id="roadHeader" style="display:flex;align-items:center;justify-content:space-between;
+                 background:#d4edda;padding:8px 12px;cursor:pointer;">
+                <span style="font-weight:600;color:#28a745;font-size:13px;">
+                    🛣️ ${roadName}
+                    <span style="font-weight:400;color:#555;margin-left:6px;">(${roadResults.length} pipes)</span>
+                </span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span id="zoomAllBtn" style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;cursor:pointer;">Zoom All</span>
+                    <span id="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
+                </div>
+            </div>
+            <div id="pipeList" style="max-height:160px;overflow-y:auto;background:#fff;"></div>`;
 
-    roadDiv.innerHTML = `
-    <div id="roadHeader" style="display:flex;align-items:center;justify-content:space-between;
-    background:#d4edda;padding:8px 12px;cursor:pointer;">
-    <span style="font-weight:600;color:#28a745;font-size:13px;">
-    🛣️ ${roadName}
-    <span style="font-weight:400;color:#555;margin-left:6px;">(${roadResults.length} pipes)</span>
-    </span>
-    <div style="display:flex;align-items:center;gap:8px;">
-    <span style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;"
-    id="zoomAllBtn">Zoom All</span>
-    <span id="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
-    </div>
-    </div>
-    <div id="pipeList" style="max-height:160px;overflow-y:auto;display:block;background:#fff;">
-    </div>`;
+        roadDiv.querySelector("#zoomAllBtn").onclick = e => {
+            e.stopPropagation();
+            highlightMultiplePipes(roadResults);
+        };
 
-    // Zoom All button
-    roadDiv.querySelector("#zoomAllBtn").onclick = (e) => {
-    e.stopPropagation();
-    highlightMultiplePipes(roadResults);
-    };
+        const pipeList   = roadDiv.querySelector("#pipeList");
+        const toggleIcon = roadDiv.querySelector("#toggleIcon");
+        roadDiv.querySelector("#roadHeader").onclick = e => {
+            if (e.target.id === "zoomAllBtn") return;
+            isExpanded = !isExpanded;
+            pipeList.style.display = isExpanded ? "none" : "block";
+            toggleIcon.textContent = isExpanded ? "▸" : "▾";
+        };
 
-    // Toggle collapse
-    const pipeList   = roadDiv.querySelector("#pipeList");
-    const toggleIcon = roadDiv.querySelector("#toggleIcon");
-    roadDiv.querySelector("#roadHeader").onclick = (e) => {
-    if (e.target.id === "zoomAllBtn") return;
-    isExpanded = !isExpanded;
-    pipeList.style.display   = isExpanded ? "none" : "block";
-    toggleIcon.textContent   = isExpanded ? "▸" : "▾";
-    };
+        roadResults.forEach(pipe => {
+            let row = document.createElement("div");
+            row.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:13px;";
+            row.innerHTML = `
+                <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
+                <span style="color:#999;font-size:11px;">${pipe.Condition || "Uninspected"}</span>`;
+            row.onmouseenter = () => row.style.background = "#f0f7ff";
+            row.onmouseleave = () => row.style.background = "";
+            row.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
+            pipeList.appendChild(row);
+        });
 
-    // Populate pipe rows
-    roadResults.forEach(pipe => {
-    let row = document.createElement("div");
-    row.style.cssText = "display:flex;align-items:center;justify-content:space-between;" +
-    "padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;" +
-    "font-size:13px;transition:background 0.15s;";
-    row.innerHTML = `
-    <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
-    <span style="color:#999;font-size:11px;">${pipe.Condition || "Uninspected"}</span>`;
-    row.onmouseenter = () => row.style.background = "#f0f7ff";
-    row.onmouseleave = () => row.style.background = "";
-    row.onclick = () => highlightPipe(pipe.Id);
-    pipeList.appendChild(row);
-    });
-
-    resultsDiv.appendChild(roadDiv);
+        resultsDiv.appendChild(roadDiv);
     }
 
-    // ---------------- PIPE RESULTS ----------------
+    // ── Pipe rows ──
     pipeResults.forEach(pipe => {
-    let div = document.createElement("div");
-
-    div.innerHTML = `
-    <p style="cursor:pointer;color:#007bff;margin:6px 0;">
-    📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}
-    </p>`;
-
-    div.onclick = () => {
-    let mapPipe = pipeObjects.find(p => p.id === pipe.Id);
-    if (mapPipe) highlightPipe(pipe.Id);
-    };
-
-    resultsDiv.appendChild(div);
+        let div = document.createElement("div");
+        div.style.cssText = "padding:8px 12px;cursor:pointer;border-bottom:1px solid #f0f0f0;font-size:13px;";
+        div.innerHTML = `<span style="color:#007bff;">📍 ${pipe.Name || pipe.Id}</span>
+                         <span style="color:#999;margin-left:8px;font-size:11px;">${pipe.Address || ""}</span>`;
+        div.onmouseenter = () => div.style.background = "#f0f7ff";
+        div.onmouseleave = () => div.style.background = "";
+        div.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
+        resultsDiv.appendChild(div);
     });
 
-    // ---------------- NO RESULTS ----------------
-    if (pipeResults.length === 0 && roadResults.length === 0) {
-    resultsDiv.innerHTML = "<p style='color:#999;'>No results found.</p>";
+    if (!pipeResults.length && !roadResults.length) {
+        resultsDiv.innerHTML = "<p style='color:#999;padding:10px;margin:0;'>No results found.</p>";
     }
-    }
+}
 
-    function normalizeRoad(text) {
-    return (text || "")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/\broad\b/g, "rd") 
-    .replace(/\bstreet\b/g, "st")
-    .replace(/\bavenue\b/g, "ave")
-    .replace(/\bdrive\b/g, "dr")
-    .replace(/\bclose\b/g, "cl");
+// Close search results when clicking elsewhere
+document.addEventListener("click", e => {
+    let sr = document.getElementById("searchResults");
+    if (!sr.contains(e.target) && e.target.id !== "searchBox") {
+        sr.style.display = "none";
     }
+});
 
-    // ---------------- ACCORDION ----------------
-    function renderAccordion(summary) {
+// ACCORDION
+function renderAccordion(summary) {
     let container = document.getElementById("accordion");
     container.innerHTML = "";
 
     summary.forEach(item => {
-    let condColor = (item.Condition || "").toLowerCase().includes("poor")  ? "#e74c3c"
-    : (item.Condition || "").toLowerCase().includes("fair")  ? "#e67e22"
-    : (item.Condition || "").toLowerCase().includes("good")  ? "#27ae60"
-    : "#95a5a6";
+        let inspectionsHtml = "";
 
-    let inspectionsHtml = "";
+        if (item.Inspections && item.Inspections.length > 0) {
+            item.Inspections.forEach(insp => {
+                let dateStr = insp.InspectionDate
+                    ? new Date(insp.InspectionDate).toLocaleDateString()
+                    : "No date";
 
-    if (item.Inspections && item.Inspections.length > 0) {
-    item.Inspections.forEach(insp => {
-    let dateStr = insp.InspectionDate
-    ? new Date(insp.InspectionDate).toLocaleDateString() : "No date";
+                let obsHtml = "";
 
-    let obsHtml = "";
-    if (insp.Observations && insp.Observations.length > 0) {
-    insp.Observations.forEach(o => {
-    let mediaHtml = "";
-    if (o.Media && o.Media.length > 0) {
-    mediaHtml = o.Media.map(m => {
-    let isJpg = (m.FileType || "").toLowerCase().includes("jpg")  ||
-    (m.FileType || "").toLowerCase().includes("jpeg") ||
-    (m.FileName || "").toLowerCase().endsWith(".jpg")  ||
-    (m.FileName || "").toLowerCase().endsWith(".jpeg");
-    return isJpg ? `<div style="margin-top:6px;">
-    <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
-    alt="${m.FileName}"
-    style="width:100%;max-width:300px;border-radius:6px;
-    border:1px solid #ddd;display:block;"
-    onerror="this.style.display='none'" />
-    </div>` : "";
-    }).join("");
-    }
+                if (insp.Observations && insp.Observations.length > 0) {
+                    insp.Observations.forEach(o => {
+                        let mediaHtml = "";
 
-    obsHtml += `
-    <div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-    <span style="background:#007bff;color:white;padding:2px 10px;
-    border-radius:10px;font-size:12px;white-space:nowrap;flex-shrink:0;">
-    📍 ${o.Distance ?? "?"}m
-    </span>
-    <span style="color:#444;flex:1;">${o.Observation || "No description"}</span>
-    </div>
-    ${mediaHtml ? `<div style="margin-top:6px;">${mediaHtml}</div>` : ""}
-    </div>`;
+                        if (o.Media && o.Media.length > 0) {
+                            mediaHtml = o.Media.map(m => {
+                                let isImg =
+                                    /\.(jpg|jpeg|png)$/i.test(m.FileName || "") ||
+                                    /jpg|jpeg|png/i.test(m.FileType || "");
+
+                                return isImg
+                                    ? `<div style="margin-top:6px;">
+                                         <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                                              alt="${m.FileName}"
+                                              style="width:100%;max-width:300px;border-radius:6px;border:1px solid #ddd;"
+                                              onerror="this.style.display='none'" />
+                                       </div>`
+                                    : "";
+                            }).join("");
+                        }
+
+                        obsHtml += `
+                        <div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                <span style="background:#007bff;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">
+                                    📍 ${o.Distance ?? "?"}m
+                                </span>
+                                <span style="color:#444;flex:1;">
+                                    ${o.Observation || "No description"}
+                                </span>
+                                ${o.Grade != null
+                                    ? `<span style="font-size:11px;color:#e67e22;">Grade: ${o.Grade}</span>`
+                                    : ""}
+                            </div>
+                            ${mediaHtml}
+                        </div>`;
+                    });
+                } else {
+                    obsHtml = `
+                        <p style="color:#999;font-size:13px;margin:6px 0;">
+                            No observations recorded.
+                        </p>`;
+                }
+
+                inspectionsHtml += `
+                <div style="margin-bottom:10px;border:1px solid #d0e4ff;border-radius:6px;overflow:hidden;">
+                    <div style="background:#e8f0fe;padding:8px 12px;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-weight:600;color:#1a56db;">
+                            Inspection ${insp.InspectionNumber}
+                            <span style="font-weight:400;color:#555;margin-left:6px;">
+                                (${dateStr})
+                            </span>
+                        </span>
+                        <span style="font-size:12px;color:#555;">
+                            🔧 Length: <b>${insp.InspectedLength ?? "N/A"}m</b>
+                            &nbsp;|&nbsp;
+                            Grade: <b>${insp.HighestGrade ?? "N/A"}</b>
+                        </span>
+                    </div>
+                    <div style="padding:8px 12px;background:#fff;">
+                        ${obsHtml}
+                    </div>
+                </div>`;
+            });
+        } else {
+            inspectionsHtml = `
+                <p style="color:#999;font-size:13px;">
+                    No inspections recorded.
+                </p>`;
+        }
+
+        let condColor =
+            (item.Condition || "").toLowerCase() === "inspected"
+                ? "#1a56db"
+                : "#95a5a6";
+
+        let div = document.createElement("div");
+        div.className = "infra-accordion-item";
+
+        div.innerHTML = `
+        <div class="infra-accordion-header"
+             data-id="${item.Id}"
+             onclick="toggleAccordion(this, '${item.Id}')"
+             style="display:flex;align-items:center;gap:10px;user-select:none;">
+
+            <span class="accordion-icon"
+                  style="font-size:18px;font-weight:700;color:white;width:22px;text-align:center;">
+                +
+            </span>
+
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                📍 ${item.Id}
+
+                ${item.Address
+                    ? `<span style="font-size:11px;color:#cce0ff;margin-left:6px;">
+                        🛣️ ${item.Address}
+                      </span>`
+                    : ""}
+
+                <span style="font-size:11px;color:#cce0ff;margin-left:8px;">
+                    🗓️ ${item.LastInspection
+                        ? new Date(item.LastInspection).toLocaleDateString()
+                        : "N/A"}
+                </span>
+            </span>
+
+            <span style="
+                font-size:12px;
+                background:${condColor};
+                padding:2px 8px;
+                border-radius:10px;
+                white-space:nowrap;
+                flex-shrink:0;">
+                ${item.Condition || "Uninspected"}
+            </span>
+        </div>
+
+        <div class="infra-accordion-content">
+            <p style="margin:0 0 10px;font-size:13px;color:#555;padding-bottom:8px;border-bottom:1px solid #eee;">
+                <b>Segment:</b> ${item.Id}
+                &nbsp;|&nbsp;
+                <b>Material:</b> ${item.Material || "N/A"}
+                &nbsp;|&nbsp;
+                <b>Road:</b> ${item.Address || "N/A"}
+            </p>
+
+            ${inspectionsHtml}
+        </div>`;
+
+        container.appendChild(div);
     });
-    } else {
-    obsHtml = `<p style="color:#999;font-size:13px;margin:6px 0;">No observations recorded.</p>`;
-    }
+}
 
-    inspectionsHtml += `
-    <div style="margin-bottom:10px;border:1px solid #d0e4ff;border-radius:6px;overflow:hidden;">
-    <div style="background:#e8f0fe;padding:8px 12px;font-size:13px;
-    display:flex;justify-content:space-between;align-items:center;">
-    <span style="font-weight:600;color:#1a56db;">
-    Inspection ${insp.InspectionNumber}
-    <span style="font-weight:400;color:#555;margin-left:6px;">(${dateStr})</span>
-    </span>
-    <span style="font-size:12px;color:#555;">
-    🔧 Length: <b>${insp.InspectedLength ?? "N/A"}m</b>
-    </span>
-    </div>
-    <div style="padding:8px 12px;background:#fff;">${obsHtml}</div>
-    </div>`;
-    });
-    } else {
-    inspectionsHtml = `<p style="color:#999;font-size:13px;">No inspections recorded.</p>`;
-    }
-
-    let div = document.createElement("div");
-    div.className = "infra-accordion-item";
-    div.innerHTML = `
-    <div class="infra-accordion-header" data-id="${item.Id}"
-    onclick="toggleAccordion(this, '${item.Id}')"
-    style="display:flex;align-items:center;gap:10px;user-select:none;">
-    <span class="accordion-icon"
-    style="font-size:18px;font-weight:700;color:white;width:22px;text-align:center;flex-shrink:0;">+</span>
-    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-    📍 ${item.Id} —
-    <span style="font-size:11px;color:#cce0ff;margin-left:8px;">
-    🗓️ ${item.LastInspection ? new Date(item.LastInspection).toLocaleDateString() : "N/A"}
-    </span>
-    </span>
-    <span style="font-size:12px;background:${condColor};padding:2px 8px;
-    border-radius:10px;white-space:nowrap;flex-shrink:0;">
-    ${item.Condition || "Uninspected"}
-    </span>
-    </div>
-    <div class="infra-accordion-content">
-    <p style="margin:0 0 10px;font-size:13px;color:#555;
-    padding-bottom:8px;border-bottom:1px solid #eee;">
-    <b>Segment:</b> ${item.Id} &nbsp;|&nbsp;
-    <b>Material:</b> ${item.Material || "N/A"}
-    </p>
-    ${inspectionsHtml}
-    </div>`;
-
-    container.appendChild(div);
-    });
-
-    if (summary.length > 0) {
-    let firstContent = container.querySelector(".infra-accordion-content");
-    let firstIcon    = container.querySelector(".accordion-icon");
-    if (firstContent) firstContent.style.display = "block";
-    if (firstIcon)    firstIcon.textContent = "−";
-    }
-    }
-
-    function toggleAccordion(header, id) {
+function toggleAccordion(header, id) {
     let content = header.nextElementSibling;
     let icon    = header.querySelector(".accordion-icon");
     let isOpen  = content.style.display === "block";
@@ -849,10 +866,9 @@
     document.querySelectorAll(".accordion-icon").forEach(i => i.textContent = "+");
 
     if (!isOpen) {
-    content.style.display = "block";
-    icon.textContent = "−";
-    let pipeObj = pipeObjects.find(p => p.id == id);
-    if (pipeObj) highlightPipe(id);
+        content.style.display = "block";
+        icon.textContent = "−";
+        highlightPipe(id);
     }
-    }
+}
 </script>

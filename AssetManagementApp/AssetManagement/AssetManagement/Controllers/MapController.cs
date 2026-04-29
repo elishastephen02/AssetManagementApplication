@@ -17,44 +17,28 @@ namespace AssetManagement.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult UploadGeoJson(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return BadRequest("No file uploaded");
-
-            string geoJson;
-            using (var reader = new StreamReader(file.OpenReadStream(),
-                   System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true))
-                geoJson = reader.ReadToEnd();
-
-            // Trim any leading whitespace or BOM characters
-            geoJson = geoJson.Trim().TrimStart('\uFEFF', '\u200B');
-
-            if (!geoJson.StartsWith("{"))
-                return BadRequest($"Invalid GeoJSON - content starts with: {geoJson.Substring(0, Math.Min(50, geoJson.Length))}");
-
-            var result = _mapService.ProcessGeoJson(geoJson);
-
-            return Json(result, new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = null
-            });
-        }
-
         [HttpGet]
-        public IActionResult GetSectionDetails(int id)
+        public IActionResult GetMapData()
         {
-            var result = _mapService.GetSectionDetails(id);
-
-            return Json(result);
+            try
+            {
+                var result = _mapService.GetMapData();
+                return Json(result, new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
 
         [HttpGet]
         public IActionResult GetImage(string fileName)
         {
-            // Adjust this path to wherever images are stored on disk
-            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Picture", fileName);
+            var imagePath = Path.Combine(
+                Directory.GetCurrentDirectory(), "wwwroot", "Picture", fileName);
 
             if (!System.IO.File.Exists(imagePath))
                 return NotFound();
@@ -63,15 +47,14 @@ namespace AssetManagement.Controllers
             var mimeType = ext switch
             {
                 ".jpg" or ".jpeg" => "image/jpeg",
-                ".png" => "image/png",
-                ".gif" => "image/gif",
-                ".bmp" => "image/bmp",
-                ".webp" => "image/webp",
-                _ => "application/octet-stream"
+                ".png"            => "image/png",
+                ".gif"            => "image/gif",
+                ".bmp"            => "image/bmp",
+                ".webp"           => "image/webp",
+                _                 => "application/octet-stream"
             };
 
             return PhysicalFile(imagePath, mimeType);
         }
-
     }
 }
