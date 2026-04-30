@@ -216,6 +216,23 @@
         display: none;
         margin-bottom: 80px;
     }
+    /* New: CCTV report styles */
+    .report-header-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: 12px; }
+    .rh-cell { padding: 5px 8px; border: 0.5px solid #ddd; }
+    .rh-label { color: #888; font-size: 11px; display: block; }
+    .rh-val { color: #222; font-weight: 500; }
+    .obs-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .obs-table th { background: #f5f5f5; padding: 5px 8px; text-align: left; font-weight: 500; font-size: 11px; color: #666; border-bottom: 1px solid #ddd; white-space: nowrap; }
+    .obs-table td { padding: 5px 8px; border-bottom: 0.5px solid #eee; vertical-align: top; }
+    .obs-table tr:nth-child(even) td { background: #fafafa; }
+    .insp-block { margin-bottom: 1rem; border: 1px solid #d0e4ff; border-radius: 8px; overflow: hidden; }
+    .insp-block-header { background: #e8f0fe; padding: 6px 10px; font-size: 12px; font-weight: 600; color: #1a56db; display: flex; justify-content: space-between; align-items: center; }
+    .score-summary { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #ddd; margin-top: 10px; border-radius: 6px; overflow: hidden; }
+    .score-half-title { padding: 4px 8px; font-size: 10px; font-weight: 600; color: #666; background: #f5f5f5; border-bottom: 1px solid #ddd; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-row { display: grid; grid-template-columns: repeat(5,1fr); text-align: center; font-size: 11px; }
+    .score-row.labels div { padding: 3px 2px; color: #888; border-right: 0.5px solid #eee; }
+    .score-row.values div { padding: 5px 2px; font-weight: 600; font-size: 13px; border-right: 0.5px solid #eee; border-top: 1px solid #eee; }
+    .score-row div:last-child { border-right: none; }
 
     #mapPanel {
         transition: all 0.3s ease;
@@ -306,27 +323,58 @@
     );
 
     var map = L.map('map', {
-    minZoom: 11, maxZoom: 19,
+    minZoom: 11, maxZoom: 18,
     maxBounds: eThekwiniBounds,
     maxBoundsViscosity: 1.0
     }).setView([-29.8587, 31.0218], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var streetLayer = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+    maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    }
+    );
+
+    var satelliteLayer = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+    maxZoom: 19,
+    attribution: 'Tiles &copy; Esri'
+    }
+    );
+
+    // Default layer
+    streetLayer.addTo(map);
+
+    L.control.layers(
+    {
+    "🗺️ Street Map": streetLayer,
+    "🛰️ Satellite": satelliteLayer
+    },
+    null,
+    {
+    position: 'topright',
+    collapsed: false
+    }
+    ).addTo(map);
 
     var legend = L.control({ position: 'bottomright' });
     legend.onAdd = function () {
     var div = L.DomUtil.create('div', 'map-legend');
     div.innerHTML = `
-    <h4>🗺️ Pipe Status</h4>
+    <h4>🗺️ Pipe Condition</h4>
     <div class="legend-item">
-    <div class="legend-line" style="background:#1a56db;height:5px;"></div>
-    <span class="legend-label">Inspected</span>
+    <div class="legend-line" style="background:#28a745;height:5px;"></div>
+    <span class="legend-label">Good</span>
     </div>
     <div class="legend-item">
-    <div class="legend-line" style="background:none;border-top:2px dashed #95a5a6;"></div>
-    <span class="legend-label">Uninspected</span>
+    <div class="legend-line" style="background:#ffc107;height:5px;"></div>
+    <span class="legend-label">Okay</span>
+    </div>
+    <div class="legend-item">
+    <div class="legend-line" style="background:#dc3545;height:5px;"></div>
+    <span class="legend-label">Bad</span>
     </div>`;
     return div;
     };
@@ -354,22 +402,36 @@
     allSummary = data.summary || [];
 
     console.log("Total summary items:", allSummary.length);
-    console.log("Inspected:", allSummary.filter(x => x.Condition === "Inspected").length);
+    console.log("Inspected:", allSummary.filter(x => x.Inspected === "Inspected").length);
     console.log("Sample item:", allSummary[0]);
     console.log("Total sections:", data.sections?.length);
     console.log("Sample section:", data.sections?.[0]);
 
     pipeColors = {};
     allSummary.forEach(x => {
-    pipeColors[x.Id] = (x.Condition || "").toLowerCase() === "inspected"
-    ? "#1a56db" : "#95a5a6";
+    const condition = (x.Condition || "").toLowerCase().trim();
+    const inspected = (x.Inspected || "").toLowerCase().trim();
+
+    if (condition === "good") {
+    pipeColors[x.Id] = "#28a745";
+    }
+    else if (condition === "okay") {
+    pipeColors[x.Id] = "#ffc107";
+    }
+    else if (condition === "bad") {
+    pipeColors[x.Id] = "#dc3545";
+    }
+    else if (inspected === "inspected") {
+    pipeColors[x.Id] = "#1a56db";
+    }
+    else {
+    pipeColors[x.Id] = "#95a5a6";
+    }
     });
 
     updateStats(allSummary);
-    renderAccordion(allSummary);
-    drawMap(data);
-
     document.getElementById("inspectionPanel").style.display = "block";
+    drawMap(data);
     })
     .catch(err => console.error("Map data load failed:", err));
     }
@@ -426,43 +488,60 @@
     if (!data.sections || !data.sections.length) return;
 
     data.sections.forEach(s => {
-    let id  = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+    let id = s.OBJ_PK || s.obj_PK || s.obJ_PK;
     let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
 
-    if (!id || !wkt) { console.warn("Skipping invalid pipe record:", s); return; }
+    if (!id || !wkt) {
+    console.warn("Skipping invalid pipe record:", s);
+    return;
+    }
 
     let geo = wktToGeoJSON(wkt);
-    if (!geo) { console.warn("Invalid geometry:", id, wkt); return; }
+    if (!geo) {
+    console.warn("Invalid geometry:", id, wkt);
+    return;
+    }
 
-    let color       = pipeColors[id] || "#95a5a6";
+    let color = pipeColors[id] || "#95a5a6";
     let summaryItem = allSummary.find(x => x.Id === id);
-    let isInspected = color === "#1a56db";
+    let isInspected = (summaryItem?.Inspected || "").toLowerCase() === "inspected";
 
     let layer = L.geoJSON(geo, {
     style: {
     color,
-    weight:    isInspected ? 5 : 3,
-    opacity:   0.9,
+    weight: isInspected ? 5 : 3,
+    opacity: 0.9,
     dashArray: isInspected ? "" : "6,4"
     },
     onEachFeature: function (feature, fl) {
     fl.bindTooltip(
     `<b>${summaryItem?.Name || id}</b><br>
     Road: ${summaryItem?.Address || 'N/A'}<br>
-    Condition: ${summaryItem?.Condition || 'Uninspected'}`,
+    Inspection: ${summaryItem?.Inspected || 'Uninspected'}<br>
+    Condition: ${summaryItem?.Condition || 'N/A'}`,
     { sticky: true, className: 'pipe-tooltip' }
     );
+
     fl.on("click", () => highlightPipe(id));
     }
-    }).addTo(pipeLayer);
+    });
 
-    pipeObjects.push({ id, data: summaryItem || s, layer });
+    layer.addTo(pipeLayer);
+
+    pipeObjects.push({
+    id,
+    data: summaryItem || s,
+    section: s,
+    layer
+    });
     });
 
     setTimeout(() => {
     if (pipeLayer.getLayers().length > 0) {
     let bounds = pipeLayer.getBounds();
-    if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+    if (bounds.isValid()) {
+    map.fitBounds(bounds, { padding: [20, 20] });
+    }
     }
     }, 200);
     }
@@ -470,7 +549,7 @@
     // HIGHLIGHT SINGLE PIPE
     function highlightPipe(id) {
     pipeObjects.forEach(p => {
-    let isInsp = (pipeColors[p.id] || "") === "#1a56db";
+    let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
     p.layer.setStyle({
     color:     pipeColors[p.id] || "#95a5a6",
     weight:    isInsp ? 5 : 3,
@@ -481,8 +560,8 @@
     let target = pipeObjects.find(p => p.id === id);
     if (target) {
     target.layer.setStyle({ color: "yellow", weight: 6, dashArray: null });
-    try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 19 }); } catch (e) {}
-    if (target.data) showPipeDetails(target.data);
+    try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 18 }); } catch (e) {}
+    if (target.data) renderInspectionReport(target.data, target.section);
     }
 
     document.querySelectorAll(".infra-accordion-item").forEach(item => {
@@ -503,7 +582,7 @@
     // HIGHLIGHT MULTIPLE PIPES (road search)
     function highlightMultiplePipes(pipeList) {
     pipeObjects.forEach(p => {
-    let isInsp = (pipeColors[p.id] || "") === "#1a56db";
+    let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
     p.layer.setStyle({ color: pipeColors[p.id] || "#95a5a6", weight: isInsp ? 5 : 3 });
     });
 
@@ -514,7 +593,10 @@
     });
 
     if (layers.length) {
-    map.fitBounds(L.featureGroup(layers).getBounds(), { padding: [20, 20] });
+    map.fitBounds(L.featureGroup(layers).getBounds(), {
+    padding: [20, 20],
+    maxZoom: 18
+    });
     }
     }
 
@@ -534,7 +616,7 @@
     ["Road / Address",   fmt(pipe.Address)],
     ["Last Inspection",  fmtDate(pipe.LastInspection)],
     ["Inspected Length", fmt(pipe.InspectedLength)],
-    ["Condition",        fmt(pipe.Condition)],
+    ["Inspection",       fmt(pipe.Inspected)],
     ["Highest Grade",    fmt(pipe.HighestGrade)],
     ["Total Score",      fmt(pipe.TotalScore)],
     ["Peak Score",       fmt(pipe.PeakScore)],
@@ -557,7 +639,7 @@
     document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     pipeObjects.forEach(p => {
-    let c    = (p.data.Condition || "").toLowerCase();
+    let c    = (p.data.Inspected || "").toLowerCase();
     let show = filter === 'all'
     || (filter === 'inspected'   && c === 'inspected')
     || (filter === 'uninspected' && c === 'uninspected');
@@ -573,8 +655,8 @@
 
     // STATS
     function updateStats(summary) {
-    let ins   = summary.filter(x => (x.Condition || "").toLowerCase() === 'inspected').length;
-    let unins = summary.filter(x => (x.Condition || "").toLowerCase() === 'uninspected').length;
+    let ins   = summary.filter(x => (x.Inspected || "").toLowerCase() === 'inspected').length;
+    let unins = summary.filter(x => (x.Inspected || "").toLowerCase() === 'uninspected').length;
     document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
     document.getElementById('statInspected').textContent   = `🔵 Inspected: ${ins}`;
     document.getElementById('statUninspected').textContent = `⚪ Uninspected: ${unins}`;
@@ -687,7 +769,7 @@
     row.innerHTML = `
     <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
     <span style="color:#999;font-size:11px;">
-    ${pipe.Condition || "Uninspected"}
+    ${pipe.Inspected || "Uninspected"}
     </span>
     `;
 
@@ -759,117 +841,185 @@
     }
     });
 
-    // ACCORDION
-    function renderAccordion(summary) {
-    let container = document.getElementById("accordion");
-    container.innerHTML = "";
+    function renderInspectionReport(item, section) {
+    let panel    = document.getElementById("inspectionPanel");
+    let accordion = document.getElementById("accordion");
 
-    summary.forEach(item => {
+    if (!item) { panel.style.display = "none"; return; }
+
+    panel.style.display = "block";
+
+    let fmt     = v => (v != null && v !== "") ? v : "N/A";
+    let fmtDate = v => v ? new Date(v).toLocaleDateString() : "N/A";
+
+    let gradeColor = g => {
+        let n = parseFloat(g);
+        if (isNaN(n)) return "#222";
+        return n >= 4 ? "#A32D2D" : n === 3 ? "#854F0B" : "#3B6D11";
+    };
+
+    let gradeBg = g => {
+        let n = parseFloat(g);
+        if (isNaN(n)) return "#f5f5f5";
+        return n >= 4 ? "#FCEBEB" : n === 3 ? "#FAEEDA" : "#EAF3DE";
+    };
+
+    let headerHtml = `
+    <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-radius:8px 8px 0 0;">
+        <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
+            Inspection Report — ${fmt(item.Id)}
+        </span>
+        <span style="font-size:11px;color:#b5d4f4;">${fmt(item.Address)}</span>
+    </div>
+    <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
+        <div class="rh-cell"><span class="rh-label">Pipe ID</span><span class="rh-val">${fmt(item.Id)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Material</span><span class="rh-val">${fmt(item.Material)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Diameter</span><span class="rh-val">${item.PipeDiameter != null ? item.PipeDiameter + ' mm' : 'N/A'}</span></div>
+        <div class="rh-cell"><span class="rh-label">Road / Address</span><span class="rh-val">${fmt(item.Address)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Inspected Length</span><span class="rh-val">${fmt(item.InspectedLength)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Last Inspection</span><span class="rh-val">${fmtDate(item.LastInspection)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Status</span><span class="rh-val">${fmt(item.Inspected)}</span></div>
+        <div class="rh-cell"><span class="rh-label">STR Grade</span><span class="rh-val" style="color:${gradeColor(section?.STR_GRADE)};">${fmt(section?.STR_GRADE)}</span></div>
+        <div class="rh-cell"><span class="rh-label">SER Grade</span><span class="rh-val" style="color:${gradeColor(section?.SER_GRADE)};">${fmt(section?.SER_GRADE)}</span></div>
+    </div>`;
+
     let inspectionsHtml = "";
 
     if (item.Inspections && item.Inspections.length > 0) {
-    item.Inspections.forEach(insp => {
-    let dateStr = insp.InspectionDate
-    ? new Date(insp.InspectionDate).toLocaleDateString()
-    : "No date";
+        item.Inspections.forEach((insp, idx) => {
+            let dateStr = insp.InspectionDate ? new Date(insp.InspectionDate).toLocaleDateString() : "No date";
 
-    let obsHtml = "";
+            // --- Observations ---
+            let obsRows = "";
+            if (insp.Observations && insp.Observations.length > 0) {
+                insp.Observations.forEach(o => {
+                    let gradeHtml = o.Grade != null
+                        ? `<span style="display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:600;background:${gradeBg(o.Grade)};color:${gradeColor(o.Grade)};">${o.Grade}</span>`
+                        : "—";
+                    let mediaHtml = "";
+                    if (o.Media && o.Media.length > 0) {
+                        mediaHtml = o.Media
+                            .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""))
+                            .map(m => `<div style="margin-top:6px;">
+                                <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                                     alt="${m.FileName}"
+                                     style="width:100%;max-width:280px;border-radius:6px;border:1px solid #ddd;"
+                                     onerror="this.style.display='none'" />
+                            </div>`).join("");
+                    }
+                    obsRows += `<tr>
+                        <td style="white-space:nowrap;">${o.Distance ?? "?"}m</td>
+                        <td><span style="font-weight:600;color:#007bff;">${o.Code || ""}</span></td>
+                        <td>${o.Observation || "No description"}${mediaHtml}</td>
+                        <td style="text-align:center;">${gradeHtml}</td>
+                    </tr>`;
+                });
+            } else {
+                obsRows = `<tr><td colspan="4" style="color:#999;padding:8px;text-align:center;">No observations recorded.</td></tr>`;
+            }
 
-    if (insp.Observations && insp.Observations.length > 0) {
-    insp.Observations.forEach(o => {
-    let mediaHtml = "";
+            // --- SECSTAT rows for this inspection ---
+            let statsHtml = "";
+            if (insp.Stats && insp.Stats.length > 0) {
+                let statRows = insp.Stats.map((st, i) => `
+                    <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'};">
+                        <td style="padding:5px 8px;font-size:12px;color:#555;">Record ${i + 1}</td>
+                        <td style="padding:5px 8px;text-align:center;">
+                            <span style="display:inline-block;padding:1px 10px;border-radius:10px;font-size:12px;font-weight:600;
+                                background:${gradeBg(st.HighestGrade)};color:${gradeColor(st.HighestGrade)};">
+                                ${st.HighestGrade ?? "N/A"}
+                            </span>
+                        </td>
+                        <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.TotalScore ?? "N/A"}</td>
+                        <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.PeakScore ?? "N/A"}</td>
+                    </tr>`
+                ).join("");
 
-    if (o.Media && o.Media.length > 0) {
-    mediaHtml = o.Media.map(m => {
-    let isImg =
-    /\.(jpg|jpeg|png)$/i.test(m.FileName || "") ||
-    /jpg|jpeg|png/i.test(m.FileType || "");
-    return isImg
-    ? `<div style="margin-top:6px;">
-    <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
-    alt="${m.FileName}"
-    style="width:100%;max-width:300px;border-radius:6px;border:1px solid #ddd;"
-    onerror="this.style.display='none'" />
-    </div>`
-    : "";
-    }).join("");
-    }
+                statsHtml = `
+                <div style="margin-top:10px;border:1px solid #ddd;border-radius:6px;overflow:hidden;">
+                    <div style="background:#f5f5f5;padding:4px 8px;font-size:10px;font-weight:600;
+                        color:#555;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #ddd;">
+                        Section Statistics (SECSTAT)
+                    </div>
+                    <table style="width:100%;border-collapse:collapse;">
+                        <thead>
+                            <tr style="background:#fafafa;">
+                                <th style="padding:5px 8px;text-align:left;font-size:11px;color:#888;border-bottom:1px solid #eee;">Record</th>
+                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Highest Grade</th>
+                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Total Score</th>
+                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Peak Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>${statRows}</tbody>
+                    </table>
+                </div>`;
+            } else {
+                statsHtml = `<p style="color:#999;font-size:12px;margin:8px 0 0;">No statistics recorded for this inspection.</p>`;
+            }
 
-    obsHtml += `
-    <div style="padding:8px 0;border-bottom:1px solid #eee;font-size:13px;">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-    <span style="background:#007bff;color:white;padding:2px 10px;border-radius:10px;font-size:12px;">
-    📍 ${o.Distance ?? "?"}m
-    </span>
-    <span style="color:#444;flex:1;">
-    ${o.Observation || "No description"}
-    </span>
-    ${o.Grade != null
-    ? `<span style="font-size:11px;color:#e67e22;">Grade: ${o.Grade}</span>`
-    : ""}
-    </div>
-    ${mediaHtml}
-    </div>`;
-    });
+            // --- GeoJSON score footer (pipe-level, shown once on last inspection) ---
+            let geoScoreHtml = "";
+            if (idx === item.Inspections.length - 1) {
+                geoScoreHtml = `
+                <div class="score-summary" style="margin-top:14px;">
+                    <div style="border-right:1px solid #ddd;">
+                        <div class="score-half-title" style="color:#dc3545;">
+                            ▪ Structural — overall
+                        </div>
+                        <div class="score-row labels" style="grid-template-columns:1fr 1fr;">
+                            <div>STR Score</div><div>STR Grade</div>
+                        </div>
+                        <div class="score-row values" style="grid-template-columns:1fr 1fr;">
+                            <div>${section?.STR_SCORE ?? "N/A"}</div>
+                            <div style="color:${gradeColor(section?.STR_GRADE)};">${section?.STR_GRADE ?? "N/A"}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="score-half-title" style="color:#1a56db;">
+                            ▪ Service &amp; Operational — overall
+                        </div>
+                        <div class="score-row labels" style="grid-template-columns:1fr 1fr;">
+                            <div>SER Score</div><div>SER Grade</div>
+                        </div>
+                        <div class="score-row values" style="grid-template-columns:1fr 1fr;">
+                            <div>${section?.SER_SCORE ?? "N/A"}</div>
+                            <div style="color:${gradeColor(section?.SER_GRADE)};">${section?.SER_GRADE ?? "N/A"}</div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            inspectionsHtml += `
+            <div class="insp-block">
+                <div class="insp-block-header">
+                    <span>Inspection ${insp.InspectionNumber ?? idx + 1}
+                        <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
+                    </span>
+                    <span style="font-size:11px;color:#378ADD;">
+                        Length: ${insp.InspectedLength ?? "N/A"}m
+                    </span>
+                </div>
+                <table class="obs-table">
+                    <thead><tr>
+                        <th style="width:60px;">Position</th>
+                        <th style="width:50px;">Code</th>
+                        <th>Observation</th>
+                        <th style="width:55px;text-align:center;">Grade</th>
+                    </tr></thead>
+                    <tbody>${obsRows}</tbody>
+                </table>
+                <div style="padding:8px 10px 10px;">
+                    ${statsHtml}
+                </div>
+            </div>
+            ${geoScoreHtml}`;
+        });
     } else {
-    obsHtml = `<p style="color:#999;font-size:13px;margin:6px 0;">No observations recorded.</p>`;
+        inspectionsHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">No inspections recorded for this pipe.</p>`;
     }
 
-    inspectionsHtml += `
-    <div style="margin-bottom:10px;border:1px solid #d0e4ff;border-radius:6px;overflow:hidden;">
-    <div style="background:#e8f0fe;padding:8px 12px;font-size:13px;display:flex;justify-content:space-between;align-items:center;">
-    <span style="font-weight:600;color:#1a56db;">
-    Inspection ${insp.InspectionNumber}
-    <span style="font-weight:400;color:#555;margin-left:6px;">(${dateStr})</span>
-    </span>
-    <span style="font-size:12px;color:#555;">
-    🔧 Length: <b>${insp.InspectedLength ?? "N/A"}m</b>
-    &nbsp;|&nbsp;
-    Grade: <b>${insp.HighestGrade ?? "N/A"}</b>
-    </span>
-    </div>
-    <div style="padding:8px 12px;background:#fff;">${obsHtml}</div>
-    </div>`;
-    });
-    } else {
-    inspectionsHtml = `<p style="color:#999;font-size:13px;">No inspections recorded.</p>`;
-    }
-
-    let condColor = (item.Condition || "").toLowerCase() === "inspected" ? "#1a56db" : "#95a5a6";
-
-    let div = document.createElement("div");
-    div.className = "infra-accordion-item";
-    div.innerHTML = `
-    <div class="infra-accordion-header"
-    data-id="${item.Id}"
-    onclick="toggleAccordion(this, '${item.Id}')"
-    style="display:flex;align-items:center;gap:10px;user-select:none;">
-    <span class="accordion-icon"
-    style="font-size:18px;font-weight:700;color:white;width:22px;text-align:center;">+</span>
-    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-    📍 ${item.Id}
-    ${item.Address
-    ? `<span style="font-size:11px;color:#cce0ff;margin-left:6px;">🛣️ ${item.Address}</span>`
-    : ""}
-    <span style="font-size:11px;color:#cce0ff;margin-left:8px;">
-    🗓️ ${item.LastInspection ? new Date(item.LastInspection).toLocaleDateString() : "N/A"}
-    </span>
-    </span>
-    <span style="font-size:12px;background:${condColor};padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;">
-    ${item.Condition || "Uninspected"}
-    </span>
-    </div>
-    <div class="infra-accordion-content">
-    <p style="margin:0 0 10px;font-size:13px;color:#555;padding-bottom:8px;border-bottom:1px solid #eee;">
-    <b>Segment:</b> ${item.Id} &nbsp;|&nbsp;
-    <b>Material:</b> ${item.Material || "N/A"} &nbsp;|&nbsp;
-    <b>Road:</b> ${item.Address || "N/A"}
-    </p>
-    ${inspectionsHtml}
-    </div>`;
-
-    container.appendChild(div);
-    });
+    accordion.innerHTML = headerHtml + `<div style="padding:12px 0;">` + inspectionsHtml + `</div>`;
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function toggleAccordion(header, id) {

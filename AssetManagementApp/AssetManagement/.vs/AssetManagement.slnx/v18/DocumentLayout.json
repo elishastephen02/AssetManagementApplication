@@ -48,7 +48,7 @@
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Map\\Index.cshtml",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
               "RelativeToolTip": "AssetManagement\\Views\\Map\\Index.cshtml",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAXwCMBAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAANEDAAAAAAAAAAAUwN4DAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-04-28T08:11:47.005Z",
               "EditorCaption": ""
@@ -61,9 +61,10 @@
               "RelativeDocumentMoniker": "AssetManagement\\Services\\MapService.cs",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\MapService.cs",
               "RelativeToolTip": "AssetManagement\\Services\\MapService.cs",
-              "ViewState": "AgIAAFwAAACAmpmZmVkqwLsAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAMsAAABAAAAAAAAYwOIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T07:06:03.142Z"
+              "WhenOpened": "2026-04-28T07:06:03.142Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
