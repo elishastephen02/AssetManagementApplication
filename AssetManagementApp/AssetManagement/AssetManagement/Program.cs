@@ -23,6 +23,7 @@ builder.Services.AddSession();
 builder.Services.AddScoped<DataService>();
 builder.Services.AddScoped<MapService>();
 builder.Services.AddScoped<ImportService>();
+builder.Services.AddScoped<ManholeImportService>();
 
 var app = builder.Build();
 

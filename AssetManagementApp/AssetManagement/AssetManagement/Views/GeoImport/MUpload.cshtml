@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Manhole GeoJSON Import";
+}
+
+<style>
+    .upload-container {
+        max-width: 720px;
+        margin: 60px auto;
+        padding: 30px;
+        font-family: Arial, sans-serif;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    .upload-title {
+        margin-bottom: 20px;
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .upload-controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .upload-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    .upload-btn {
+        padding: 10px 18px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+        .upload-btn:hover {
+            background: #0056b3;
+        }
+
+    .status-box {
+        margin-top: 25px;
+    }
+
+    .success {
+        background: #e8f5e9;
+        padding: 15px;
+        border-radius: 10px;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+
+    .error {
+        background: #ffebee;
+        padding: 15px;
+        border-radius: 10px;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+
+        <h2 class="mb-3 text-primary">Upload Manhole GeoJSON File</h2>
+
+        <div class="mb-3">
+            <input type="file" id="geoFile" accept=".geojson,.json" class="form-control" />
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="uploadManholeGeo()">
+            Upload File
+        </button>
+
+        <div id="status" class="mt-4"></div>
+
+    </div>
+</div>
+
+<script>
+    function uploadManholeGeo() {
+        const fileInput = document.getElementById("geoFile");
+        const statusDiv = document.getElementById("status");
+
+        if (!fileInput.files.length) {
+            statusDiv.innerHTML = `<div class="alert alert-warning mt-3">Please select a file.</div>`;
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+
+        statusDiv.innerHTML = `<div class="alert alert-info mt-3">Uploading and processing...</div>`;
+
+        fetch("/GeoImport/MUpload", {
+            method: "POST",
+            body: formData
+        })
+        .then(async response => {
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text);
+            }
+            return response.json();
+        })
+        .then(data => {
+            statusDiv.innerHTML = `
+                <div class="alert alert-success mt-3">
+                    <b>Import Completed Successfully</b><br><br>
+                    Inserted: ${data.Inserted}<br>
+                    Skipped: ${data.Skipped}
+                </div>
+            `;
+        })
+        .catch(err => {
+            statusDiv.innerHTML = `
+                <div class="alert alert-danger mt-3">
+                    <b>Upload Failed</b><br>
+                    ${err.message}
+                </div>
+            `;
+        });
+    }
+</script>

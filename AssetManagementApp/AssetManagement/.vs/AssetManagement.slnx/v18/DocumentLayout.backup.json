@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\map\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\map\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\geoimport\\mupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\geoimport\\mupload.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\services\\mapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\services\\mapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\controllers\\mapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\controllers\\mapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\controllers\\geoimportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\controllers\\geoimportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -30,53 +26,42 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MapController.cs",
-              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\MapController.cs",
-              "RelativeDocumentMoniker": "AssetManagement\\Controllers\\MapController.cs",
-              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\MapController.cs",
-              "RelativeToolTip": "AssetManagement\\Controllers\\MapController.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAmwBwAAAATAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "GeoImportController.cs",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\GeoImportController.cs",
+              "RelativeDocumentMoniker": "AssetManagement\\Controllers\\GeoImportController.cs",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\GeoImportController.cs",
+              "RelativeToolTip": "AssetManagement\\Controllers\\GeoImportController.cs",
+              "ViewState": "AgIAACAAAAAANDMzMzPvv0cAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T12:46:43.139Z"
+              "WhenOpened": "2026-04-30T11:57:10.696Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
-              "RelativeDocumentMoniker": "AssetManagement\\Views\\Map\\Index.cshtml",
-              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
-              "RelativeToolTip": "AssetManagement\\Views\\Map\\Index.cshtml",
-              "ViewState": "AgIAAO8EAAAAoJmZmRkWwPIEAAAjAAAAAAAAAA==",
+              "Title": "MUpload.cshtml",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\GeoImport\\MUpload.cshtml",
+              "RelativeDocumentMoniker": "AssetManagement\\Views\\GeoImport\\MUpload.cshtml",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\GeoImport\\MUpload.cshtml",
+              "RelativeToolTip": "AssetManagement\\Views\\GeoImport\\MUpload.cshtml",
+              "ViewState": "AgIAAFkAAAAAAAAAAABwvW8AAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-28T08:11:47.005Z",
+              "WhenOpened": "2026-04-30T11:42:42.143Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MapService.cs",
-              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\MapService.cs",
-              "RelativeDocumentMoniker": "AssetManagement\\Services\\MapService.cs",
-              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\MapService.cs",
-              "RelativeToolTip": "AssetManagement\\Services\\MapService.cs",
-              "ViewState": "AgIAAN4AAAAAAAAAAAAuwO0AAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T07:06:03.142Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAsAAADQMzMzM5MwwCsAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAmwC8AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-21T05:49:12.118Z"
+              "WhenOpened": "2026-04-21T05:49:12.118Z",
+              "EditorCaption": ""
             }
           ]
         }
