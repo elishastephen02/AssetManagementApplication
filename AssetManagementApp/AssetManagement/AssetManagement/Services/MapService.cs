@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.Features;
-using NetTopologySuite.Features;
+﻿using NetTopologySuite.Features;
 using NetTopologySuite.IO;
-using NuGet.Packaging.Signing;
-using SQLitePCL;
 
 namespace AssetManagement.Services
 {
@@ -33,7 +30,6 @@ namespace AssetManagement.Services
                 WHERE GEOMETRY_DATA IS NOT NULL
             ").ToList();
 
-            // Sections — no SECSTAT join here, kept flat
             var dbSections = _db.Query(@"
                 SELECT
                     s.OBJ_PK           AS Id,
@@ -49,19 +45,16 @@ namespace AssetManagement.Services
                 LEFT JOIN SECINSP si ON s.OBJ_PK = si.INS_Section_FK
             ").ToList();
 
-            // SECSTAT — fetched separately, grouped by inspection
-            var allStats = _db.Query(@"
+            var statsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
+            foreach (var st in _db.Query(@"
                 SELECT
                     STA_Inspection_FK AS InspectionId,
                     STA_HighestGrade  AS HighestGrade,
                     STA_TotalScore    AS TotalScore,
                     STA_PeakScore     AS PeakScore
                 FROM SECSTAT
-            ").ToList();
-
-            // Group stats by InspectionId
-            var statsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var st in allStats)
+                WHERE STA_Type = 'STR'
+            ").ToList())
             {
                 string key = Convert.ToString(st.InspectionId ?? "");
                 if (string.IsNullOrEmpty(key)) continue;
@@ -69,30 +62,29 @@ namespace AssetManagement.Services
                 statsLookup[key].Add(st);
             }
 
-            // Group sections by SegId
             var dbLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var row in dbSections)
+            foreach (var r in dbSections)
             {
-                string key = Convert.ToString(row.SegId ?? "");
+                string key = Convert.ToString(r.SegId ?? "");
                 if (string.IsNullOrEmpty(key)) continue;
                 if (!dbLookup.ContainsKey(key)) dbLookup[key] = new List<dynamic>();
-                dbLookup[key].Add(row);
+                dbLookup[key].Add(r);
             }
 
-            // Collect all unique inspection IDs for observation query
             var inspectionIds = dbSections
-                .Select(p => Convert.ToString(p.InspectionId ?? ""))
+                .Select(r => Convert.ToString(r.InspectionId ?? ""))
                 .Where(x => !string.IsNullOrEmpty(x))
-                .Distinct().ToList();
+                .Distinct()
+                .ToList();
 
-            List<dynamic> observations = new();
-            List<dynamic> media = new();
+            var observationsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
+            var mediaLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
 
             if (inspectionIds.Any())
             {
                 string insIdList = string.Join(",", inspectionIds.Select(id => $"'{id}'"));
 
-                observations = _db.Query($@"
+                var observations = _db.Query($@"
                     SELECT
                         OBS_PK            AS ObsId,
                         OBS_Inspection_FK AS InspectionId,
@@ -104,22 +96,38 @@ namespace AssetManagement.Services
                     WHERE OBS_Inspection_FK IN ({insIdList})
                 ").ToList();
 
+                foreach (var o in observations)
+                {
+                    string key = Convert.ToString(o.InspectionId ?? "");
+                    if (string.IsNullOrEmpty(key)) continue;
+                    if (!observationsLookup.ContainsKey(key)) observationsLookup[key] = new List<dynamic>();
+                    observationsLookup[key].Add(o);
+                }
+
                 var obsIds = observations
                     .Select(o => Convert.ToString(o.ObsId ?? ""))
                     .Where(x => !string.IsNullOrEmpty(x))
-                    .Distinct().ToList();
+                    .Distinct()
+                    .ToList();
 
                 if (obsIds.Any())
                 {
                     string obsIdList = string.Join(",", obsIds.Select(id => $"'{id}'"));
-                    media = _db.Query($@"
+
+                    foreach (var m in _db.Query($@"
                         SELECT
                             OMM_Observation_FK AS ObsId,
                             OMM_FileName       AS FileName,
                             OMM_FileType       AS FileType
                         FROM SECOBSMM
                         WHERE OMM_Observation_FK IN ({obsIdList})
-                    ").ToList();
+                    ").ToList())
+                    {
+                        string key = Convert.ToString(m.ObsId ?? "");
+                        if (string.IsNullOrEmpty(key)) continue;
+                        if (!mediaLookup.ContainsKey(key)) mediaLookup[key] = new List<dynamic>();
+                        mediaLookup[key].Add(m);
+                    }
                 }
             }
 
@@ -131,7 +139,6 @@ namespace AssetManagement.Services
                 string segId = Convert.ToString(geo.SEGID ?? "");
                 if (string.IsNullOrEmpty(segId)) continue;
 
-                // Pass GeoJSON score fields through to the sections list
                 sections.Add(new
                 {
                     OBJ_PK = segId,
@@ -144,7 +151,6 @@ namespace AssetManagement.Services
 
                 dbLookup.TryGetValue(segId, out var dbRows);
 
-                // Deduplicate inspections — one row per INS_PK
                 var distinctInspections = dbRows?
                     .Where(r => r.InspectionId != null)
                     .GroupBy(r => Convert.ToString(r.InspectionId ?? ""))
@@ -153,8 +159,16 @@ namespace AssetManagement.Services
                     .ToList();
 
                 var firstRow = distinctInspections?.FirstOrDefault();
+                var lastInsp = distinctInspections?.LastOrDefault();
 
-                // Build inspections list — each with its own Stats array from SECSTAT
+                dynamic lastStat = null;
+                if (lastInsp != null)
+                {
+                    string lastInsId = Convert.ToString(lastInsp.InspectionId ?? "");
+                    if (statsLookup.TryGetValue(lastInsId, out var lastStats) && lastStats.Any())
+                        lastStat = lastStats.First();
+                }
+
                 var inspections = new List<object>();
                 if (distinctInspections != null)
                 {
@@ -163,65 +177,49 @@ namespace AssetManagement.Services
                     {
                         string insId = Convert.ToString(insp.InspectionId ?? "");
 
-                        // SECSTAT rows for this inspection (the two records)
                         statsLookup.TryGetValue(insId, out var statRows);
-                        var stats = (statRows ?? new List<dynamic>()).Select(st => new
-                        {
-                            HighestGrade = st.HighestGrade,
-                            TotalScore = st.TotalScore,
-                            PeakScore = st.PeakScore
-                        }).ToList();
-
-                        // Observations for this inspection
-                        var pipeObs = !string.IsNullOrEmpty(insId)
-                            ? observations
-                                .Where(o => Convert.ToString(o.InspectionId ?? "") == insId)
-                                .OrderBy(o => {
-                                    decimal d;
-                                    return decimal.TryParse(Convert.ToString(o.Distance ?? ""), out d)
-                                        ? d : decimal.MaxValue;
-                                })
-                                .ToList()
-                            : new List<dynamic>();
-
-                        var obsWithMedia = pipeObs.Select(o =>
-                        {
-                            string obsId = Convert.ToString(o.ObsId ?? "");
-                            var obsMedia = !string.IsNullOrEmpty(obsId)
-                                ? media.Where(m => Convert.ToString(m.ObsId ?? "") == obsId).ToList()
-                                : new List<dynamic>();
-
-                            return new
+                        var stats = (statRows ?? new List<dynamic>())
+                            .Select(st => new
                             {
-                                o.Distance,
-                                o.Observation,
-                                o.Grade,
-                                o.Score,
-                                Media = obsMedia.Select(m => new { m.FileName, m.FileType }).ToList()
-                            };
-                        }).ToList();
+                                HighestGrade = st.HighestGrade,
+                                TotalScore = st.TotalScore,
+                                PeakScore = st.PeakScore
+                            })
+                            .ToList();
+
+                        observationsLookup.TryGetValue(insId, out var pipeObsList);
+                        var obsWithMedia = (pipeObsList ?? new List<dynamic>())
+                            .OrderBy(o =>
+                            {
+                                decimal d;
+                                return decimal.TryParse(Convert.ToString(o.Distance ?? ""), out d)
+                                    ? d : decimal.MaxValue;
+                            })
+                            .Select(o =>
+                            {
+                                string obsId = Convert.ToString(o.ObsId ?? "");
+                                mediaLookup.TryGetValue(obsId, out var obsMedia);
+                                return new
+                                {
+                                    o.Distance,
+                                    o.Observation,
+                                    o.Grade,
+                                    o.Score,
+                                    Media = (obsMedia ?? new List<dynamic>())
+                                        .Select(m => new { m.FileName, m.FileType })
+                                        .ToList()
+                                };
+                            })
+                            .ToList();
 
                         inspections.Add(new
                         {
                             InspectionNumber = inspNum++,
                             InspectionDate = insp.InspectionDate,
                             InspectedLength = insp.InspectedLength,
-                            Stats = stats,          // ← both SECSTAT rows
+                            Stats = stats,
                             Observations = obsWithMedia
                         });
-                    }
-                }
-
-                bool hasInspection = distinctInspections?.Any() == true;
-
-                // Use first stat record's HighestGrade as the summary grade
-                dynamic firstStat = null;
-                if (distinctInspections != null && distinctInspections.Any())
-                {
-                    string lastInsId = Convert.ToString(distinctInspections.Last().InspectionId ?? "");
-                    if (statsLookup.TryGetValue(lastInsId, out List<dynamic> lastStats) && lastStats.Any())
-                    {
-                        firstStat = lastStats.First();
                     }
                 }
 
@@ -230,19 +228,17 @@ namespace AssetManagement.Services
                     Id = segId,
                     Name = segId,
                     Material = firstRow?.Material != null
-                                        ? Convert.ToString(firstRow.Material)
-                                        : Convert.ToString(geo.MATERIAL ?? ""),
+                                          ? Convert.ToString(firstRow.Material)
+                                          : Convert.ToString(geo.MATERIAL ?? ""),
                     Address = Convert.ToString(geo.RoadName ?? ""),
                     PipeDiameter = firstRow?.Size,
-                    LastInspection = distinctInspections?.LastOrDefault()?.InspectionDate
-                                        ?? geo.InspectedDate,
-                    InspectedLength = distinctInspections?.LastOrDefault()?.InspectedLength
-                                        ?? geo.InspectedLength,
-                    HighestGrade = firstStat?.HighestGrade,
-                    TotalScore = firstStat?.TotalScore ?? geo.STR_SCORE,
-                    PeakScore = firstStat?.PeakScore ?? geo.SER_SCORE,
-                    Inspected = hasInspection ? "Inspected" : "Uninspected",
-                    Condition = GetPipeCondition(firstStat?.HighestGrade ?? geo.STR_GRADE),
+                    LastInspection = lastInsp?.InspectionDate ?? geo.InspectedDate,
+                    InspectedLength = lastInsp?.InspectedLength ?? geo.InspectedLength,
+                    HighestGrade = lastStat?.HighestGrade,
+                    TotalScore = lastStat?.TotalScore ?? geo.STR_SCORE,
+                    PeakScore = lastStat?.PeakScore ?? geo.SER_SCORE,
+                    Inspected = distinctInspections?.Any() == true ? "Inspected" : "Uninspected",
+                    Condition = GetPipeCondition(lastStat?.HighestGrade ?? geo.STR_GRADE),
                     Inspections = inspections
                 });
             }
@@ -252,11 +248,8 @@ namespace AssetManagement.Services
 
         private string GetPipeCondition(object scoreObj)
         {
-            if (scoreObj == null)
-                return "N/A";
-
-            if (!int.TryParse(scoreObj.ToString(), out int score))
-                return "N/A";
+            if (scoreObj == null) return "N/A";
+            if (!int.TryParse(scoreObj.ToString(), out int score)) return "N/A";
 
             return score switch
             {
