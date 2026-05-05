@@ -256,6 +256,37 @@
         display: block !important;
         flex: 1;
     }
+
+    .image-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+    }
+
+    .image-modal-content {
+        max-width: 92%;
+        max-height: 92%;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+        object-fit: contain;
+        cursor: default;
+    }
+
+    .image-modal-close {
+        position: absolute;
+        top: 18px;
+        right: 28px;
+        font-size: 36px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+    }
 </style>
 
 <div class="infra-container">
@@ -308,6 +339,11 @@
     <div class="infra-panel" id="inspectionPanel">
         <h3 class="infra-title">Inspection Details</h3>
         <div id="accordion" style="max-height: 450px; overflow-y: auto; padding-right: 4px;"></div>
+    </div>
+
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="image-modal-close">&times;</span>
+        <img id="modalImage" class="image-modal-content" />
     </div>
 
 </div>
@@ -927,8 +963,13 @@
 
                     let mediaHtml = images.map(m => `
                         <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                             onclick="openImageModal(this.src)"
                              style="width:100px;height:80px;object-fit:cover;
-                                    border-radius:6px;border:1px solid #ddd;" />
+                                    border-radius:6px;border:1px solid #ddd;
+                                    cursor:zoom-in;transition:0.2s;"
+                             onmouseover="this.style.transform='scale(1.05)'"
+                             onmouseout="this.style.transform='scale(1)'"
+                        />
                     `).join("");
 
                     obsRows += `
@@ -1248,13 +1289,23 @@
         // Image at label Y
         if (imageHref) {
             obsRows += `
-            <image href="${imageHref}"
-                   x="${IMG_X}" y="${labelY - 8}"
-                   width="${IMG_W}" height="${IMG_H}"
-                   preserveAspectRatio="xMidYMid slice"/>
-            <rect x="${IMG_X}" y="${labelY - 8}"
-                  width="${IMG_W}" height="${IMG_H}"
-                  fill="none" stroke="#ccc" stroke-width="0.8" rx="4"/>`;
+            <a href="javascript:void(0)"
+               onclick="openImageModal('${imageHref}')">
+
+                <image href="${imageHref}"
+                       x="${IMG_X}" y="${labelY - 8}"
+                       width="${IMG_W}" height="${IMG_H}"
+                       preserveAspectRatio="xMidYMid slice"
+                       style="cursor:pointer;" />
+
+                <rect x="${IMG_X}" y="${labelY - 8}"
+                      width="${IMG_W}" height="${IMG_H}"
+                      fill="transparent"
+                      stroke="#ccc"
+                      stroke-width="0.8"
+                      rx="4"
+                      style="cursor:pointer;" />
+            </a>`;
         }
     });
 
@@ -1305,7 +1356,26 @@
     </svg>`;
 
     return svg;
-}
+    }
+
+    function openImageModal(src) {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+
+    modalImg.src = src;
+    modal.style.display = "flex";
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+
+    // Prevent closing when clicking actual image
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("modalImage").addEventListener("click", e => {
+            e.stopPropagation();
+        });
+    });
 
     function toggleAccordion(header, id) {
     let content = header.nextElementSibling;

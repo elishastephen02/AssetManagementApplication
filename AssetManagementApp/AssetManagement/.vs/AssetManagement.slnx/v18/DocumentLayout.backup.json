@@ -7,12 +7,24 @@
       "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\map\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\services\\mapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\services\\mapservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\controllers\\mapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\controllers\\mapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\manhole\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\manhole\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\services\\manholeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\services\\manholeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\controllers\\manholecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\controllers\\manholecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +34,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MapController.cs",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\MapController.cs",
+              "RelativeDocumentMoniker": "AssetManagement\\Controllers\\MapController.cs",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\MapController.cs",
+              "RelativeToolTip": "AssetManagement\\Controllers\\MapController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-05T10:54:07.363Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -32,35 +57,62 @@
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Map\\Index.cshtml",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
               "RelativeToolTip": "AssetManagement\\Views\\Map\\Index.cshtml",
-              "ViewState": "AgIAAL0EAACAxczMzMwRwBsFAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAA8FAAAAAAAAAAAcwDMFAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-05-04T08:17:12.966Z",
+              "WhenOpened": "2026-05-05T10:52:52.984Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MapService.cs",
-              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\MapService.cs",
-              "RelativeDocumentMoniker": "AssetManagement\\Services\\MapService.cs",
-              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\MapService.cs",
-              "RelativeToolTip": "AssetManagement\\Services\\MapService.cs",
-              "ViewState": "AgIAABkAAAAASAAAAAAEwDYAAAAcAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "ManholeController.cs",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\ManholeController.cs",
+              "RelativeDocumentMoniker": "AssetManagement\\Controllers\\ManholeController.cs",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Controllers\\ManholeController.cs",
+              "RelativeToolTip": "AssetManagement\\Controllers\\ManholeController.cs",
+              "ViewState": "AgIAAAEAAACQZWZmZuYswBMAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-03T06:56:33.642Z",
+              "WhenOpened": "2026-05-05T10:48:17.444Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Manhole\\Index.cshtml",
+              "RelativeDocumentMoniker": "AssetManagement\\Views\\Manhole\\Index.cshtml",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Manhole\\Index.cshtml",
+              "RelativeToolTip": "AssetManagement\\Views\\Manhole\\Index.cshtml",
+              "ViewState": "AgIAABYCAAAAQAEAAADQv3EBAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-05-05T10:46:33.094Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ManholeService.cs",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\ManholeService.cs",
+              "RelativeDocumentMoniker": "AssetManagement\\Services\\ManholeService.cs",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\ManholeService.cs",
+              "RelativeToolTip": "AssetManagement\\Services\\ManholeService.cs",
+              "ViewState": "AgIAAK4AAAAANDMzM7MSwNIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-05T10:44:47.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAmwC8AAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAmwDMAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-04-21T05:49:12.118Z"
+              "WhenOpened": "2026-04-21T05:49:12.118Z",
+              "EditorCaption": ""
             }
           ]
         }

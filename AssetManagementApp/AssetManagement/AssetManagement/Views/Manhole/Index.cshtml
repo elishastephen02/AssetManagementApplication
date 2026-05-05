@@ -1,0 +1,924 @@
+﻿@{
+    ViewData["Title"] = "Manhole Map";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<style>
+    .infra-container {
+        padding: 20px 15px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .infra-panel {
+        background: #fff;
+        padding: 16px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .infra-row {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .infra-col {
+        flex: 1;
+        min-width: 280px;
+    }
+
+    .infra-title {
+        margin: 0 0 10px 0;
+        font-size: 18px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .infra-input {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        width: 70%;
+        margin-right: 10px;
+    }
+
+    .infra-btn {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 8px;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+        .infra-btn:hover {
+            background: #0056b3;
+        }
+
+    #mhMap {
+        height: 420px;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .map-legend {
+        background: white;
+        padding: 12px 16px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        font-size: 13px;
+        line-height: 1.8;
+        min-width: 160px;
+    }
+
+        .map-legend h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 6px;
+        }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0;
+    }
+
+    .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 2px solid rgba(0,0,0,0.15);
+    }
+
+    .legend-label {
+        color: #444;
+        font-size: 12px;
+    }
+
+    .map-controls {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .map-control-btn {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background: white;
+        cursor: pointer;
+        font-size: 12px;
+        color: #444;
+        transition: all 0.2s;
+    }
+
+        .map-control-btn:hover {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .map-control-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .map-stats {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .map-stat-chip {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        background: #f0f6ff;
+        color: #007bff;
+        border: 1px solid #d0e4ff;
+    }
+
+    .mh-tooltip {
+        background: rgba(0,0,0,0.75);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+        .mh-tooltip::before {
+            border-top-color: rgba(0,0,0,0.75);
+        }
+
+    #mhSearchResults {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 100%;
+        max-height: 260px;
+        overflow-y: auto;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        display: none;
+        z-index: 9999;
+    }
+
+    .search-panel {
+        position: relative;
+        z-index: 10000;
+    }
+
+    #mhInspectionPanel {
+        display: none;
+        margin-bottom: 80px;
+    }
+
+    /* Inspection report styles */
+    .report-header-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: 12px; }
+    .rh-cell { padding: 5px 8px; border: 0.5px solid #ddd; }
+    .rh-label { color: #888; font-size: 11px; display: block; }
+    .rh-val { color: #222; font-weight: 500; }
+    .obs-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .obs-table th { background: #f5f5f5; padding: 5px 8px; text-align: left; font-weight: 500; font-size: 11px; color: #666; border-bottom: 1px solid #ddd; white-space: nowrap; }
+    .obs-table td { padding: 5px 8px; border-bottom: 0.5px solid #eee; vertical-align: top; }
+    .obs-table tr:nth-child(even) td { background: #fafafa; }
+    .insp-block { margin-bottom: 1rem; border: 1px solid #d0e4ff; border-radius: 8px; overflow: hidden; }
+    .insp-block-header { background: #e8f0fe; padding: 6px 10px; font-size: 12px; font-weight: 600; color: #1a56db; display: flex; justify-content: space-between; align-items: center; }
+
+    #mhSummaryPanel {
+        transition: all 0.3s ease;
+        display: none;
+    }
+
+    .summary-visible {
+        display: block !important;
+        flex: 1;
+    }
+</style>
+
+<div class="infra-container">
+
+    <!-- Search -->
+    <div class="infra-row">
+        <div class="infra-panel infra-col search-panel">
+            <h3 class="infra-title">Search Manholes</h3>
+            <input type="text" id="mhSearchBox" class="infra-input" placeholder="Search by name, street or material" />
+            <button class="infra-btn" onclick="mhSearch()">Search</button>
+            <div id="mhSearchResults"></div>
+        </div>
+    </div>
+
+    <!-- Map + summary row -->
+    <div class="infra-row" id="mhMapRow" style="align-items: flex-start;">
+
+        <div class="infra-panel" id="mhMapPanel" style="flex: 1;">
+            <h3 class="infra-title">Manhole Map</h3>
+
+            <div class="map-stats">
+                <span class="map-stat-chip" id="mhStatTotal">🔢 Manholes: —</span>
+                <span class="map-stat-chip" id="mhStatInspected"
+                      style="background:#e8f0fe;color:#1a56db;border-color:#c3d9ff;">
+                    🔵 Inspected: —
+                </span>
+                <span class="map-stat-chip" id="mhStatUninspected"
+                      style="background:#f5f5f5;color:#666;border-color:#ddd;">
+                    ⚪ Uninspected: —
+                </span>
+            </div>
+
+            <div class="map-controls">
+                <button class="map-control-btn active" onclick="mhFilter('all', this)">All</button>
+                <button class="map-control-btn" onclick="mhFilter('inspected', this)">Inspected</button>
+                <button class="map-control-btn" onclick="mhFilter('uninspected', this)">Uninspected</button>
+                <button class="map-control-btn" onclick="mhResetView()" style="margin-left:auto;">🔍 Reset View</button>
+            </div>
+
+            <div id="mhMap"></div>
+        </div>
+
+        <div class="infra-panel" id="mhSummaryPanel"
+             style="display:none; flex: 1; min-width: 220px; margin-top:80px">
+            <h3 class="infra-title">Manhole Summary</h3>
+            <div id="mhSummaryTable"></div>
+        </div>
+
+    </div>
+
+    <!-- Inspection detail accordion -->
+    <div class="infra-panel" id="mhInspectionPanel">
+        <h3 class="infra-title">Manhole Inspection Details</h3>
+        <div id="mhAccordion" style="max-height: 500px; overflow-y: auto; padding-right: 4px;"></div>
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+// ─── MAP INIT ───────────────────────────────────────────────────────────────
+var eThekwiniBounds = L.latLngBounds(
+    L.latLng(-30.1500, 30.6500),
+    L.latLng(-29.5500, 31.2000)
+);
+
+var mhMap = L.map('mhMap', {
+    minZoom: 11, maxZoom: 18,
+    maxBounds: eThekwiniBounds,
+    maxBoundsViscosity: 1.0
+}).setView([-29.8587, 31.0218], 12);
+
+var streetLayer = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
+);
+var satelliteLayer = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
+);
+streetLayer.addTo(mhMap);
+
+L.control.layers(
+    { "🗺️ Street Map": streetLayer, "🛰️ Satellite": satelliteLayer },
+    null,
+    { position: 'topright', collapsed: false }
+).addTo(mhMap);
+
+// Legend
+var mhLegend = L.control({ position: 'bottomright' });
+mhLegend.onAdd = function () {
+    var div = L.DomUtil.create('div', 'map-legend');
+    div.innerHTML = `
+        <h4>🗺️ Manhole Status</h4>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#1a56db;"></div>
+            <span class="legend-label">Inspected</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#95a5a6;"></div>
+            <span class="legend-label">Uninspected</span>
+        </div>`;
+    return div;
+};
+mhLegend.addTo(mhMap);
+setTimeout(() => mhMap.invalidateSize(), 200);
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+var mhMarkerLayer = L.featureGroup().addTo(mhMap);
+var mhObjects     = [];    // { id, data, marker }
+var mhSummary     = [];    // flat array of summary items
+
+// ─── CUSTOM MARKER ICONS ─────────────────────────────────────────────────────
+function makeMhIcon(color, highlighted) {
+    var size  = highlighted ? 18 : 13;
+    var ring  = highlighted ? 4  : 2;
+    var svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size+ring*2}" height="${size+ring*2}">
+        <circle cx="${(size+ring*2)/2}" cy="${(size+ring*2)/2}" r="${size/2}"
+                fill="${color}" stroke="white" stroke-width="${ring}"/>
+    </svg>`;
+    return L.divIcon({
+        html: svg,
+        className: '',
+        iconSize:   [size + ring*2, size + ring*2],
+        iconAnchor: [(size + ring*2)/2, (size + ring*2)/2]
+    });
+}
+
+// ─── LOAD DATA ────────────────────────────────────────────────────────────────
+function mhLoadData() {
+    fetch("/Map/GetManholeMapData")
+        .then(async res => {
+            if (!res.ok) {
+                let text = await res.text();
+                console.error("SERVER ERROR:", text);
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (!data) return;
+            mhSummary = data.summary || [];
+            mhUpdateStats(mhSummary);
+            mhDrawMap(mhSummary);
+        })
+        .catch(err => console.error("Manhole data load failed:", err));
+}
+
+window.addEventListener('load', mhLoadData);
+
+function mhDrawMap(summary) {
+    mhMarkerLayer.clearLayers();
+    mhObjects = [];
+
+    var hasCoords = false;
+
+    summary.forEach(node => {
+        // Use lat/lng if available on the summary object
+        var lat = parseFloat(node.Latitude);
+        var lng = parseFloat(node.Longitude);
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        hasCoords = true;
+        var isInsp = (node.Inspected || "").toLowerCase() === "inspected";
+        var color  = isInsp ? "#1a56db" : "#95a5a6";
+
+        var marker = L.marker([lat, lng], {
+            icon: makeMhIcon(color, false)
+        });
+
+        marker.bindTooltip(
+            `<b>${node.Name || node.Id}</b><br>
+             Street: ${node.Street || 'N/A'}<br>
+             Material: ${node.Material || 'N/A'}<br>
+             Inspection: ${node.Inspected || 'Uninspected'}`,
+            { sticky: true, className: 'mh-tooltip' }
+        );
+
+        marker.on('click', () => mhHighlight(node.Id));
+        marker.addTo(mhMarkerLayer);
+
+        mhObjects.push({ id: node.Id, data: node, marker });
+    });
+
+    if (hasCoords) {
+        setTimeout(() => {
+            var bounds = mhMarkerLayer.getBounds();
+            if (bounds.isValid()) mhMap.fitBounds(bounds, { padding: [20, 20] });
+        }, 200);
+    }
+}
+
+// ─── HIGHLIGHT ────────────────────────────────────────────────────────────────
+function mhHighlight(id) {
+    // Reset all markers
+    mhObjects.forEach(m => {
+        var isInsp = (m.data.Inspected || "").toLowerCase() === "inspected";
+        var color  = isInsp ? "#1a56db" : "#95a5a6";
+        m.marker.setIcon(makeMhIcon(color, false));
+    });
+
+    var target = mhObjects.find(m => m.id === id);
+    if (!target) return;
+
+    var isInsp = (target.data.Inspected || "").toLowerCase() === "inspected";
+    var color  = isInsp ? "#1a56db" : "#95a5a6";
+    target.marker.setIcon(makeMhIcon(color, true));
+
+    try { mhMap.setView(target.marker.getLatLng(), 17, { animate: true }); } catch(e) {}
+
+    mhShowSummary(target.data);
+    mhRenderInspection(target.data);
+}
+
+// ─── SUMMARY PANEL ────────────────────────────────────────────────────────────
+function mhShowSummary(node) {
+    document.getElementById('mhSummaryPanel').classList.add('summary-visible');
+    setTimeout(() => mhMap.invalidateSize(), 300);
+
+    var fmt     = v => (v != null && v !== '') ? v : 'N/A';
+    var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
+
+    var rows = [
+        ["Name",            fmt(node.Name)],
+        ["Street",          fmt(node.Street)],
+        ["Material",        fmt(node.Material)],
+        ["Situation",       fmt(node.Situation)],
+        ["Last Inspection", fmtDate(node.LastInspection)],
+        ["Inspected Length",fmt(node.InspectedLength)],
+        ["Status",          fmt(node.Inspected)],
+    ];
+
+    var html = `<table style="width:100%;border-collapse:collapse;font-size:14px;">`;
+    rows.forEach(([label, val], i) => {
+        var bg = i % 2 === 0 ? "#fff" : "#f5f5f5";
+        html += `<tr style="background:${bg};">
+            <td style="padding:7px 8px;font-weight:600;white-space:nowrap;">${label}</td>
+            <td style="padding:7px 8px;">${val}</td>
+        </tr>`;
+    });
+    html += `</table>`;
+    document.getElementById('mhSummaryTable').innerHTML = html;
+}
+
+// ─── INSPECTION REPORT ────────────────────────────────────────────────────────
+function mhRenderInspection(node) {
+    var panel     = document.getElementById('mhInspectionPanel');
+    var accordion = document.getElementById('mhAccordion');
+
+    if (!node) { panel.style.display = 'none'; return; }
+    panel.style.display = 'block';
+
+    var fmt     = v => (v != null && v !== '') ? v : 'N/A';
+    var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
+
+    // ── Header ──
+    var headerHtml = `
+    <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;
+                align-items:center;border-radius:8px 8px 0 0;">
+        <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
+            Manhole Report — ${fmt(node.Name)}
+        </span>
+        <span style="font-size:11px;color:#b5d4f4;">${fmt(node.Street)}</span>
+    </div>
+    <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
+        <div class="rh-cell"><span class="rh-label">Manhole ID</span><span class="rh-val">${fmt(node.Id)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Name</span><span class="rh-val">${fmt(node.Name)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Material</span><span class="rh-val">${fmt(node.Material)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Street</span><span class="rh-val">${fmt(node.Street)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Situation</span><span class="rh-val">${fmt(node.Situation)}</span></div>
+        <div class="rh-cell"><span class="rh-label">Last Inspection</span><span class="rh-val">${fmtDate(node.LastInspection)}</span></div>
+    </div>`;
+
+    // ── Inspections ──
+    var inspHtml = '';
+
+    if (node.Inspections && node.Inspections.length > 0) {
+        node.Inspections.forEach((insp, idx) => {
+            var dateStr = insp.InspectionDate
+                ? new Date(insp.InspectionDate).toLocaleDateString()
+                : 'No date';
+
+            // ── Diagram (cross-section) ──
+            var diagramSvg = mhRenderDiagram(node, insp);
+
+            // ── Observation rows (with images) ──
+            var obsRows = '';
+            if (insp.Observations && insp.Observations.length > 0) {
+                insp.Observations.forEach(o => {
+                    var images = (o.Media || [])
+                        .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
+                    if (images.length === 0) return;
+
+                    var mediaHtml = images.map(m => `
+                        <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                             style="width:100px;height:80px;object-fit:cover;
+                                    border-radius:6px;border:1px solid #ddd;" />`
+                    ).join('');
+
+                    obsRows += `
+                    <tr>
+                        <td style="white-space:nowrap;font-weight:600;color:#555;">
+                            ${o.Depth ?? '?'}m
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:10px;align-items:flex-start;">
+                                <div style="flex-shrink:0;">${mediaHtml}</div>
+                                <div style="font-size:12px;color:#333;">
+                                    ${(o.Observation || 'No description').replace(/</g,'&lt;')}
+                                    ${o.O3Value ? `<br><span style="color:#888;font-size:11px;">O3: ${o.O3Value}</span>` : ''}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+
+                if (!obsRows) {
+                    obsRows = `<tr><td colspan="2" style="color:#999;text-align:center;padding:10px;">
+                        No observations with images available.</td></tr>`;
+                }
+            } else {
+                obsRows = `<tr><td colspan="2" style="color:#999;text-align:center;padding:10px;">
+                    No observations recorded.</td></tr>`;
+            }
+
+            inspHtml += `
+            <!-- Diagram -->
+            <div style="margin-bottom:16px;border:1px solid #d0e4ff;border-radius:8px;overflow:hidden;">
+                <div style="background:#e8f0fe;padding:6px 10px;font-size:11px;font-weight:600;
+                            color:#1a56db;border-bottom:1px solid #d0e4ff;">
+                    Inspection ${insp.InspectionNumber ?? idx + 1} — Cross-Section Diagram
+                </div>
+                <div style="padding:8px;overflow-x:auto;">${diagramSvg}</div>
+            </div>
+
+            <!-- Detail block -->
+            <div class="insp-block">
+                <div class="insp-block-header">
+                    <span>Inspection ${insp.InspectionNumber ?? idx + 1}
+                        <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
+                    </span>
+                    <span style="font-size:11px;color:#378ADD;">
+                        ${insp.Method ? 'Method: ' + insp.Method : ''}
+                        ${insp.Drainage ? '· Drainage: ' + insp.Drainage : ''}
+                    </span>
+                </div>
+                <div style="padding:8px 10px 10px;">
+                    <!-- Meta row -->
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+                                margin-bottom:10px;font-size:12px;">
+                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                            <span style="color:#888;display:block;font-size:10px;">Equipment</span>
+                            <span style="font-weight:500;">${fmt(insp.Equipment)}</span>
+                        </div>
+                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                            <span style="color:#888;display:block;font-size:10px;">Insp. Dir.</span>
+                            <span style="font-weight:500;">${fmt(insp.InspectionDir)}</span>
+                        </div>
+                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                            <span style="color:#888;display:block;font-size:10px;">Insp. Length</span>
+                            <span style="font-weight:500;">${fmt(insp.InspectedLength)}m</span>
+                        </div>
+                    </div>
+
+                    <!-- Observations table -->
+                    <table class="obs-table">
+                        <thead>
+                            <tr>
+                                <th>Depth</th>
+                                <th>Observation / Images</th>
+                            </tr>
+                        </thead>
+                        <tbody>${obsRows}</tbody>
+                    </table>
+                </div>
+            </div>`;
+        });
+    } else {
+        inspHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">
+            No inspections recorded for this manhole.</p>`;
+    }
+
+    accordion.innerHTML = headerHtml + `<div style="padding:12px 0;">${inspHtml}</div>`;
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── MANHOLE CROSS-SECTION DIAGRAM ───────────────────────────────────────────
+function mhRenderDiagram(node, insp) {
+    var obs         = insp?.Observations || [];
+    var totalDepth  = parseFloat(insp?.InspectedLength || 0);
+    var mhName      = node?.Name || 'MH';
+    var material    = node?.Material || '—';
+    var street      = node?.Street || '—';
+
+    var SVG_W       = 760;
+    var HEADER_H    = 34;
+    var MH_W        = 60;
+    var MH_TOP_H    = 20;    // cone / cover
+    var SHAFT_X     = (SVG_W / 4) - MH_W / 2;
+    var SHAFT_MID_X = SHAFT_X + MH_W / 2;
+    var SHAFT_TOP   = HEADER_H + MH_TOP_H + 10;
+    var SHAFT_H     = Math.max(360, obs.length * 45 + 60);
+    var SHAFT_BOT   = SHAFT_TOP + SHAFT_H;
+
+    var IMG_W = 90;
+    var IMG_H = 65;
+    var IMG_X = 600;
+    var MIN_SPACING = IMG_H + 18;
+
+    function depthToY(d) {
+        if (!totalDepth) return SHAFT_TOP + 20;
+        return SHAFT_TOP + (parseFloat(d || 0) / totalDepth) * SHAFT_H;
+    }
+
+    // Sort observations by depth
+    var sorted = [...obs].sort((a, b) =>
+        (parseFloat(a.Depth) || 0) - (parseFloat(b.Depth) || 0)
+    );
+
+    // Resolve label positions
+    var placed = [];
+    sorted.forEach(o => {
+        var baseY  = depthToY(o.Depth);
+        var labelY = baseY;
+        var tries  = 0;
+        while (placed.some(p => Math.abs(p.labelY - labelY) < MIN_SPACING) && tries < 500) {
+            labelY += MIN_SPACING;
+            tries++;
+        }
+        placed.push({ obs: o, baseY, labelY });
+    });
+
+    var lowestLabel = placed.length > 0
+        ? Math.max(...placed.map(p => p.labelY + IMG_H + 10))
+        : SHAFT_BOT;
+
+    var SVG_H = Math.max(SHAFT_BOT + 60, lowestLabel + 40);
+
+    // Build observation marks
+    var obsRows = '';
+    placed.forEach(({ obs: o, baseY, labelY }) => {
+        var hasImg  = (o.Media || []).some(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
+        var imgObj  = (o.Media || []).find(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
+        var imgHref = imgObj ? `/Map/GetImage?fileName=${encodeURIComponent(imgObj.FileName)}` : null;
+        var desc    = (o.Observation || 'No description').replace(/</g, '&lt;');
+
+        // Leader line
+        obsRows += `
+        <line x1="${SHAFT_X + MH_W}" y1="${baseY}" x2="${SHAFT_X + MH_W + 40}" y2="${labelY}"
+              stroke="#ccc" stroke-width="0.5" stroke-dasharray="3 3"/>`;
+
+        // Marker ring on shaft wall
+        obsRows += `
+        <circle cx="${SHAFT_X + MH_W}" cy="${baseY}" r="4"
+                fill="none" stroke="#E8593C" stroke-width="1.5"/>
+        <circle cx="${SHAFT_X}" cy="${baseY}" r="4"
+                fill="none" stroke="#E8593C" stroke-width="1.5"/>
+        <line x1="${SHAFT_X}" y1="${baseY}" x2="${SHAFT_X + MH_W}" y2="${baseY}"
+              stroke="#E8593C" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>`;
+
+        // Depth label
+        obsRows += `
+        <text x="${SHAFT_X - 8}" y="${baseY}" text-anchor="end" dominant-baseline="central"
+              font-size="10" fill="#E8593C" font-family="monospace">
+              ${parseFloat(o.Depth || 0).toFixed(2)}m
+        </text>`;
+
+        // Description at label Y
+        var label_x = SHAFT_X + MH_W + 46;
+        obsRows += `
+        <text x="${label_x}" y="${labelY}" dominant-baseline="central" font-size="10" fill="#333">
+            ${desc.length > 48 ? desc.substring(0, 48) + '…' : desc}
+        </text>`;
+
+        // O3 value
+        if (o.O3Value != null) {
+            obsRows += `
+            <text x="${label_x}" y="${labelY + 13}" dominant-baseline="central"
+                  font-size="9" fill="#888">O3: ${o.O3Value}</text>`;
+        }
+
+        // Image
+        if (imgHref) {
+            obsRows += `
+            <image href="${imgHref}" x="${IMG_X}" y="${labelY - 8}"
+                   width="${IMG_W}" height="${IMG_H}"
+                   preserveAspectRatio="xMidYMid slice"/>
+            <rect x="${IMG_X}" y="${labelY - 8}" width="${IMG_W}" height="${IMG_H}"
+                  fill="none" stroke="#ccc" stroke-width="0.8" rx="4"/>`;
+        }
+    });
+
+    var svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${SVG_W} ${SVG_H}"
+         style="font-family:sans-serif;display:block;">
+
+      <!-- Header bar -->
+      <rect x="0" y="0" width="${SVG_W}" height="${HEADER_H}" fill="#1a56db" rx="6"/>
+      <rect x="0" y="${HEADER_H - 6}" width="${SVG_W}" height="6" fill="#1a56db"/>
+      <text x="14" y="12" font-size="7" font-weight="600" fill="#e8f0fe" dominant-baseline="central">
+          Manhole Inspection
+      </text>
+      <text x="14" y="24" font-size="9" fill="#90b8f8" dominant-baseline="central">
+          ${street} · ${material}
+      </text>
+      <text x="${SVG_W - 14}" y="12" font-size="9" fill="#90b8f8"
+            text-anchor="end" dominant-baseline="central">${mhName}</text>
+      <text x="${SVG_W - 14}" y="24" font-size="9" fill="#90b8f8"
+            text-anchor="end" dominant-baseline="central">
+          ${insp?.InspectionDate ? new Date(insp.InspectionDate).toLocaleDateString() : ''}
+      </text>
+
+      <!-- Cover / frame at top -->
+      <rect x="${SHAFT_X - 8}" y="${HEADER_H + 10}"
+            width="${MH_W + 16}" height="${MH_TOP_H}"
+            rx="3" fill="#888" stroke="#555" stroke-width="1"/>
+      <text x="${SHAFT_MID_X}" y="${HEADER_H + 10 + MH_TOP_H / 2}"
+            text-anchor="middle" dominant-baseline="central"
+            font-size="8" fill="white" font-weight="600">COVER</text>
+
+      <!-- Shaft walls -->
+      <rect x="${SHAFT_X}" y="${SHAFT_TOP}" width="8" height="${SHAFT_H}"
+            fill="#bbb" stroke="#999" stroke-width="0.8"/>
+      <rect x="${SHAFT_X + MH_W - 8}" y="${SHAFT_TOP}" width="8" height="${SHAFT_H}"
+            fill="#bbb" stroke="#999" stroke-width="0.8"/>
+      <!-- Interior fill -->
+      <rect x="${SHAFT_X + 8}" y="${SHAFT_TOP}" width="${MH_W - 16}" height="${SHAFT_H}"
+            fill="#1a56db" opacity="0.05"/>
+
+      <!-- Depth axis label -->
+      <text x="${SHAFT_X - 8}" y="${SHAFT_TOP - 10}" text-anchor="end"
+            font-size="9" fill="#888">Depth (m)</text>
+
+      <!-- 0m label -->
+      <text x="${SHAFT_X - 8}" y="${SHAFT_TOP}" text-anchor="end"
+            dominant-baseline="central" font-size="9" fill="#888"
+            font-family="monospace">0.00m</text>
+
+      <!-- Base of shaft -->
+      <rect x="${SHAFT_X}" y="${SHAFT_BOT}" width="${MH_W}" height="8"
+            fill="#888" stroke="#555" stroke-width="1"/>
+
+      <!-- Total depth label -->
+      <text x="${SHAFT_X - 8}" y="${SHAFT_BOT}" text-anchor="end"
+            dominant-baseline="central" font-size="9" fill="#555"
+            font-family="monospace">${totalDepth.toFixed(2)}m</text>
+
+      <!-- Flow arrow -->
+      <defs>
+        <marker id="mhArr" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="#1a56db"
+                stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+      </defs>
+      <line x1="${SHAFT_MID_X}" y1="${SHAFT_TOP + 20}" x2="${SHAFT_MID_X}" y2="${SHAFT_BOT - 14}"
+            stroke="#1a56db" stroke-width="1" opacity="0.25"
+            marker-end="url(#mhArr)"/>
+
+      <!-- Observations -->
+      ${obsRows}
+
+    </svg>`;
+
+    return svg;
+}
+
+// ─── FILTER ───────────────────────────────────────────────────────────────────
+function mhFilter(filter, btn) {
+    document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    mhObjects.forEach(m => {
+        var c    = (m.data.Inspected || '').toLowerCase();
+        var show = filter === 'all'
+            || (filter === 'inspected'   && c === 'inspected')
+            || (filter === 'uninspected' && c === 'uninspected');
+        show ? mhMarkerLayer.addLayer(m.marker) : mhMarkerLayer.removeLayer(m.marker);
+    });
+}
+
+// ─── RESET VIEW ───────────────────────────────────────────────────────────────
+function mhResetView() {
+    try { mhMap.fitBounds(mhMarkerLayer.getBounds(), { padding: [20, 20] }); }
+    catch { mhMap.setView([-29.8587, 31.0218], 12); }
+}
+
+// ─── STATS ────────────────────────────────────────────────────────────────────
+function mhUpdateStats(summary) {
+    var ins   = summary.filter(x => (x.Inspected || '').toLowerCase() === 'inspected').length;
+    var unins = summary.filter(x => (x.Inspected || '').toLowerCase() === 'uninspected').length;
+    document.getElementById('mhStatTotal').textContent       = `🔢 Manholes: ${summary.length}`;
+    document.getElementById('mhStatInspected').textContent   = `🔵 Inspected: ${ins}`;
+    document.getElementById('mhStatUninspected').textContent = `⚪ Uninspected: ${unins}`;
+}
+
+// ─── SEARCH ───────────────────────────────────────────────────────────────────
+function mhSearch() {
+    var query      = document.getElementById('mhSearchBox').value.trim().toLowerCase();
+    var resultsDiv = document.getElementById('mhSearchResults');
+
+    resultsDiv.innerHTML = '';
+    resultsDiv.style.display = 'block';
+
+    if (!query) { resultsDiv.style.display = 'none'; return; }
+
+    var results = mhSummary.filter(x =>
+        (x.Id       && x.Id.toLowerCase().includes(query)) ||
+        (x.Name     && x.Name.toLowerCase().includes(query)) ||
+        (x.Street   && x.Street.toLowerCase().includes(query)) ||
+        (x.Material && x.Material.toLowerCase().includes(query))
+    );
+
+    if (results.length === 0) {
+        resultsDiv.innerHTML = `<p style="padding:10px;color:#999;margin:0;">No results found.</p>`;
+        return;
+    }
+
+    // Group by street
+    var byStreet = {};
+    results.forEach(n => {
+        var s = n.Street || '(No Street)';
+        if (!byStreet[s]) byStreet[s] = [];
+        byStreet[s].push(n);
+    });
+
+    Object.entries(byStreet).forEach(([street, nodes]) => {
+        if (nodes.length > 1) {
+            // Road group
+            var roadDiv = document.createElement('div');
+            roadDiv.style.cssText =
+                'border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;';
+
+            var isCollapsed = false;
+            roadDiv.innerHTML = `
+            <div class="roadHeader"
+                 style="display:flex;align-items:center;justify-content:space-between;
+                        background:#d4edda;padding:8px 12px;cursor:pointer;">
+                <span style="font-weight:600;color:#28a745;font-size:13px;">
+                    🛣️ ${street}
+                    <span style="font-weight:400;color:#555;margin-left:6px;">
+                        (${nodes.length} manholes)
+                    </span>
+                </span>
+                <span class="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
+            </div>
+            <div class="nodeList"
+                 style="max-height:160px;overflow-y:auto;display:block;background:#fff;"></div>`;
+
+            var nodeList   = roadDiv.querySelector('.nodeList');
+            var toggleIcon = roadDiv.querySelector('.toggleIcon');
+            var roadHeader = roadDiv.querySelector('.roadHeader');
+
+            roadHeader.onclick = () => {
+                isCollapsed = !isCollapsed;
+                nodeList.style.display  = isCollapsed ? 'none' : 'block';
+                toggleIcon.textContent  = isCollapsed ? '▸' : '▾';
+            };
+
+            nodes.forEach(n => {
+                var row = document.createElement('div');
+                row.style.cssText =
+                    'display:flex;align-items:center;justify-content:space-between;' +
+                    'padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;' +
+                    'font-size:13px;transition:background 0.15s;';
+                row.innerHTML = `
+                <span style="color:#007bff;">↳ ${n.Name || n.Id}</span>
+                <span style="color:#999;font-size:11px;">${n.Inspected || 'Uninspected'}</span>`;
+                row.onmouseenter = () => row.style.background = '#f0f7ff';
+                row.onmouseleave = () => row.style.background = '';
+                row.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
+                nodeList.appendChild(row);
+            });
+
+            resultsDiv.appendChild(roadDiv);
+        } else {
+            // Single result
+            nodes.forEach(n => {
+                var div = document.createElement('div');
+                div.style.cssText =
+                    'padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;' +
+                    'font-size:13px;transition:background 0.15s;';
+                div.innerHTML = `
+                <span style="color:#007bff;">
+                    🕳️ ${n.Name || n.Id} — ${n.Street || ''}
+                </span>`;
+                div.onmouseenter = () => div.style.background = '#f0f7ff';
+                div.onmouseleave = () => div.style.background = '';
+                div.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
+                resultsDiv.appendChild(div);
+            });
+        }
+    });
+}
+
+// Enter key
+document.getElementById('mhSearchBox').addEventListener('keydown', e => {
+    if (e.key === 'Enter') mhSearch();
+});
+
+// Click outside to close
+document.addEventListener('click', e => {
+    var sr = document.getElementById('mhSearchResults');
+    if (!sr.contains(e.target) &&
+        e.target.id !== 'mhSearchBox' &&
+        !e.target.classList.contains('infra-btn')) {
+        sr.style.display = 'none';
+    }
+});
+</script>
