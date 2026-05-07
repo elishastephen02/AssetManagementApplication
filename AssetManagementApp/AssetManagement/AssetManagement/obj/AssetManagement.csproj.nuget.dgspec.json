@@ -101,6 +101,10 @@
             "NetTopologySuite.IO.GeoJSON": {
               "target": "Package",
               "version": "[4.0.0, )"
+            },
+            "ProjNET": {
+              "target": "Package",
+              "version": "[2.1.0, )"
             }
           },
           "imports": [

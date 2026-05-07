@@ -18,12 +18,15 @@ namespace AssetManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetManholeMapData()
+        public IActionResult GetManholeData()
         {
             try
             {
-                var data = _manholeService.GetManholeMapData();
-                return Json(data);
+                var data = _manholeService.GetManholeData();
+                return Json(data, new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null 
+                });
             }
             catch (Exception ex)
             {
@@ -35,7 +38,7 @@ namespace AssetManagement.Controllers
         public IActionResult GetImage(string fileName)
         {
             var imagePath = Path.Combine(
-                Directory.GetCurrentDirectory(), "wwwroot", "Picture", fileName);
+                Directory.GetCurrentDirectory(), "wwwroot", "Node", fileName);
 
             if (!System.IO.File.Exists(imagePath))
                 return NotFound();

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wktqscyI4gc=",
+  "dgSpecHash": "ikGWGH+quSE=",
   "success": true,
   "projectFilePath": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\AssetManagement.csproj",
   "expectedPackageFiles": [
@@ -137,6 +137,7 @@
     "C:\\Users\\elishastephen\\.nuget\\packages\\nuget.projectmodel\\6.11.0\\nuget.projectmodel.6.11.0.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\nuget.protocol\\6.11.0\\nuget.protocol.6.11.0.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\nuget.versioning\\6.11.0\\nuget.versioning.6.11.0.nupkg.sha512",
+    "C:\\Users\\elishastephen\\.nuget\\packages\\projnet\\2.1.0\\projnet.2.1.0.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.11\\sqlitepclraw.bundle_e_sqlite3.2.1.11.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\sqlitepclraw.core\\2.1.11\\sqlitepclraw.core.2.1.11.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.11\\sqlitepclraw.lib.e_sqlite3.2.1.11.nupkg.sha512",
@@ -164,15 +165,5 @@
     "C:\\Users\\elishastephen\\.nuget\\packages\\system.text.json\\8.0.6\\system.text.json.8.0.6.nupkg.sha512",
     "C:\\Users\\elishastephen\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.",
-      "projectPath": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\AssetManagement.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\AssetManagement.csproj",
-      "targetGraphs": []
-    }
-  ]
+  "logs": []
 }
