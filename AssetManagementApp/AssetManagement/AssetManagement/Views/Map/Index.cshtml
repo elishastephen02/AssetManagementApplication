@@ -94,7 +94,7 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         font-size: 13px;
         line-height: 1.8;
-        min-width: 160px;
+        min-width: 170px;
     }
 
         .map-legend h4 {
@@ -118,6 +118,14 @@
         height: 4px;
         border-radius: 2px;
         flex-shrink: 0;
+    }
+
+    .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        border: 2px solid rgba(0,0,0,0.15);
     }
 
     .legend-label {
@@ -156,6 +164,41 @@
             border-color: #007bff;
         }
 
+    /* Layer toggle group — visually distinct from filter buttons */
+    .layer-toggle-group {
+        display: flex;
+        gap: 0;
+        border: 1px solid #007bff;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-right: 8px;
+    }
+
+    .layer-toggle-btn {
+        padding: 6px 12px;
+        border: none;
+        background: white;
+        cursor: pointer;
+        font-size: 12px;
+        color: #007bff;
+        font-weight: 500;
+        transition: all 0.2s;
+        border-right: 1px solid #007bff;
+    }
+
+    .layer-toggle-btn:last-child {
+        border-right: none;
+    }
+
+    .layer-toggle-btn:hover {
+        background: #e8f0fe;
+    }
+
+    .layer-toggle-btn.layer-active {
+        background: #007bff;
+        color: white;
+    }
+
     .map-stats {
         display: flex;
         gap: 10px;
@@ -184,6 +227,19 @@
 
         .pipe-tooltip::before {
             border-top-color: rgba(0,0,0,0.75);
+        }
+
+    .mh-tooltip {
+        background: rgba(30,30,30,0.82);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+        .mh-tooltip::before {
+            border-top-color: rgba(30,30,30,0.82);
         }
 
     #summaryTable p.placeholder {
@@ -216,7 +272,7 @@
         display: none;
         margin-bottom: 80px;
     }
-    /* New: CCTV report styles */
+
     .report-header-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; font-size: 12px; }
     .rh-cell { padding: 5px 8px; border: 0.5px solid #ddd; }
     .rh-label { color: #888; font-size: 11px; display: block; }
@@ -244,28 +300,19 @@
         display: none;
     }
 
-    .map-full {
-        flex: 1 1 100%;
-    }
-
-    .map-split {
-        flex: 2;
-    }
-
-    .summary-visible {
-        display: block !important;
-        flex: 1;
-    }
+    .map-full { flex: 1 1 100%; }
+    .map-split { flex: 2; }
+    .summary-visible { display: block !important; flex: 1; }
 
     .image-modal {
-    display: none;
-    position: fixed;
-    z-index: 99999;
-    inset: 0;
-    background: rgba(0,0,0,0.88);
-    justify-content: center;
-    align-items: center;
-    cursor: zoom-out;
+        display: none;
+        position: fixed;
+        z-index: 99999;
+        inset: 0;
+        background: rgba(0,0,0,0.88);
+        justify-content: center;
+        align-items: center;
+        cursor: zoom-out;
     }
 
     .image-modal-content {
@@ -287,24 +334,59 @@
         cursor: pointer;
         user-select: none;
     }
+
+    /* Controls row label */
+    .controls-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        align-self: center;
+        white-space: nowrap;
+    }
+
+    .controls-divider {
+        width: 1px;
+        height: 24px;
+        background: #ddd;
+        align-self: center;
+        margin: 0 4px;
+    }
+
+    .pipe-line {
+        outline: none !important;
+        filter: none !important;
+    }
+
+    .pipe-line path,
+    .leaflet-interactive:focus {
+        outline: none !important;
+        stroke-dasharray: inherit;
+    }
+
+    .leaflet-interactive {
+        outline: none !important;
+    }
 </style>
 
 <div class="infra-container">
     <div class="infra-row">
         <div class="infra-panel infra-col search-panel">
             <h3 class="infra-title">Search Pipes</h3>
-            <input type="text" id="searchBox" class="infra-input" placeholder="Search" />
+            <input type="text" id="searchBox" class="infra-input" placeholder="Search by pipe ID, name, material or road" />
             <button class="infra-btn" onclick="search()">Search</button>
             <div id="searchResults"></div>
         </div>
     </div>
 
-    <!-- Middle row: map LEFT, summary RIGHT -->
+    <!-- Map -->
     <div class="infra-row" id="mapRow" style="align-items: flex-start;">
 
         <div class="infra-panel" id="mapPanel" style="flex: 1;">
             <h3 class="infra-title">Infrastructure Map</h3>
 
+            <!-- Stats -->
             <div class="map-stats">
                 <span class="map-stat-chip" id="statTotal">🔢 Pipes: —</span>
                 <span class="map-stat-chip" id="statInspected"
@@ -315,27 +397,62 @@
                       style="background:#f5f5f5;color:#666;border-color:#ddd;">
                     ⚪ Uninspected: —
                 </span>
+                <span class="map-stat-chip" id="statManholes"
+                      style="background:#fff8e1;color:#856404;border-color:#ffe066;">
+                    🕳️ Manholes: —
+                </span>
             </div>
 
+            <!-- Controls row -->
             <div class="map-controls">
-                <button class="map-control-btn active" onclick="filterPipes('all', this)">All Pipes</button>
-                <button class="map-control-btn" onclick="filterPipes('inspected', this)">Inspected</button>
-                <button class="map-control-btn" onclick="filterPipes('uninspected', this)">Uninspected</button>
+
+                <!-- Layer visibility toggles -->
+                <span class="controls-label">Layers:</span>
+                <div class="layer-toggle-group">
+                    <button class="layer-toggle-btn layer-active" id="togglePipesBtn"
+                            onclick="toggleLayer('pipes', this)">🔵 Pipes</button>
+                    <button class="layer-toggle-btn" id="toggleManholesBtn"
+                            onclick="toggleLayer('manholes', this)">🕳️ Manholes</button>
+                </div>
+
+                <div class="controls-divider"></div>
+
+                <!-- Pipe filter (only relevant when pipes visible) -->
+                <span class="controls-label">Filter:</span>
+
+                <!-- Pipe Filters -->
+                <div id="pipeFilters" style="display:flex;gap:8px;">
+                    <button class="map-control-btn active"
+                            onclick="filterPipes('all', this)">All Pipes</button>
+                    <button class="map-control-btn"
+                            onclick="filterPipes('inspected', this)">Inspected</button>
+                    <button class="map-control-btn"
+                            onclick="filterPipes('uninspected', this)">Uninspected</button>
+                </div>
+
+                <!-- Manhole Filters -->
+                <div id="manholeFilters" style="display:none;gap:8px;">
+                    <button class="map-control-btn active"
+                            onclick="filterManholes('all', this)">All Manholes</button>
+                    <button class="map-control-btn"
+                            onclick="filterManholes('inspected', this)">Inspected</button>
+                    <button class="map-control-btn"
+                            onclick="filterManholes('uninspected', this)">Uninspected</button>
+                </div>
+
                 <button class="map-control-btn" onclick="resetMapView()" style="margin-left:auto;">🔍 Reset View</button>
             </div>
 
             <div id="map"></div>
         </div>
-
-        <div class="infra-panel" id="summaryPanel" style="display:none; flex: 1; min-width: 220px; margin-top:80px">
-            <h3 class="infra-title">Pipe Summary</h3>
-            <div id="summaryTable">
-            </div>
-        </div>
-
     </div>
 
-    <!-- Bottom: scrollable accordion — hidden until GeoJSON is uploaded -->
+    <!-- Asset management summary panel -->
+    <div class="infra-panel" id="summaryPanel" style="max-height: 450px; overflow-y: auto; padding-right: 4px;">
+        <h3 class="infra-title">Asset Management</h3>
+        <div id="summaryTable"></div>
+    </div>
+
     <div class="infra-panel" id="inspectionPanel">
         <h3 class="infra-title">Inspection Details</h3>
         <div id="accordion" style="max-height: 450px; overflow-y: auto; padding-right: 4px;"></div>
@@ -345,1050 +462,1249 @@
         <span class="image-modal-close">&times;</span>
         <img id="modalImage" class="image-modal-content" />
     </div>
-
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 
-    // MAP INIT
+    // MAP INIT 
     var eThekwiniBounds = L.latLngBounds(
-    L.latLng(-30.1500, 30.6500),
-    L.latLng(-29.5500, 31.2000)
+        L.latLng(-30.1500, 30.6500),
+        L.latLng(-29.5500, 31.2000)
     );
 
     var map = L.map('map', {
-    minZoom: 11, maxZoom: 18,
-    maxBounds: eThekwiniBounds,
-    maxBoundsViscosity: 1.0
+        minZoom: 11, maxZoom: 18,
+        maxBounds: eThekwiniBounds,
+        maxBoundsViscosity: 1.0
     }).setView([-29.8587, 31.0218], 12);
 
     var streetLayer = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-    }
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
     );
-
     var satelliteLayer = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    {
-    maxZoom: 19,
-    attribution: 'Tiles &copy; Esri'
-    }
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
     );
-
-    // Default layer
     streetLayer.addTo(map);
 
     L.control.layers(
-    {
-    "🗺️ Street Map": streetLayer,
-    "🛰️ Satellite": satelliteLayer
-    },
-    null,
-    {
-    position: 'topright',
-    collapsed: false
-    }
+        { "🗺️ Street Map": streetLayer, "🛰️ Satellite": satelliteLayer },
+        null,
+        { position: 'topright', collapsed: false }
     ).addTo(map);
 
+    // Combined legend
     var legend = L.control({ position: 'bottomright' });
     legend.onAdd = function () {
-    var div = L.DomUtil.create('div', 'map-legend');
-    div.innerHTML = `
-    <h4>🗺️ Pipe Condition</h4>
-    <div class="legend-item">
-    <div class="legend-line" style="background:#28a745;height:5px;"></div>
-    <span class="legend-label">Good</span>
-    </div>
-    <div class="legend-item">
-    <div class="legend-line" style="background:#ffc107;height:5px;"></div>
-    <span class="legend-label">Okay</span>
-    </div>
-    <div class="legend-item">
-    <div class="legend-line" style="background:#dc3545;height:5px;"></div>
-    <span class="legend-label">Bad</span>
-    </div>`;
-    return div;
+        var div = L.DomUtil.create('div', 'map-legend');
+        div.innerHTML = `
+        <h4>🗺️ Map Legend</h4>
+        <div style="font-size:11px;font-weight:600;color:#888;margin:4px 0 2px;
+                    text-transform:uppercase;letter-spacing:0.04em;">Pipe Condition</div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#28a745;height:5px;"></div>
+            <span class="legend-label">Good</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#ffc107;height:5px;"></div>
+            <span class="legend-label">Okay</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#dc3545;height:5px;"></div>
+            <span class="legend-label">Bad</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#95a5a6;height:3px;border-top:2px dashed #95a5a6;background:none;"></div>
+            <span class="legend-label">Uninspected</span>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#888;margin:8px 0 2px;
+                    text-transform:uppercase;letter-spacing:0.04em;">Manholes</div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background:#378add;border-color:#185fa5;"></div>
+            <span class="legend-label">Manhole</span>
+        </div>`;
+        return div;
     };
     legend.addTo(map);
     setTimeout(() => map.invalidateSize(), 200);
 
-    var pipeLayer = L.featureGroup().addTo(map);
+    var pipeLayer    = L.featureGroup().addTo(map);
+    var manholeLayer = L.featureGroup();  // always on top conceptually
+
     let pipeColors  = {};
     let pipeObjects = [];
     let allSummary  = [];
 
-    // LOAD DATA ON PAGE OPEN
-    function loadMapData() {
-    fetch("/Map/GetMapData")
-    .then(async res => {
-    if (!res.ok) {
-    let text = await res.text();
-    console.error("SERVER ERROR:", text);
-    return;
-    }
-    return res.json();
-    })
-    .then(data => {
-    if (!data) return;
-    allSummary = data.summary || [];
+    let mhObjects  = [];
+    let mhSummary  = [];
 
-    console.log("Total summary items:", allSummary.length);
-    console.log("Inspected:", allSummary.filter(x => x.Inspected === "Inspected").length);
-    console.log("Sample item:", allSummary[0]);
-    console.log("Total sections:", data.sections?.length);
-    console.log("Sample section:", data.sections?.[0]);
+    let currentManholeFilter = 'all';
 
-    pipeColors = {};
-    allSummary.forEach(x => {
-    const condition = (x.Condition || "").toLowerCase().trim();
-    const inspected = (x.Inspected || "").toLowerCase().trim();
+    // Layer visibility flags
+    let pipesVisible    = true;
+    let manholesVisible = false;
 
-    if (condition === "good") {
-    pipeColors[x.Id] = "#28a745";
-    }
-    else if (condition === "okay") {
-    pipeColors[x.Id] = "#ffc107";
-    }
-    else if (condition === "bad") {
-    pipeColors[x.Id] = "#dc3545";
-    }
-    else if (inspected === "inspected") {
-    pipeColors[x.Id] = "#1a56db";
-    }
-    else {
-    pipeColors[x.Id] = "#95a5a6";
-    }
-    });
-
-    updateStats(allSummary);
-    drawMap(data);
-    })
-    .catch(err => console.error("Map data load failed:", err));
-    }
-
-    window.onload = loadMapData;
-
-    // WKT → GeoJSON
+    // WKT → GeoJSON (handles POINT, LINESTRING, MULTILINESTRING)
     function wktToGeoJSON(wkt) {
-    if (!wkt) return null;
+        if (!wkt) return null;
 
-    wkt = wkt.trim()
-    .replace(/^SRID=\d+;/i, "")
-    .replace(/\bZ\b/i, "")
-    .trim();
+        wkt = wkt.trim()
+            .replace(/^SRID=\d+;/i, "")
+            .replace(/\bZ\b/i, "")
+            .trim();
 
-    const type = wkt.match(/^([A-Z]+)\s*\(/i)?.[1]?.toUpperCase();
-    if (!type) { console.warn("Cannot detect WKT type:", wkt); return null; }
+        const type = wkt.match(/^([A-Z]+)\s*\(/i)?.[1]?.toUpperCase();
+        if (!type) { console.warn("Cannot detect WKT type:", wkt); return null; }
 
-    function parsePoints(str) {
-    return str.trim().split(",").map(p => {
-    const parts = p.trim().split(/\s+/);
-    const lng = parseFloat(parts[0]);
-    const lat = parseFloat(parts[1]);
-    return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
-    }).filter(Boolean);
-    }
-
-    if (type === "LINESTRING") {
-    const inner = wkt.replace(/^LINESTRING\s*\(/i, "").replace(/\)\s*$/, "");
-    return {
-    type: "Feature",
-    geometry: { type: "LineString", coordinates: parsePoints(inner) }
-    };
-    }
-
-    if (type === "MULTILINESTRING") {
-    const inner = wkt.replace(/^MULTILINESTRING\s*\(\s*\(/i, "").replace(/\)\s*\)\s*$/, "");
-    const lines = inner.split(/\)\s*,\s*\(/).map(part => parsePoints(part));
-    return {
-    type: "Feature",
-    geometry: { type: "MultiLineString", coordinates: lines }
-    };
-    }
-
-    console.warn("Unsupported WKT type:", type, wkt);
-    return null;
-    }
-
-    // DRAW MAP
-    function drawMap(data) {
-    pipeLayer.clearLayers();
-    pipeObjects = [];
-
-    if (!data.sections || !data.sections.length) return;
-
-    data.sections.forEach(s => {
-    let id = s.OBJ_PK || s.obj_PK || s.obJ_PK;
-    let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
-
-    if (!id || !wkt) {
-    console.warn("Skipping invalid pipe record:", s);
-    return;
-    }
-
-    let geo = wktToGeoJSON(wkt);
-    if (!geo) {
-    console.warn("Invalid geometry:", id, wkt);
-    return;
-    }
-
-    let color = pipeColors[id] || "#95a5a6";
-    let summaryItem = allSummary.find(x => x.Id === id);
-    let isInspected = (summaryItem?.Inspected || "").toLowerCase() === "inspected";
-
-    let layer = L.geoJSON(geo, {
-    style: {
-    color,
-    weight: isInspected ? 5 : 3,
-    opacity: 0.9,
-    dashArray: isInspected ? "" : "6,4"
-    },
-    onEachFeature: function (feature, fl) {
-    fl.bindTooltip(
-    `<b>${summaryItem?.Name || id}</b><br>
-    Road: ${summaryItem?.Address || 'N/A'}<br>
-    Inspection: ${summaryItem?.Inspected || 'Uninspected'}<br>
-    Condition: ${summaryItem?.Condition || 'N/A'}`,
-    { sticky: true, className: 'pipe-tooltip' }
-    );
-
-    fl.on("click", () => highlightPipe(id));
-    }
-    });
-
-    layer.addTo(pipeLayer);
-
-    pipeObjects.push({
-    id,
-    data: summaryItem || s,
-    section: s,
-    layer
-    });
-    });
-
-    setTimeout(() => {
-    if (pipeLayer.getLayers().length > 0) {
-    let bounds = pipeLayer.getBounds();
-    if (bounds.isValid()) {
-    map.fitBounds(bounds, { padding: [20, 20] });
-    }
-    }
-    }, 200);
-    }
-
-    function highlightPipe(id) {
-    // Reset all pipes to their default style
-    pipeObjects.forEach(p => {
-        let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
-        p.layer.setStyle({
-            color:     pipeColors[p.id] || "#95a5a6",
-            weight:    isInsp ? 5 : 3,
-            opacity:   0.9,
-            dashArray: isInsp ? null : '6,4'
-        });
-    });
-
-    let target = pipeObjects.find(p => p.id === id);
-    if (target) {
-        let baseColor = pipeColors[id] || "#95a5a6";
-        target.layer.setStyle({
-            color:     boldColor(baseColor),   // same hue, much bolder
-            weight:    8,                      // thicker so it pops
-            opacity:   1,
-            dashArray: null                    // solid even if uninspected
-        });
-
-        try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 18 }); } catch (e) {}
-        if (target.data) renderInspectionReport(target.data, target.section);
-    }
-
-    document.querySelectorAll(".infra-accordion-item").forEach(item => {
-        let header  = item.querySelector(".infra-accordion-header");
-        let content = item.querySelector(".infra-accordion-content");
-        let icon    = item.querySelector(".accordion-icon");
-        if (header && header.dataset.id === id) {
-            content.style.display = "block";
-            if (icon) icon.textContent = "−";
-            item.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        } else {
-            content.style.display = "none";
-            if (icon) icon.textContent = "+";
+        function parsePoints(str) {
+            return str.trim().split(",").map(p => {
+                const parts = p.trim().split(/\s+/);
+                const lng = parseFloat(parts[0]);
+                const lat = parseFloat(parts[1]);
+                return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
+            }).filter(Boolean);
         }
-    }); 
+
+        if (type === "POINT") {
+            const inner = wkt.replace(/^POINT\s*\(/i, "").replace(/\)\s*$/, "");
+            const coords = parsePoints(inner);
+            if (!coords.length) return null;
+            return { type: "Feature", geometry: { type: "Point", coordinates: coords[0] } };
+        }
+
+        if (type === "LINESTRING") {
+            const inner = wkt.replace(/^LINESTRING\s*\(/i, "").replace(/\)\s*$/, "");
+            return { type: "Feature", geometry: { type: "LineString", coordinates: parsePoints(inner) } };
+        }
+
+        if (type === "MULTILINESTRING") {
+            const inner = wkt.replace(/^MULTILINESTRING\s*\(\s*\(/i, "").replace(/\)\s*\)\s*$/, "");
+            const lines = inner.split(/\)\s*,\s*\(/).map(part => parsePoints(part));
+            return { type: "Feature", geometry: { type: "MultiLineString", coordinates: lines } };
+        }
+
+        console.warn("Unsupported WKT type:", type, wkt);
+        return null;
+    }
+
+    // LOAD ALL DATA
+    function loadAllData() {
+        // Load pipes
+        fetch("/Map/GetMapData")
+            .then(async res => {
+                if (!res.ok) { console.error("Pipe server error:", await res.text()); return; }
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                allSummary = data.summary || [];
+                pipeColors = {};
+                allSummary.forEach(x => {
+                    const condition = (x.Condition || "").toLowerCase().trim();
+                    const inspected = (x.Inspected || "").toLowerCase().trim();
+                    if      (condition === "good")         pipeColors[x.Id] = "#28a745";
+                    else if (condition === "okay")         pipeColors[x.Id] = "#ffc107";
+                    else if (condition === "bad")          pipeColors[x.Id] = "#dc3545";
+                    else if (inspected === "inspected")    pipeColors[x.Id] = "#1a56db";
+                    else                                   pipeColors[x.Id] = "#95a5a6";
+                });
+                updatePipeStats(allSummary);
+                drawPipes(data);
+            })
+            .catch(err => console.error("Pipe data load failed:", err));
+    }
+
+    window.onload = loadAllData;
+
+    // DRAW PIPES
+    function drawPipes(data) {
+        pipeLayer.clearLayers();
+        pipeObjects = [];
+
+        if (!data.sections || !data.sections.length) return;
+
+        data.sections.forEach(s => {
+            let id  = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+            let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
+            if (!id || !wkt) { console.warn("Skipping invalid pipe:", s); return; }
+
+            let geo = wktToGeoJSON(wkt);
+            if (!geo) { console.warn("Invalid pipe geometry:", id, wkt); return; }
+
+            let color       = pipeColors[id] || "#95a5a6";
+            let summaryItem = allSummary.find(x => x.Id === id);
+            let isInspected = (summaryItem?.Inspected || "").toLowerCase() === "inspected";
+
+            let layer = L.geoJSON(geo, {
+                style: {
+                    color,
+                    weight:    isInspected ? 5 : 3,
+                    opacity:   0.9,
+                    dashArray: isInspected ? "" : "6,4",
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    className: 'pipe-line'
+                },
+                onEachFeature: function (feature, fl) {
+                    fl.bindTooltip(
+                        `<b>${summaryItem?.Name || id}</b><br>
+                        Road: ${summaryItem?.Address || 'N/A'}<br>
+                        Inspection: ${summaryItem?.Inspected || 'Uninspected'}<br>
+                        Condition: ${summaryItem?.Condition || 'N/A'}`,
+                        { sticky: true, className: 'pipe-tooltip' }
+                    );
+                    fl.on("click", () => highlightPipe(id));
+                }
+            });
+
+            layer.addTo(pipeLayer);
+            pipeObjects.push({ id, data: summaryItem || s, section: s, layer });
+        });
+
+        drawManholesFromPipes(data.sections);
+
+        setTimeout(() => {
+            if (pipeLayer.getLayers().length > 0) {
+                let bounds = pipeLayer.getBounds();
+                if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+            }
+        }, 200);
+    }
+
+    // DRAW MANHOLES from pipe geometry endpoints
+    function drawManholesFromPipes(sections) {
+        manholeLayer.clearLayers();
+        mhObjects = [];
+
+        const seen = new Map();
+
+        sections.forEach(s => {
+            let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
+            if (!wkt) return;
+
+            let geo = wktToGeoJSON(wkt);
+            if (!geo) return;
+
+            let coords = [];
+            const g = geo.geometry;
+
+            if (g.type === "LineString") {
+                coords = [g.coordinates[0], g.coordinates[g.coordinates.length - 1]];
+            } else if (g.type === "MultiLineString") {
+                const all = g.coordinates.flat();
+                coords = [all[0], all[all.length - 1]];
+            }
+
+            const upName   = s.UpstreamNode   || s.upstreamNode;
+            const downName = s.DownstreamNode || s.downstreamNode;
+
+            // Find the pipe summary for this section — fixed scope
+            const pipeId      = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+            const pipeSummary = allSummary.find(x => x.Id === pipeId);
+            const inspected   = (pipeSummary?.Inspected || "").toLowerCase() === "inspected";
+            const address     = pipeSummary?.Address || "N/A";
+            const condition   = pipeSummary?.Condition || "N/A";
+
+            coords.forEach(c => {
+                if (!c) return;
+                const key = `${c[0].toFixed(6)},${c[1].toFixed(6)}`;
+
+                if (!seen.has(key)) {
+                    seen.set(key, {
+                        latlng:    L.latLng(c[1], c[0]),
+                        labels:    new Set([upName, downName].filter(Boolean)),
+                        inspected,
+                        address,
+                        condition
+                    });
+                } else {
+                    const existing = seen.get(key);
+                    if (upName)   existing.labels.add(upName);
+                    if (downName) existing.labels.add(downName);
+                    if (inspected) existing.inspected = true;
+                }
+            });
+        });
+
+        let count = 0;
+
+        seen.forEach(({ latlng, labels, inspected, address, condition }) => {
+            const labelText = Array.from(labels).filter(Boolean).join(" / ") || "Manhole";
+
+            const tooltipHtml = `
+                <div style="min-width:150px;line-height:1.6;">
+                    <div style="font-weight:700;font-size:13px;margin-bottom:4px;
+                                border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:3px;">
+                        🕳️ ${labelText}
+                    </div>
+                    <div><span style="opacity:0.7;">Road:</span> ${address}</div>
+                    <div><span style="opacity:0.7;">Condition:</span> ${condition}</div>
+                    <div><span style="opacity:0.7;">Inspection:</span>
+                        <span style="color:${inspected ? '#7ecbff' : '#ccc'};">
+                            ${inspected ? "✔ Inspected" : "○ Uninspected"}
+                        </span>
+                    </div>
+                </div>`;
+
+            const marker = L.circleMarker(latlng, {
+                radius:      3,
+                fillColor:   inspected ? '#1a56db' : '#95a5a6',
+                color:       inspected ? '#1a56db' : '#95a5a6',
+                interactive: true
+            });
+
+            marker.bindTooltip(tooltipHtml, { sticky: true, className: 'mh-tooltip' });
+            manholeLayer.addLayer(marker);
+            mhObjects.push({ marker, inspected });
+            count++;
+        });
+
+        // Layer stays off map until user toggles it on
+        updateManholeStats(count);
+    }
+
+    // LAYER TOGGLES
+    function toggleLayer(which, btn) {
+        if (which === 'pipes') {
+            pipesVisible = !pipesVisible;
+
+            if (pipesVisible) {
+                map.addLayer(pipeLayer);
+                btn.classList.add('layer-active');
+
+                document.getElementById('pipeFilters').style.display = 'flex';
+                document.getElementById('manholeFilters').style.display = 'none';
+            } else {
+                map.removeLayer(pipeLayer);
+                btn.classList.remove('layer-active');
+            }
+        }
+        else if (which === 'manholes') 
+        {
+            manholesVisible = !manholesVisible;
+
+            if (manholesVisible) {
+                map.addLayer(manholeLayer);
+                btn.classList.add('layer-active');
+
+                document.getElementById('manholeFilters').style.display = 'flex';
+                document.getElementById('pipeFilters').style.display = 'none';
+            } 
+            else 
+            {
+                map.removeLayer(manholeLayer);
+                btn.classList.remove('layer-active');
+
+                document.getElementById('manholeFilters').style.display = 'none';
+
+                if (pipesVisible) {
+                    document.getElementById('pipeFilters').style.display = 'flex';
+                }
+            }
+        }
+    }
+
+    // PIPE HIGHLIGHT
+    function highlightPipe(id) {
+        pipeObjects.forEach(p => {
+            let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
+            p.layer.setStyle({
+                color:     pipeColors[p.id] || "#95a5a6",
+                weight:    isInsp ? 5 : 3,
+                opacity:   0.9,
+                dashArray: isInsp ? null : '6,4'
+            });
+        });
+
+        let target = pipeObjects.find(p => p.id === id);
+        if (target) {
+            let baseColor = pipeColors[id] || "#95a5a6";
+            target.layer.setStyle({
+                color:     boldColor(baseColor),
+                weight:    8,
+                opacity:   1,
+                dashArray: null,
+                lineCap: 'round',
+                lineJoin: 'round'
+            });
+            try { map.fitBounds(target.layer.getBounds(), { padding: [10, 10], maxZoom: 18 }); } catch (e) {}
+            if (target.data)
+                showPipeDetails(target.data, target.section),
+                renderInspectionReport(target.data, target.section);
+        }
+
+        document.querySelectorAll(".infra-accordion-item").forEach(item => {
+            let header  = item.querySelector(".infra-accordion-header");
+            let content = item.querySelector(".infra-accordion-content");
+            let icon    = item.querySelector(".accordion-icon");
+            if (header && header.dataset.id === id) {
+                content.style.display = "block";
+                if (icon) icon.textContent = "−";
+                item.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            } else {
+                content.style.display = "none";
+                if (icon) icon.textContent = "+";
+            }
+        });
     }
 
     // HIGHLIGHT MULTIPLE PIPES (road search)
     function highlightMultiplePipes(pipeList) {
-    pipeObjects.forEach(p => {
-    let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
-    p.layer.setStyle({ color: pipeColors[p.id] || "#95a5a6", weight: isInsp ? 5 : 3 });
-    });
-
-    let layers = [];
-    pipeList.forEach(pipe => {
-    let mp = pipeObjects.find(p => p.id === pipe.Id);
-    if (mp) { mp.layer.setStyle({ color: "orange", weight: 6 }); layers.push(mp.layer); }
-    });
-
-    if (layers.length) {
-    map.fitBounds(L.featureGroup(layers).getBounds(), {
-    padding: [20, 20],
-    maxZoom: 18
-    });
-    }
+        pipeObjects.forEach(p => {
+            let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
+            p.layer.setStyle({ color: pipeColors[p.id] || "#95a5a6", weight: isInsp ? 5 : 3 });
+        });
+        let layers = [];
+        pipeList.forEach(pipe => {
+            let mp = pipeObjects.find(p => p.id === pipe.Id);
+            if (mp) { mp.layer.setStyle({ color: "orange", weight: 6 }); layers.push(mp.layer); }
+        });
+        if (layers.length)
+            map.fitBounds(L.featureGroup(layers).getBounds(), { padding: [20, 20], maxZoom: 18 });
     }
 
-    // SHOW PIPE DETAILS (summary panel)
-    function showPipeDetails(pipe) {
-    document.getElementById("summaryPanel").classList.add("summary-visible");
-    document.getElementById("mapPanel").classList.add("map-split");
-    setTimeout(() => map.invalidateSize(), 300);
+    // SHOW PIPE DETAILS (asset management) 
+    function showPipeDetails(pipe, section) {
+        document.getElementById("summaryPanel").classList.add("summary-visible");
+        document.getElementById("mapPanel").classList.add("map-split");
+        setTimeout(() => map.invalidateSize(), 300);
 
-    let fmt     = v => (v != null && v !== "") ? v : "N/A";
-    let fmtDate = v => v ? new Date(v).toLocaleDateString() : "N/A";
+        let fmt = v => (v != null && v !== "") ? v : "N/A";
 
-    let rows = [
-    ["Name",             fmt(pipe.Name)],
-    ["Pipe Diameter",    fmt(pipe.PipeDiameter) + (pipe.PipeDiameter != null ? " mm" : "")],
-    ["Material",         fmt(pipe.Material)],
-    ["Road / Address",   fmt(pipe.Address)],
-    ["Last Inspection",  fmtDate(pipe.LastInspection)],
-    ["Inspected Length", fmt(pipe.InspectedLength)],
-    ["Inspection",       fmt(pipe.Inspected)],
-    ["Highest Grade",    fmt(pipe.HighestGrade)],
-    ["Total Score",      fmt(pipe.TotalScore)],
-    ["Peak Score",       fmt(pipe.PeakScore)],
-    ];
+        let rows = [
+            ["Pipe ID", fmt(pipe.Id)],
 
-    let html = `<table style="width:100%;border-collapse:collapse;font-size:14px;">`;
-    rows.forEach(([label, val], i) => {
-    let bg = i % 2 === 0 ? "#fff" : "#f5f5f5";
-    html += `<tr style="background:${bg};">
-    <td style="padding:7px 8px;font-weight:600;white-space:nowrap;">${label}</td>
-    <td style="padding:7px 8px;">${val}</td>
-    </tr>`;
-    });
-    html += `</table>`;
-    document.getElementById("summaryTable").innerHTML = html;
+            ["Des Date", fmt(section?.DesDate)],
+            ["Des Year", section?.DesDate ? new Date(section.DesDate).getFullYear() : "N/A"],
+
+            ["Condition Rating", "N/A"],
+            ["Expected Useful Life", "N/A"],
+            ["Remaining Useful Life", "N/A"],
+            ["Disposal Date", "N/A"],
+            ["Disposal Year", "N/A"],
+            ["Adjusted Business Risk", "N/A"],
+            ["Impairment", "N/A"],
+
+            ["X Coordinate", fmt(section?.XCoord)],
+            ["Y Coordinate", fmt(section?.YCoord)],
+
+            ["Current Replacement Value", "N/A"],
+            ["Depreciated Value", "N/A"]
+        ];
+
+        let html = `
+            <div class="report-header-grid"
+                 style="border:1px solid #ddd;border-radius:6px;overflow:hidden;">
+        `;
+
+        rows.forEach(([label, val], i) => {
+            html += `
+                <div class="rh-cell"
+                     style="background:${i % 2 === 0 ? '#fff' : '#f9fbfd'};">
+                    <span class="rh-label">${label}</span>
+                    <span class="rh-val">${val}</span>
+                </div>
+            `;
+        });
+
+        html += `</div>`;
+
+        document.getElementById("summaryTable").innerHTML = html;
     }
-
     // FILTER PIPES
     function filterPipes(filter, btn) {
-    document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    pipeObjects.forEach(p => {
-    let c    = (p.data.Inspected || "").toLowerCase();
-    let show = filter === 'all'
-    || (filter === 'inspected'   && c === 'inspected')
-    || (filter === 'uninspected' && c === 'uninspected');
-    show ? pipeLayer.addLayer(p.layer) : pipeLayer.removeLayer(p.layer);
-    });
+        document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        pipeObjects.forEach(p => {
+            let c    = (p.data.Inspected || "").toLowerCase();
+            let show = filter === 'all'
+                || (filter === 'inspected'   && c === 'inspected')
+                || (filter === 'uninspected' && c === 'uninspected');
+            show ? pipeLayer.addLayer(p.layer) : pipeLayer.removeLayer(p.layer);
+        });
+    }
+
+    function filterManholes(filter, btn) {
+        currentManholeFilter = filter;
+
+        document
+            .querySelectorAll('#manholeFilters .map-control-btn')
+            .forEach(b => b.classList.remove('active'));
+
+        btn.classList.add('active');
+
+        mhObjects.forEach(mh => {
+            let show =
+                filter === 'all'
+                || (filter === 'inspected' && mh.inspected)
+                || (filter === 'uninspected' && !mh.inspected);
+
+            if (show) {
+                manholeLayer.addLayer(mh.marker);
+            } else {
+                manholeLayer.removeLayer(mh.marker);
+            }
+        });
     }
 
     // RESET VIEW
     function resetMapView() {
-    try { map.fitBounds(pipeLayer.getBounds(), { padding: [20, 20] }); }
-    catch { map.setView([-29.8587, 31.0218], 12); }
+        try {
+            // Fit to whichever layers are currently visible
+            let visibleLayers = [];
+            if (pipesVisible    && pipeLayer.getLayers().length)    visibleLayers.push(pipeLayer);
+            if (manholesVisible && manholeLayer.getLayers().length)  visibleLayers.push(manholeLayer);
+            if (visibleLayers.length) {
+                let group = L.featureGroup(visibleLayers.flatMap(l => l.getLayers()));
+                map.fitBounds(group.getBounds(), { padding: [20, 20] });
+            } else {
+                map.setView([-29.8587, 31.0218], 12);
+            }
+        } catch {
+            map.setView([-29.8587, 31.0218], 12);
+        }
     }
 
     // STATS
-    function updateStats(summary) {
-    let ins   = summary.filter(x => (x.Inspected || "").toLowerCase() === 'inspected').length;
-    let unins = summary.filter(x => (x.Inspected || "").toLowerCase() === 'uninspected').length;
-    document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
-    document.getElementById('statInspected').textContent   = `🔵 Inspected: ${ins}`;
-    document.getElementById('statUninspected').textContent = `⚪ Uninspected: ${unins}`;
+    function updatePipeStats(summary) {
+        let ins   = summary.filter(x => (x.Inspected || "").toLowerCase() === 'inspected').length;
+        let unins = summary.filter(x => (x.Inspected || "").toLowerCase() === 'uninspected').length;
+        document.getElementById('statTotal').textContent       = `🔢 Pipes: ${summary.length}`;
+        document.getElementById('statInspected').textContent   = `🔵 Inspected: ${ins}`;
+        document.getElementById('statUninspected').textContent = `⚪ Uninspected: ${unins}`;
     }
 
+    function updateManholeStats(count) {
+        document.getElementById('statManholes').textContent = `🕳️ Manholes: ${count}`;
+    }
+
+    // BOLD COLOR HELPER
     function boldColor(hex) {
-    const map = {
-        "#28a745": "#1aff6b",   // Good → vivid green
-        "#ffc107": "#ffdd00",   // Okay → bright yellow-amber
-        "#dc3545": "#ff1a2e",   // Bad  → vivid red
-        "#1a56db": "#4d8bff",   // Inspected (no grade) → bright blue
-        "#95a5a6": "#c8d6d7"    // Uninspected → lighter grey
-    };
-    return map[hex] || "#ffffff";
-}
+        const map = {
+            "#28a745": "#1aff6b",
+            "#ffc107": "#ffdd00",
+            "#dc3545": "#ff1a2e",
+            "#1a56db": "#4d8bff",
+            "#95a5a6": "#c8d6d7"
+        };
+        return map[hex] || "#ffffff";
+    }
 
-    // SEARCH HELPERS
+    // SEARCH
     function normalizeRoad(text) {
-    return (text || "")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ")
-    .replace(/\broad\b/g, "rd")
-    .replace(/\bstreet\b/g, "st")
-    .replace(/\bavenue\b/g, "ave")
-    .replace(/\bdrive\b/g, "dr")
-    .replace(/\bclose\b/g, "cl");
+        return (text || "")
+            .toLowerCase().trim()
+            .replace(/\s+/g, " ")
+            .replace(/\broad\b/g, "rd")
+            .replace(/\bstreet\b/g, "st")
+            .replace(/\bavenue\b/g, "ave")
+            .replace(/\bdrive\b/g, "dr")
+            .replace(/\bclose\b/g, "cl");
     }
 
-
-    // MAIN SEARCH FUNCTION
     function search() {
-    let query = document.getElementById("searchBox").value.trim().toLowerCase();
-    let resultsDiv = document.getElementById("searchResults");
+        let query      = document.getElementById("searchBox").value.trim().toLowerCase();
+        let resultsDiv = document.getElementById("searchResults");
+        resultsDiv.innerHTML = "";
+        resultsDiv.style.display = "block";
+        if (!query) { resultsDiv.style.display = "none"; return; }
 
-    resultsDiv.innerHTML = "";
-    resultsDiv.style.display = "block";
+        let pipeResults = allSummary.filter(x =>
+            (x.Id       && x.Id.toLowerCase().includes(query)) ||
+            (x.Name     && x.Name.toLowerCase().includes(query)) ||
+            (x.Material && x.Material.toLowerCase().includes(query))
+        );
 
-    if (!query) {
-    resultsDiv.style.display = "none";
-    return;
+        let roadResults = allSummary.filter(x =>
+            normalizeRoad(x.Address).includes(normalizeRoad(query))
+        );
+
+        // Road group
+        if (roadResults.length > 0) {
+            let roadName    = roadResults[0].Address || "Selected Road";
+            let isCollapsed = false;
+            let roadDiv     = document.createElement("div");
+            roadDiv.style.cssText = "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
+            roadDiv.innerHTML = `
+            <div class="roadHeader"
+                 style="display:flex;align-items:center;justify-content:space-between;
+                        background:#d4edda;padding:8px 12px;cursor:pointer;">
+                <span style="font-weight:600;color:#28a745;font-size:13px;">
+                    🛣️ ${roadName}
+                    <span style="font-weight:400;color:#555;margin-left:6px;">(${roadResults.length} pipes)</span>
+                </span>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="zoomAllBtn" style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;">Zoom All</span>
+                    <span class="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
+                </div>
+            </div>
+            <div class="pipeList" style="max-height:160px;overflow-y:auto;display:block;background:#fff;"></div>`;
+
+            const zoomBtn   = roadDiv.querySelector(".zoomAllBtn");
+            const pipeList  = roadDiv.querySelector(".pipeList");
+            const toggleIcon = roadDiv.querySelector(".toggleIcon");
+            const roadHeader = roadDiv.querySelector(".roadHeader");
+
+            zoomBtn.onclick = e => { e.stopPropagation(); highlightMultiplePipes(roadResults); };
+            roadHeader.onclick = e => {
+                if (e.target.classList.contains("zoomAllBtn")) return;
+                isCollapsed = !isCollapsed;
+                pipeList.style.display = isCollapsed ? "none" : "block";
+                toggleIcon.textContent = isCollapsed ? "▸" : "▾";
+            };
+
+            roadResults.forEach(pipe => {
+                let row = document.createElement("div");
+                row.style.cssText = "display:flex;align-items:center;justify-content:space-between;" +
+                    "padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;" +
+                    "font-size:13px;transition:background 0.15s;";
+                row.innerHTML = `
+                <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
+                <span style="color:#999;font-size:11px;">${pipe.Inspected || "Uninspected"}</span>`;
+                row.onmouseenter = () => row.style.background = "#f0f7ff";
+                row.onmouseleave = () => row.style.background = "";
+                row.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
+                pipeList.appendChild(row);
+            });
+            resultsDiv.appendChild(roadDiv);
+        }
+
+        // Individual pipe results
+        pipeResults.forEach(pipe => {
+            let div = document.createElement("div");
+            div.style.cssText = "padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;" +
+                "font-size:13px;transition:background 0.15s;";
+            div.innerHTML = `<span style="color:#007bff;">📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}</span>`;
+            div.onmouseenter = () => div.style.background = "#f0f7ff";
+            div.onmouseleave = () => div.style.background = "";
+            div.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
+            resultsDiv.appendChild(div);
+        });
+
+        if (pipeResults.length === 0 && roadResults.length === 0) {
+            resultsDiv.innerHTML = `<p style="padding:10px;color:#999;margin:0;">No results found.</p>`;
+        }
     }
 
-    // ---------------- PIPE MATCHES ----------------
-    let pipeResults = allSummary.filter(x =>
-    (x.Id && x.Id.toLowerCase().includes(query)) ||
-    (x.Name && x.Name.toLowerCase().includes(query)) ||
-    (x.Material && x.Material.toLowerCase().includes(query))
-    );
-
-    // ---------------- ROAD MATCHES ----------------
-    let roadResults = allSummary.filter(x =>
-    normalizeRoad(x.Address).includes(normalizeRoad(query))
-    );
-
-    // ROAD RESULTS
-    if (roadResults.length > 0) {
-
-    let roadName = roadResults[0].Address || "Selected Road";
-    let isCollapsed = false;
-
-    let roadDiv = document.createElement("div");
-    roadDiv.style.cssText =
-    "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
-
-    roadDiv.innerHTML = `
-    <div class="roadHeader"
-    style="display:flex;align-items:center;justify-content:space-between;
-    background:#d4edda;padding:8px 12px;cursor:pointer;">
-    <span style="font-weight:600;color:#28a745;font-size:13px;">
-    🛣️ ${roadName}
-    <span style="font-weight:400;color:#555;margin-left:6px;">
-    (${roadResults.length} pipes)
-    </span>
-    </span>
-
-    <div style="display:flex;align-items:center;gap:8px;">
-    <span class="zoomAllBtn"
-    style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;">
-    Zoom All
-    </span>
-    <span class="toggleIcon"
-    style="font-size:16px;color:#555;font-weight:700;">
-    ▾
-    </span>
-    </div>
-    </div>
-
-    <div class="pipeList"
-    style="max-height:160px;overflow-y:auto;display:block;background:#fff;">
-    </div>
-    `;
-
-    const zoomBtn = roadDiv.querySelector(".zoomAllBtn");
-    const pipeList = roadDiv.querySelector(".pipeList");
-    const toggleIcon = roadDiv.querySelector(".toggleIcon");
-    const roadHeader = roadDiv.querySelector(".roadHeader");
-
-    zoomBtn.onclick = (e) => {
-    e.stopPropagation();
-    highlightMultiplePipes(roadResults);
-    };
-
-    roadHeader.onclick = (e) => {
-    if (e.target.classList.contains("zoomAllBtn")) return;
-
-    isCollapsed = !isCollapsed;
-
-    pipeList.style.display = isCollapsed ? "none" : "block";
-    toggleIcon.textContent = isCollapsed ? "▸" : "▾";
-    };
-
-    roadResults.forEach(pipe => {
-    let row = document.createElement("div");
-
-    row.style.cssText =
-    "display:flex;align-items:center;justify-content:space-between;" +
-    "padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;" +
-    "font-size:13px;transition:background 0.15s;";
-
-    row.innerHTML = `
-    <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
-    <span style="color:#999;font-size:11px;">
-    ${pipe.Inspected || "Uninspected"}
-    </span>
-    `;
-
-    row.onmouseenter = () => row.style.background = "#f0f7ff";
-    row.onmouseleave = () => row.style.background = "";
-
-    row.onclick = () => {
-    highlightPipe(pipe.Id);
-    resultsDiv.style.display = "none";
-    };
-
-    pipeList.appendChild(row);
-    });
-
-    resultsDiv.appendChild(roadDiv);
-    }
-
-    // PIPE RESULTS
-    pipeResults.forEach(pipe => {
-    let div = document.createElement("div");
-
-    div.style.cssText =
-    "padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;" +
-    "font-size:13px;transition:background 0.15s;";
-
-    div.innerHTML = `
-    <span style="color:#007bff;">
-    📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}
-    </span>
-    `;
-
-    div.onmouseenter = () => div.style.background = "#f0f7ff";
-    div.onmouseleave = () => div.style.background = "";
-
-    div.onclick = () => {
-    highlightPipe(pipe.Id);
-    resultsDiv.style.display = "none";
-    };
-
-    resultsDiv.appendChild(div);
-    });
-
-    // NO RESULTS
-    if (pipeResults.length === 0 && roadResults.length === 0) {
-    resultsDiv.innerHTML = `
-    <p style="padding:10px;color:#999;margin:0;">
-    No results found.
-    </p>
-    `;
-    }
-    }
-
-    // ENTER KEY SEARCH
     document.getElementById("searchBox").addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-    search();
-    }
+        if (e.key === "Enter") search();
     });
 
-    // CLOSE DROPDOWN WHEN CLICKING OUTSIDE
     document.addEventListener("click", e => {
-    let sr = document.getElementById("searchResults");
-
-    if (!sr.contains(e.target) &&
-    e.target.id !== "searchBox" &&
-    !e.target.classList.contains("infra-btn")) {
-
-    sr.style.display = "none";
-    }
+        let sr = document.getElementById("searchResults");
+        if (!sr.contains(e.target) &&
+            e.target.id !== "searchBox" &&
+            !e.target.classList.contains("infra-btn")) {
+            sr.style.display = "none";
+        }
     });
 
+    // INSPECTION REPORT
     function renderInspectionReport(item, section) {
-    let panel = document.getElementById("inspectionPanel");
-    let accordion = document.getElementById("accordion");
+        let panel    = document.getElementById("inspectionPanel");
+        let accordion = document.getElementById("accordion");
+        if (!item) { panel.style.display = "none"; return; }
+        panel.style.display = "block";
 
-    if (!item) { 
-        panel.style.display = "none"; 
-        return; 
-    }
+        let fmt     = v => (v != null && v !== "") ? v : "N/A";
+        let fmtDate = v => v ? new Date(v).toLocaleDateString() : "N/A";
 
-    panel.style.display = "block";
+        let gradeColor = g => { let n = parseFloat(g); if (isNaN(n)) return "#222"; return n >= 4 ? "#A32D2D" : n === 3 ? "#854F0B" : "#3B6D11"; };
+        let gradeBg    = g => { let n = parseFloat(g); if (isNaN(n)) return "#f5f5f5"; return n >= 4 ? "#FCEBEB" : n === 3 ? "#FAEEDA" : "#EAF3DE"; };
 
-    let fmt = v => (v != null && v !== "") ? v : "N/A";
-    let fmtDate = v => v ? new Date(v).toLocaleDateString() : "N/A";
+        let headerHtml = `
+        <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;
+                    align-items:center;border-radius:8px 8px 0 0;">
+            <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
+                Inspection Report — ${fmt(item.Id)}
+            </span>
+            <span style="font-size:11px;color:#b5d4f4;">${fmt(item.Address)}</span>
+        </div>
+        <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
+            <div class="rh-cell"><span class="rh-label">Pipe ID</span><span class="rh-val">${fmt(item.Id)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Material</span><span class="rh-val">${fmt(item.Material)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Diameter</span><span class="rh-val">${item.PipeDiameter != null ? item.PipeDiameter + ' mm' : 'N/A'}</span></div>
+            <div class="rh-cell"><span class="rh-label">Road / Address</span><span class="rh-val">${fmt(item.Address)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Inspected Length</span><span class="rh-val">${fmt(item.InspectedLength)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Last Inspection</span><span class="rh-val">${fmtDate(item.LastInspection)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Status</span><span class="rh-val">${fmt(item.Inspected)}</span></div>
+            <div class="rh-cell"><span class="rh-label">STR Grade</span><span class="rh-val" style="color:${gradeColor(section?.STR_GRADE)};">${fmt(section?.STR_GRADE)}</span></div>
+            <div class="rh-cell"><span class="rh-label">SER Grade</span><span class="rh-val" style="color:${gradeColor(section?.SER_GRADE)};">${fmt(section?.SER_GRADE)}</span></div>
+        </div>`;
 
-    let gradeColor = g => {
-        let n = parseFloat(g);
-        if (isNaN(n)) return "#222";
-        return n >= 4 ? "#A32D2D" : n === 3 ? "#854F0B" : "#3B6D11";
-    };
+        let inspectionsHtml = "";
 
-    let gradeBg = g => {
-        let n = parseFloat(g);
-        if (isNaN(n)) return "#f5f5f5";
-        return n >= 4 ? "#FCEBEB" : n === 3 ? "#FAEEDA" : "#EAF3DE";
-    };
+        if (item.Inspections && item.Inspections.length > 0) {
+            item.Inspections.forEach((insp, idx) => {
+                let dateStr = insp.InspectionDate
+                    ? new Date(insp.InspectionDate).toLocaleDateString() : "No date";
 
-    let headerHtml = `
-    <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-radius:8px 8px 0 0;">
-        <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
-            Inspection Report — ${fmt(item.Id)}
-        </span>
-        <span style="font-size:11px;color:#b5d4f4;">${fmt(item.Address)}</span>
-    </div>
-    <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
-        <div class="rh-cell"><span class="rh-label">Pipe ID</span><span class="rh-val">${fmt(item.Id)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Material</span><span class="rh-val">${fmt(item.Material)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Diameter</span><span class="rh-val">${item.PipeDiameter != null ? item.PipeDiameter + ' mm' : 'N/A'}</span></div>
-        <div class="rh-cell"><span class="rh-label">Road / Address</span><span class="rh-val">${fmt(item.Address)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Inspected Length</span><span class="rh-val">${fmt(item.InspectedLength)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Last Inspection</span><span class="rh-val">${fmtDate(item.LastInspection)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Status</span><span class="rh-val">${fmt(item.Inspected)}</span></div>
-        <div class="rh-cell"><span class="rh-label">STR Grade</span><span class="rh-val" style="color:${gradeColor(section?.STR_GRADE)};">${fmt(section?.STR_GRADE)}</span></div>
-        <div class="rh-cell"><span class="rh-label">SER Grade</span><span class="rh-val" style="color:${gradeColor(section?.SER_GRADE)};">${fmt(section?.SER_GRADE)}</span></div>
-    </div>`;
-
-    let inspectionsHtml = "";
-
-    if (item.Inspections && item.Inspections.length > 0) {
-        item.Inspections.forEach((insp, idx) => {
-            let dateStr = insp.InspectionDate
-                ? new Date(insp.InspectionDate).toLocaleDateString()
-                : "No date";
-
-            // --- Observations ---
-            let obsRows = "";
-
-            if (insp.Observations && insp.Observations.length > 0) {
-
-                insp.Observations.forEach(o => {
-
-                    // ONLY show observations with images
-                    let images = (o.Media || [])
-                        .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""));
-
-                    if (images.length === 0) return; // skip no-image observations
-
-                    let mediaHtml = images.map(m => `
-                        <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
-                             onclick="openImageModal(this.src)"
-                             style="width:100px;height:80px;object-fit:cover;
-                                    border-radius:6px;border:1px solid #ddd;
-                                    cursor:zoom-in;transition:0.2s;"
-                             onmouseover="this.style.transform='scale(1.05)'"
-                             onmouseout="this.style.transform='scale(1)'"
-                        />
-                    `).join("");
-
-                    obsRows += `
-                    <tr>
-                        <!-- POSITION (kept) -->
-                        <td style="white-space:nowrap;font-weight:600;color:#555;">
-                            ${o.Distance ?? "?"}m
-                        </td>
-
-                        <!-- IMAGE + OBSERVATION -->
-                        <td>
-                            <div style="display:flex;gap:10px;align-items:flex-start;">
-                    
-                                <!-- IMAGE -->
-                                <div style="flex-shrink:0;">
-                                    ${mediaHtml}
+                let obsRows = "";
+                if (insp.Observations && insp.Observations.length > 0) {
+                    insp.Observations.forEach(o => {
+                        let images = (o.Media || []).filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""));
+                        if (!images.length) return;
+                        let mediaHtml = images.map(m => `
+                            <img src="/Map/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                                 onclick="openImageModal(this.src)"
+                                 style="width:100px;height:80px;object-fit:cover;border-radius:6px;
+                                        border:1px solid #ddd;cursor:zoom-in;transition:0.2s;"
+                                 onmouseover="this.style.transform='scale(1.05)'"
+                                 onmouseout="this.style.transform='scale(1)'" />`).join("");
+                        obsRows += `
+                        <tr>
+                            <td style="white-space:nowrap;font-weight:600;color:#555;">${o.Distance ?? "?"}m</td>
+                            <td>
+                                <div style="display:flex;gap:10px;align-items:flex-start;">
+                                    <div style="flex-shrink:0;">${mediaHtml}</div>
+                                    <div style="font-size:12px;color:#333;">${o.Observation || "No description"}</div>
                                 </div>
-
-                                <!-- TEXT -->
-                                <div style="font-size:12px;color:#333;">
-                                    ${o.Observation || "No description"}
-                                </div>
-
-                            </div>
-                        </td>
-                    </tr>`;
-                });
-
-                if (!obsRows) {
-                    obsRows = `
-                    <tr>
-                        <td colspan="2" style="color:#999;text-align:center;padding:10px;">
-                            No observations with images available.
-                        </td>
-                    </tr>`;
+                            </td>
+                        </tr>`;
+                    });
+                    if (!obsRows) obsRows = `<tr><td colspan="2" style="color:#999;text-align:center;padding:10px;">No observations with images available.</td></tr>`;
+                } else {
+                    obsRows = `<tr><td colspan="2" style="color:#999;text-align:center;padding:10px;">No observations recorded.</td></tr>`;
                 }
 
-            } else {
-                obsRows = `
-                <tr>
-                    <td colspan="2" style="color:#999;text-align:center;padding:10px;">
-                        No observations recorded.
-                    </td>
-                </tr>`;
-            }
+                let statsHtml = "";
+                if (insp.Stats && insp.Stats.length > 0) {
+                    let statRows = insp.Stats.map((st, i) => `
+                        <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'};">
+                            <td style="padding:5px 8px;font-size:12px;color:#555;">Record ${i + 1}</td>
+                            <td style="padding:5px 8px;text-align:center;">
+                                <span style="display:inline-block;padding:1px 10px;border-radius:10px;font-size:12px;font-weight:600;
+                                    background:${gradeBg(st.HighestGrade)};color:${gradeColor(st.HighestGrade)};">
+                                    ${st.HighestGrade ?? "N/A"}
+                                </span>
+                            </td>
+                            <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.TotalScore ?? "N/A"}</td>
+                            <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.PeakScore ?? "N/A"}</td>
+                        </tr>`).join("");
+                    statsHtml = `
+                    <div style="margin-top:10px;border:1px solid #ddd;border-radius:6px;overflow:hidden;">
+                        <div style="background:#f5f5f5;padding:4px 8px;font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #ddd;">
+                            Section Statistics (SECSTAT)
+                        </div>
+                        <table style="width:100%;border-collapse:collapse;">
+                            <thead>
+                                <tr style="background:#fafafa;">
+                                    <th style="padding:5px 8px;text-align:left;font-size:11px;color:#888;border-bottom:1px solid #eee;">Record</th>
+                                    <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Highest Grade</th>
+                                    <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Total Score</th>
+                                    <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Peak Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>${statRows}</tbody>
+                        </table>
+                    </div>`;
+                } else {
+                    statsHtml = `<p style="color:#999;font-size:12px;margin:8px 0 0;">No statistics recorded for this inspection.</p>`;
+                }
 
-            // --- SECSTAT rows ---
-            let statsHtml = "";
-            if (insp.Stats && insp.Stats.length > 0) {
-                let statRows = insp.Stats.map((st, i) => `
-                    <tr style="background:${i % 2 === 0 ? '#fff' : '#fafafa'};">
-                        <td style="padding:5px 8px;font-size:12px;color:#555;">Record ${i + 1}</td>
-                        <td style="padding:5px 8px;text-align:center;">
-                            <span style="display:inline-block;padding:1px 10px;border-radius:10px;font-size:12px;font-weight:600;
-                                background:${gradeBg(st.HighestGrade)};color:${gradeColor(st.HighestGrade)};">
-                                ${st.HighestGrade ?? "N/A"}
-                            </span>
-                        </td>
-                        <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.TotalScore ?? "N/A"}</td>
-                        <td style="padding:5px 8px;text-align:center;font-size:12px;">${st.PeakScore ?? "N/A"}</td>
-                    </tr>
-                `).join("");
+                let geoScoreHtml = "";
+                if (idx === item.Inspections.length - 1) {
+                    geoScoreHtml = `
+                    <div class="score-summary" style="margin-top:14px;">
+                        <div style="border-right:1px solid #ddd;">
+                            <div class="score-half-title" style="color:#dc3545;">▪ Structural — overall</div>
+                            <div class="score-row labels" style="grid-template-columns:1fr 1fr;"><div>STR Score</div><div>STR Grade</div></div>
+                            <div class="score-row values" style="grid-template-columns:1fr 1fr;">
+                                <div>${section?.STR_SCORE ?? "N/A"}</div>
+                                <div style="color:${gradeColor(section?.STR_GRADE)};">${section?.STR_GRADE ?? "N/A"}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="score-half-title" style="color:#1a56db;">▪ Service &amp; Operational — overall</div>
+                            <div class="score-row labels" style="grid-template-columns:1fr 1fr;"><div>SER Score</div><div>SER Grade</div></div>
+                            <div class="score-row values" style="grid-template-columns:1fr 1fr;">
+                                <div>${section?.SER_SCORE ?? "N/A"}</div>
+                                <div style="color:${gradeColor(section?.SER_GRADE)};">${section?.SER_GRADE ?? "N/A"}</div>
+                            </div>
+                        </div>
+                    </div>`;
+                }
 
-                statsHtml = `
-                <div style="margin-top:10px;border:1px solid #ddd;border-radius:6px;overflow:hidden;">
-                    <div style="background:#f5f5f5;padding:4px 8px;font-size:10px;font-weight:600;
-                        color:#555;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #ddd;">
-                        Section Statistics (SECSTAT)
+                let diagramSvg = renderCCTVDiagram(item, insp);
+
+                inspectionsHtml += `
+                <div style="margin-bottom:16px;border:1px solid #d0e4ff;border-radius:8px;overflow:hidden;">
+                    <div style="background:#e8f0fe;padding:6px 10px;font-size:11px;font-weight:600;color:#1a56db;border-bottom:1px solid #d0e4ff;">
+                        Inspection ${insp.InspectionNumber ?? idx + 1} — CCTV Diagram
                     </div>
-                    <table style="width:100%;border-collapse:collapse;">
-                        <thead>
-                            <tr style="background:#fafafa;">
-                                <th style="padding:5px 8px;text-align:left;font-size:11px;color:#888;border-bottom:1px solid #eee;">Record</th>
-                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Highest Grade</th>
-                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Total Score</th>
-                                <th style="padding:5px 8px;text-align:center;font-size:11px;color:#888;border-bottom:1px solid #eee;">Peak Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>${statRows}</tbody>
-                    </table>
-                </div>`;
-            } else {
-                statsHtml = `
-                <p style="color:#999;font-size:12px;margin:8px 0 0;">
-                    No statistics recorded for this inspection.
-                </p>`;
-            }
-
-            // --- GeoJSON score footer ---
-            let geoScoreHtml = "";
-            if (idx === item.Inspections.length - 1) {
-                geoScoreHtml = `
-                <div class="score-summary" style="margin-top:14px;">
-                    <div style="border-right:1px solid #ddd;">
-                        <div class="score-half-title" style="color:#dc3545;">
-                            ▪ Structural — overall
-                        </div>
-                        <div class="score-row labels" style="grid-template-columns:1fr 1fr;">
-                            <div>STR Score</div><div>STR Grade</div>
-                        </div>
-                        <div class="score-row values" style="grid-template-columns:1fr 1fr;">
-                            <div>${section?.STR_SCORE ?? "N/A"}</div>
-                            <div style="color:${gradeColor(section?.STR_GRADE)};">${section?.STR_GRADE ?? "N/A"}</div>
-                        </div>
+                    <div style="padding:8px;overflow-x:auto;">${diagramSvg}</div>
+                </div>
+                <div class="insp-block">
+                    <div class="insp-block-header">
+                        <span>Inspection ${insp.InspectionNumber ?? idx + 1}
+                            <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
+                        </span>
+                        <span style="font-size:11px;color:#378ADD;">Length: ${insp.InspectedLength ?? "N/A"}m</span>
                     </div>
-                    <div>
-                        <div class="score-half-title" style="color:#1a56db;">
-                            ▪ Service &amp; Operational — overall
-                        </div>
-                        <div class="score-row labels" style="grid-template-columns:1fr 1fr;">
-                            <div>SER Score</div><div>SER Grade</div>
-                        </div>
-                        <div class="score-row values" style="grid-template-columns:1fr 1fr;">
-                            <div>${section?.SER_SCORE ?? "N/A"}</div>
-                            <div style="color:${gradeColor(section?.SER_GRADE)};">${section?.SER_GRADE ?? "N/A"}</div>
-                        </div>
-                    </div>
-                </div>`;
-            }
-
-            // --- CCTV Diagram ---
-            let diagramSvg = renderCCTVDiagram(item, insp);
-
-            inspectionsHtml += `
-            <div style="margin-bottom:16px;border:1px solid #d0e4ff;border-radius:8px;overflow:hidden;">
-                <div style="background:#e8f0fe;padding:6px 10px;font-size:11px;font-weight:600;
-                            color:#1a56db;border-bottom:1px solid #d0e4ff;">
-                    Inspection ${insp.InspectionNumber ?? idx + 1} — CCTV Diagram
+                    <div style="padding:8px 10px 10px;">${statsHtml}</div>
                 </div>
-                <div style="padding:8px;overflow-x:auto;">
-                    ${diagramSvg}
-                </div>
-            </div>
-
-            <div class="insp-block">
-                <div class="insp-block-header">
-                    <span>Inspection ${insp.InspectionNumber ?? idx + 1}
-                        <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
-                    </span>
-                    <span style="font-size:11px;color:#378ADD;">
-                        Length: ${insp.InspectedLength ?? "N/A"}m
-                    </span>
-                </div>
-                <div style="padding:8px 10px 10px;">
-                    ${statsHtml}
-                </div>
-            </div>
-
-            ${geoScoreHtml}`;
-        });
-    } else {
-        inspectionsHtml = `
-        <p style="color:#999;font-size:13px;padding:12px 0;">
-            No inspections recorded for this pipe.
-        </p>`;
-    }
-
-    accordion.innerHTML = headerHtml + `<div style="padding:12px 0;">${inspectionsHtml}</div>`;
-
-    panel.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-    }
-
-    function renderCCTVDiagram(item, insp) {
-    const obs = (insp?.Observations || []);
-    const totalLength = parseFloat(insp?.InspectedLength || item?.InspectedLength || 0);
-    const upNode   = item?.UpstreamNode   || "MH-UP";
-    const downNode = item?.DownstreamNode || "MH-DN";
-    const material = item?.Material || "—";
-    const diameter = item?.PipeDiameter ? item.PipeDiameter + " mm" : "—";
-    const address  = item?.Address || "—";
-
-    const SVG_W     = 860;
-    const HEADER_H  = 34;
-    const MH_R      = 22;
-    const PIPE_X    = 200;
-    const PIPE_W    = 24;
-    const WALL_W    = 12;
-    const PIPE_LEFT  = PIPE_X - WALL_W;
-    const PIPE_RIGHT = PIPE_X + PIPE_W + WALL_W;
-    const PIPE_MID   = PIPE_X + PIPE_W / 2;
-    const TOP_Y      = HEADER_H + MH_R + 10;
-    const PIPE_TOP   = TOP_Y + MH_R;
-
-    // Fixed pipe visual height — pipe walls never stretch beyond this
-    const PIPE_H    = Math.max(460, obs.length * 40 + 60);
-    const PIPE_BOT  = PIPE_TOP + PIPE_H;   // bottom of pipe walls
-    const BOT_Y     = PIPE_BOT + MH_R;     // centre of downstream manhole — FIXED
-
-    // Image / label dimensions
-    const IMG_W      = 90;
-    const IMG_H      = 65;
-    const IMG_X      = 750;
-    const MIN_SPACING = IMG_H + 18;
-
-    // Map distance → Y within the FIXED pipe
-    function posToY(metres) {
-        if (!totalLength) return PIPE_TOP + 20;
-        return PIPE_TOP + ((parseFloat(metres) || 0) / totalLength) * PIPE_H;
-    }
-
-    function gradeColor(g) {
-        const n = parseFloat(g);
-        if (isNaN(n)) return "#555";
-        return n >= 4 ? "#A32D2D" : n >= 3 ? "#854F0B" : "#3B6D11";
-    }
-    function gradeBg(g) {
-        const n = parseFloat(g);
-        if (isNaN(n)) return "#f0f0f0";
-        return n >= 4 ? "#FCEBEB" : n >= 3 ? "#FAEEDA" : "#EAF3DE";
-    }
-    function obsColor(code) {
-        code = (code || "").toUpperCase();
-        if (["MH","MHF"].includes(code))      return "#555";
-        if (code === "WL")                     return "#1a56db";
-        if (code === "GP")                     return "#888";
-        if (["OBP","OBS","OB"].includes(code)) return "#E8593C";
-        if (code.startsWith("D"))              return "#A32D2D";
-        if (code.startsWith("S"))              return "#EF9F27";
-        return "#555";
-    }
-
-    // Sort by distance
-    const sortedObs = [...obs].sort((a, b) =>
-        (parseFloat(a.Distance) || 0) - (parseFloat(b.Distance) || 0)
-    );
-
-    // PASS 1 — resolve label Y positions (labels/images may go below PIPE_BOT into log area)
-    const placedItems = [];
-    sortedObs.forEach(o => {
-        const baseY = posToY(o.Distance);  // position on pipe — never changes
-        let labelY  = baseY;
-
-        let tries = 0;
-        while (
-            placedItems.some(p => Math.abs(p.labelY - labelY) < MIN_SPACING) &&
-            tries < 500
-        ) {
-            labelY += MIN_SPACING;
-            tries++;
-        }
-        placedItems.push({ obs: o, baseY, labelY });
-    });
-
-    // PASS 2 — SVG height: pipe + manhole are fixed; only expand for labels that overflow below
-    const lowestLabel = placedItems.length > 0
-        ? Math.max(...placedItems.map(p => p.labelY + IMG_H + 10))
-        : PIPE_BOT;
-
-    // Downstream manhole sits at BOT_Y (fixed). SVG just needs to be tall enough for labels.
-    const SVG_H = Math.max(BOT_Y + MH_R + 40, lowestLabel + 40);
-
-    // PASS 3 — build observation markup
-    let obsRows = "";
-    placedItems.forEach(({ obs: o, baseY, labelY }) => {
-        const color    = obsColor(o.Code);
-        const hasGrade = o.Grade != null;
-        const desc     = (o.Observation || "No description").replace(/</g, "&lt;");
-        const image    = (o.Media || []).find(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""));
-        const imageHref = image
-            ? `/Map/GetImage?fileName=${encodeURIComponent(image.FileName)}`
-            : null;
-
-        // Leader: from pipe wall at true pipe position → label column at resolved Y
-        obsRows += `
-        <line x1="${PIPE_RIGHT}" y1="${baseY}" x2="260" y2="${labelY}"
-              stroke="#ccc" stroke-width="0.5" stroke-dasharray="3 3"/>`;
-
-        // Marker on the pipe at the actual distance
-        if (["MH","MHF","WL","GP"].includes((o.Code || "").toUpperCase())) {
-            obsRows += `
-            <line x1="${PIPE_LEFT - 6}" y1="${baseY}" x2="${PIPE_RIGHT + 6}" y2="${baseY}"
-                  stroke="${color}" stroke-width="0.8" stroke-dasharray="2 2" opacity="0.6"/>`;
+                ${geoScoreHtml}`;
+            });
         } else {
-            obsRows += `
-            <line x1="${PIPE_X}" y1="${baseY}" x2="${PIPE_X + PIPE_W}" y2="${baseY}"
-                  stroke="${color}" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="${PIPE_LEFT - 4}" cy="${baseY}" r="3" fill="${color}"/>
-            <circle cx="${PIPE_RIGHT + 4}" cy="${baseY}" r="3" fill="${color}"/>`;
+            inspectionsHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">No inspections recorded for this pipe.</p>`;
         }
 
-        // Distance label on left axis — at actual pipe position
-        obsRows += `
-        <text x="${PIPE_LEFT - 10}" y="${baseY}"
-              text-anchor="end" dominant-baseline="central"
-              font-size="10" fill="${color}" font-weight="${hasGrade ? '600' : '400'}"
-              font-family="monospace">${parseFloat(o.Distance || 0).toFixed(2)}</text>`;
-
-        // Code badge at label Y
-        obsRows += `
-        <rect x="262" y="${labelY - 8}" width="30" height="16" rx="4"
-              fill="${color}" opacity="0.15"/>
-        <text x="277" y="${labelY}" text-anchor="middle" dominant-baseline="central"
-              font-size="9" font-weight="700" fill="${color}">
-              ${(o.Code || "").substring(0, 5)}
-        </text>`;
-
-        // Observation description at label Y
-        obsRows += `
-        <text x="298" y="${labelY}" dominant-baseline="central" font-size="10" fill="#333">
-              ${desc.length > 45 ? desc.substring(0, 45) + "…" : desc}
-        </text>`;
-
-        // Grade pill
-        if (hasGrade) {
-            obsRows += `
-            <rect x="700" y="${labelY - 8}" width="30" height="16" rx="5"
-                  fill="${gradeBg(o.Grade)}"/>
-            <text x="715" y="${labelY}" text-anchor="middle" dominant-baseline="central"
-                  font-size="10" font-weight="600" fill="${gradeColor(o.Grade)}">
-                  ${o.Grade}
-            </text>`;
-        }
-
-        // Image at label Y
-        if (imageHref) {
-            obsRows += `
-            <a href="javascript:void(0)"
-               onclick="openImageModal('${imageHref}')">
-
-                <image href="${imageHref}"
-                       x="${IMG_X}" y="${labelY - 8}"
-                       width="${IMG_W}" height="${IMG_H}"
-                       preserveAspectRatio="xMidYMid slice"
-                       style="cursor:pointer;" />
-
-                <rect x="${IMG_X}" y="${labelY - 8}"
-                      width="${IMG_W}" height="${IMG_H}"
-                      fill="transparent"
-                      stroke="#ccc"
-                      stroke-width="0.8"
-                      rx="4"
-                      style="cursor:pointer;" />
-            </a>`;
-        }
-    });
-
-    const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${SVG_W} ${SVG_H}"
-         style="font-family:sans-serif;display:block;">
-
-      <!-- Header -->
-      <rect x="0" y="0" width="${SVG_W}" height="${HEADER_H}" fill="#1a56db" rx="6"/>
-      <rect x="0" y="${HEADER_H - 6}" width="${SVG_W}" height="6" fill="#1a56db"/>
-      <text x="14" y="12" font-size="7" font-weight="600" fill="#e8f0fe" dominant-baseline="central">CCTV Inspection</text>
-      <text x="14" y="24" font-size="9" fill="#90b8f8" dominant-baseline="central">${address} · ${material} · Ø ${diameter}</text>
-      <text x="${SVG_W - 14}" y="12" font-size="9" fill="#90b8f8" text-anchor="end" dominant-baseline="central">${totalLength} m</text>
-      <text x="${SVG_W - 14}" y="24" font-size="9" fill="#90b8f8" text-anchor="end" dominant-baseline="central">
-        ${insp?.InspectionDate ? new Date(insp.InspectionDate).toLocaleDateString() : ""}
-      </text>
-
-      <!-- Axis label -->
-      <text x="${PIPE_LEFT - 10}" y="${TOP_Y - 14}" text-anchor="end" font-size="9" fill="#888">Pos (m)</text>
-
-      <!-- Upstream manhole — FIXED position -->
-      <circle cx="${PIPE_MID}" cy="${TOP_Y}" r="${MH_R}" fill="#f0f0f0" stroke="#555" stroke-width="1.5"/>
-      <text x="${PIPE_MID}" y="${TOP_Y - 5}" text-anchor="middle" dominant-baseline="central" font-size="8" font-weight="600" fill="#333">MH</text>
-      <text x="${PIPE_MID}" y="${TOP_Y + 7}" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#555">${upNode}</text>
-
-      <!-- Pipe walls — exactly from PIPE_TOP to PIPE_BOT (touching both manholes) -->
-      <rect x="${PIPE_LEFT}"       y="${PIPE_TOP}" width="${WALL_W}" height="${PIPE_H}" fill="#ddd" stroke="#aaa" stroke-width="0.8"/>
-      <rect x="${PIPE_X + PIPE_W}" y="${PIPE_TOP}" width="${WALL_W}" height="${PIPE_H}" fill="#ddd" stroke="#aaa" stroke-width="0.8"/>
-      <rect x="${PIPE_X}"          y="${PIPE_TOP}" width="${PIPE_W}" height="${PIPE_H}" fill="#1a56db" opacity="0.06"/>
-
-      <!-- Flow arrow -->
-      <defs>
-        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="#1a56db" stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-      </defs>
-      <line x1="${PIPE_MID}" y1="${PIPE_TOP + 30}" x2="${PIPE_MID}" y2="${PIPE_BOT - 10}"
-            stroke="#1a56db" stroke-width="1" opacity="0.3" marker-end="url(#arr)"/>
-
-      <!-- OBSERVATIONS (markers on pipe + labels in log area) -->
-      ${obsRows}
-
-      <!-- Downstream manhole — FIXED at BOT_Y, flush against pipe bottom -->
-      <circle cx="${PIPE_MID}" cy="${BOT_Y}" r="${MH_R}" fill="#f0f0f0" stroke="#555" stroke-width="1.5"/>
-      <text x="${PIPE_MID}" y="${BOT_Y - 5}" text-anchor="middle" dominant-baseline="central" font-size="8" font-weight="600" fill="#333">MH</text>
-      <text x="${PIPE_MID}" y="${BOT_Y + 7}" text-anchor="middle" dominant-baseline="central" font-size="8" fill="#555">${downNode}</text>
-
-    </svg>`;
-
-    return svg;
+        accordion.innerHTML = headerHtml + `<div style="padding:12px 0;">${inspectionsHtml}</div>`;
+        panel.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function openImageModal(src) {
-    const modal = document.getElementById("imageModal");
-    const modalImg = document.getElementById("modalImage");
+    // CCTV DIAGRAM
+    function renderCCTVDiagram(item, insp) {
+        const obs = (insp?.Observations || []);
+        const totalLength = parseFloat(insp?.InspectedLength || item?.InspectedLength || 0);
 
-    modalImg.src = src;
-    modal.style.display = "flex";
+        const upNode = item?.UpstreamNode || "MH-UP";
+        const downNode = item?.DownstreamNode || "MH-DN";
+
+        const material = item?.Material || "—";
+        const diameter = item?.PipeDiameter ? item.PipeDiameter + " mm" : "—";
+        const address = item?.Address || "—";
+
+        const SVG_W = 1400;
+        let SVG_H = 900;
+        SVG_H += obs.length * 90;
+
+        const MH_R = 28;
+
+        // Pipe positions
+        const START_X = 100;
+        const END_X = 1180;
+
+        // slight downward angle
+        const START_Y = 170;
+        const END_Y = 240;
+
+        const PIPE_WALL = 14;
+        const PIPE_GAP = 28;
+
+        const PIPE_TOP_START = START_Y - PIPE_GAP / 2;
+        const PIPE_BOTTOM_START = START_Y + PIPE_GAP / 2;
+
+        const PIPE_TOP_END = END_Y - PIPE_GAP / 2;
+        const PIPE_BOTTOM_END = END_Y + PIPE_GAP / 2;
+
+        const OBS_START_Y = 320;
+
+        function posToX(metres) {
+            if (!totalLength) return START_X;
+
+            return START_X + ((parseFloat(metres) || 0) / totalLength) * (END_X - START_X);
+        }
+
+        function posToY(metres) {
+            if (!totalLength) return START_Y;
+
+            return START_Y + ((parseFloat(metres) || 0) / totalLength) * (END_Y - START_Y);
+        }
+
+        function obsColor(code) {
+            code = (code || "").toUpperCase();
+
+            if (["MH", "MHF"].includes(code)) return "#555";
+            if (code === "WL") return "#1a56db";
+            if (code === "GP") return "#888";
+            if (["OBP", "OBS", "OB"].includes(code)) return "#E8593C";
+            if (code.startsWith("D")) return "#A32D2D";
+            if (code.startsWith("S")) return "#EF9F27";
+
+            return "#555";
+        }
+
+        function gradeColor(g) {
+            const n = parseFloat(g);
+
+            if (isNaN(n)) return "#555";
+
+            return n >= 4
+                ? "#A32D2D"
+                : n >= 3
+                    ? "#854F0B"
+                    : "#3B6D11";
+        }
+
+        function gradeBg(g) {
+            const n = parseFloat(g);
+
+            if (isNaN(n)) return "#f0f0f0";
+
+            return n >= 4
+                ? "#FCEBEB"
+                : n >= 3
+                    ? "#FAEEDA"
+                    : "#EAF3DE";
+        }
+
+        const getRank = (code) => {
+            code = (code || "").toUpperCase();
+
+            if (code === "START" || code === "MH") return 0;
+            if (code === "WL") return 1;
+            return 2;
+        };
+
+        const sortedObs = [...obs].sort((a, b) => {
+            const codeA = (a.Code || "").toUpperCase();
+            const codeB = (b.Code || "").toUpperCase();
+
+            const rankA = getRank(codeA);
+            const rankB = getRank(codeB);
+
+            const distA = parseFloat(a.Distance) || 0;
+            const distB = parseFloat(b.Distance) || 0;
+
+            // 1. STRICT priority first (this fixes your flip issue)
+            if (rankA !== rankB) return rankA - rankB;
+
+            // 2. THEN distance
+            if (distA !== distB) return distA - distB;
+
+            return 0;
+        });
+
+        let obsSvg = "";
+
+        sortedObs.forEach((o, idx) => {
+
+            const x = posToX(o.Distance);
+            const y = posToY(o.Distance);
+
+            const color = obsColor(o.Code);
+
+            const desc = (o.Observation || "No description")
+                .replace(/</g, "&lt;");
+
+            const image = (o.Media || [])
+                .find(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""));
+
+            const imageHref = image
+                ? `/Map/GetImage?fileName=${encodeURIComponent(image.FileName)}`
+                : null;
+
+            const ROW_HEIGHT = 170;
+            const labelY = OBS_START_Y + (idx * ROW_HEIGHT);
+
+            // leader line
+            obsSvg += `
+                <line
+                    x1="${x}"
+                    y1="${y + 12}"
+                    x2="${x}"
+                    y2="${labelY - 18}"
+                    stroke="#bbb"
+                    stroke-width="1"
+                    stroke-dasharray="4 4"
+                />
+            `;
+
+            // pipe defect marker
+            obsSvg += `
+                <circle
+                    cx="${x}"
+                    cy="${y}"
+                    r="6"
+                    fill="${color}"
+                    stroke="white"
+                    stroke-width="2"
+                />
+            `;
+
+            // code pill
+            obsSvg += `
+                <rect
+                    x="${x - 18}"
+                    y="${labelY - 14}"
+                    width="36"
+                    height="18"
+                    rx="6"
+                    fill="${color}"
+                    opacity="0.15"
+                />
+
+                <text
+                    x="${x}"
+                    y="${labelY - 1}"
+                    text-anchor="middle"
+                    font-size="10"
+                    font-weight="700"
+                    fill="${color}">
+                    ${(o.Code || "").substring(0, 5)}
+                </text>
+            `;
+
+            // distance
+            obsSvg += `
+                <text
+                    x="${x}"
+                    y="${labelY + 18}"
+                    text-anchor="middle"
+                    font-size="10"
+                    fill="#777">
+                    ${(parseFloat(o.Distance || 0)).toFixed(2)}m
+                </text>
+            `;
+
+            // description
+            obsSvg += `
+                <foreignObject
+                    x="${x - 70}"
+                    y="${labelY + 24}"
+                    width="140"
+                    height="50">
+
+                    <div xmlns="http://www.w3.org/1999/xhtml"
+                         style="
+                            font-size:11px;
+                            text-align:center;
+                            color:#333;
+                            line-height:1.3;
+                            font-family:sans-serif;
+                         ">
+                        ${desc.length > 60 ? desc.substring(0, 60) + "…" : desc}
+                    </div>
+
+                </foreignObject>
+            `;
+
+            // grade badge
+            if (o.Grade != null) {
+
+                obsSvg += `
+                    <rect
+                        x="${x - 14}"
+                        y="${labelY + 78}"
+                        width="28"
+                        height="18"
+                        rx="8"
+                        fill="${gradeBg(o.Grade)}"
+                    />
+
+                    <text
+                        x="${x}"
+                        y="${labelY + 91}"
+                        text-anchor="middle"
+                        font-size="10"
+                        font-weight="700"
+                        fill="${gradeColor(o.Grade)}">
+                        ${o.Grade}
+                    </text>
+                `;
+            }
+
+            // image directly underneath
+            if (imageHref) {
+
+                obsSvg += `
+                    <a href="javascript:void(0)"
+                       onclick="openImageModal('${imageHref}')">
+
+                        <image
+                            href="${imageHref}"
+                            x="${x - 55}"
+                            y="${labelY + 150}"
+                            height="60"
+                            width="110"
+                            preserveAspectRatio="xMidYMid slice"
+                            style="cursor:pointer;"
+                        />
+
+                        <rect
+                            x="${x - 55}"
+                            y="${labelY + 150}"
+                            height="60"
+                            width="110"
+                            rx="6"
+                            fill="transparent"
+                            stroke="#ccc"
+                            stroke-width="1"
+                        />
+                    </a>
+                `;
+            }
+        });
+
+        return `
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="100%"
+            viewBox="0 0 ${SVG_W} ${SVG_H}"
+            style="font-family:sans-serif;display:block;overflow:visible;">
+
+            <!-- Header -->
+            <rect x="0" y="0" width="${SVG_W}" height="48" fill="#1a56db" rx="8"/>
+
+            <text
+                x="18"
+                y="18"
+                font-size="10"
+                font-weight="700"
+                fill="#dbeafe">
+                CCTV INSPECTION
+            </text>
+
+            <text
+                x="18"
+                y="35"
+                font-size="11"
+                fill="#bfdbfe">
+                ${address} · ${material} · Ø ${diameter}
+            </text>
+
+            <text
+                x="${SVG_W - 18}"
+                y="28"
+                text-anchor="end"
+                font-size="11"
+                fill="#bfdbfe">
+                ${totalLength} m
+            </text>
+
+            <!-- Pipe walls -->
+            <line
+                x1="${START_X}"
+                y1="${PIPE_TOP_START}"
+                x2="${END_X}"
+                y2="${PIPE_TOP_END}"
+                stroke="#cfcfcf"
+                stroke-width="${PIPE_WALL}"
+                stroke-linecap="round"
+            />
+
+            <line
+                x1="${START_X}"
+                y1="${PIPE_BOTTOM_START}"
+                x2="${END_X}"
+                y2="${PIPE_BOTTOM_END}"
+                stroke="#cfcfcf"
+                stroke-width="${PIPE_WALL}"
+                stroke-linecap="round"
+            />
+
+            <!-- Flow direction -->
+            <defs>
+                <marker id="flowArrow"
+                        viewBox="0 0 10 10"
+                        refX="8"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        orient="auto">
+
+                    <path
+                        d="M 0 0 L 10 5 L 0 10 z"
+                        fill="#1a56db"/>
+                </marker>
+            </defs>
+
+            <line
+                x1="${START_X + 40}"
+                y1="${START_Y}"
+                x2="${END_X - 40}"
+                y2="${END_Y}"
+                stroke="#1a56db"
+                stroke-width="2"
+                opacity="0.35"
+                marker-end="url(#flowArrow)"
+            />
+
+            <!-- Observations -->
+            ${obsSvg}
+
+            <!-- Upstream MH -->
+            <circle
+                cx="${START_X}"
+                cy="${START_Y}"
+                r="${MH_R}"
+                fill="#f3f4f6"
+                stroke="#555"
+                stroke-width="2"
+            />
+
+            <text
+                x="${START_X}"
+                y="${START_Y - 5}"
+                text-anchor="middle"
+                font-size="10"
+                font-weight="700"
+                fill="#333">
+                MH
+            </text>
+
+            <text
+                x="${START_X}"
+                y="${START_Y + 10}"
+                text-anchor="middle"
+                font-size="9"
+                fill="#555">
+                ${upNode}
+            </text>
+
+            <!-- Downstream MH -->
+            <circle
+                cx="${END_X}"
+                cy="${END_Y}"
+                r="${MH_R}"
+                fill="#f3f4f6"
+                stroke="#555"
+                stroke-width="2"
+            />
+
+            <text
+                x="${END_X}"
+                y="${END_Y - 5}"
+                text-anchor="middle"
+                font-size="10"
+                font-weight="700"
+                fill="#333">
+                MH
+            </text>
+
+            <text
+                x="${END_X}"
+                y="${END_Y + 10}"
+                text-anchor="middle"
+                font-size="9"
+                fill="#555">
+                ${downNode}
+            </text>
+
+        </svg>`;
+    }
+
+    // IMAGE MODAL
+    function openImageModal(src) {
+        const modal    = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        modalImg.src   = src;
+        modal.style.display = "flex";
     }
 
     function closeImageModal() {
         document.getElementById("imageModal").style.display = "none";
     }
 
-    // Prevent closing when clicking actual image
     document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("modalImage").addEventListener("click", e => {
-            e.stopPropagation();
-        });
+        document.getElementById("modalImage").addEventListener("click", e => e.stopPropagation());
     });
 
+    // ACCORDION
     function toggleAccordion(header, id) {
-    let content = header.nextElementSibling;
-    let icon    = header.querySelector(".accordion-icon");
-    let isOpen  = content.style.display === "block";
-
-    document.querySelectorAll(".infra-accordion-content").forEach(c => c.style.display = "none");
-    document.querySelectorAll(".accordion-icon").forEach(i => i.textContent = "+");
-
-    if (!isOpen) {
-    content.style.display = "block";
-    icon.textContent = "−";
-    highlightPipe(id);
-    }
+        let content = header.nextElementSibling;
+        let icon    = header.querySelector(".accordion-icon");
+        let isOpen  = content.style.display === "block";
+        document.querySelectorAll(".infra-accordion-content").forEach(c => c.style.display = "none");
+        document.querySelectorAll(".accordion-icon").forEach(i => i.textContent = "+");
+        if (!isOpen) {
+            content.style.display = "block";
+            icon.textContent = "−";
+            highlightPipe(id);
+        }
     }
 </script>

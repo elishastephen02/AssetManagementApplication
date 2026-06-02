@@ -227,6 +227,41 @@
     .io-row:last-child { border-bottom: none; }
     .io-label { color: #888; }
     .io-val   { font-weight: 500; color: #222; }
+
+    #imageModal {
+        display: none;
+        position: fixed;
+        z-index: 99999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.85);
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    #modalImage {
+        max-width: 95%;
+        max-height: 95%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        object-fit: contain;
+        background: white;
+    }
+
+    #imageModalClose {
+        position: absolute;
+        top: 18px;
+        right: 24px;
+        color: white;
+        font-size: 34px;
+        font-weight: bold;
+        cursor: pointer;
+        user-select: none;
+    }
 </style>
 
 <div class="infra-container">
@@ -270,7 +305,7 @@
             <div id="mhMap"></div>
         </div>
 
-        <div class="infra-panel" id="mhSummaryPanel" style="display:none; flex: 1; min-width: 220px; margin-top:80px"">
+        <div class="infra-panel" id="mhSummaryPanel" style="display:none; flex: 1; min-width: 220px; margin-top:80px">
             <h3 class="infra-title">Manhole Summary</h3>
             <div id="mhSummaryTable"></div>
         </div>
@@ -278,9 +313,14 @@
     </div>
 
     <!-- Inspection detail -->
-    <div class="infra-panel" id="mhInspectionPanel" >
+    <div class="infra-panel" id="mhInspectionPanel">
         <h3 class="infra-title">Manhole Inspection Details</h3>
         <div id="mhAccordion" style="max-height:500px;overflow-y:auto;padding-right:4px;"></div>
+    </div>
+
+    <div id="imageModal" onclick="closeImageModal()">
+        <span id="imageModalClose">&times;</span>
+        <img id="modalImage" />
     </div>
 
 </div>
@@ -291,8 +331,6 @@
 <script>
 
     proj4.defs("LO31", "+proj=tmerc +lat_0=0 +lon_0=31 +k=1 +x_0=0 +y_0=0 +axis=wsu +ellps=WGS84 +units=m +no_defs");
-    var ll = proj4("LO31", "EPSG:4326", [1078.63, 3291256.51]);
-    console.log(ll[0], -ll[1]);
 
     function reprojectWKT(wkt) {
         if (!wkt) return wkt;
@@ -300,832 +338,921 @@
             var px = parseFloat(x);
             var py = parseFloat(y);
             var ll = proj4("LO31", "EPSG:4326", [px, -py]);
-            // ll[0] = lng, ll[1] = lat (positive, must negate for southern hemisphere)
             return ll[0] + ' ' + (-ll[1]);
         });
     }
 
-//  MAP INIT 
-var eThekwiniBounds = L.latLngBounds(
-    L.latLng(-30.1500, 30.6500),
-    L.latLng(-29.5500, 31.2000)
-);
+    function parseDepth(val) {
+        if (val == null) return null;
+        var s = String(val).trim();
+        if (!s) return null;
+        var d = parseFloat(s);
+        if (!isNaN(d)) return d;
+        d = parseFloat(s.replace(',', '.'));
+        return isNaN(d) ? null : d;
+    }
 
-var mhMap = L.map('mhMap', {
-    minZoom: 11, maxZoom: 18,
-    maxBounds: eThekwiniBounds,
-    maxBoundsViscosity: 1.0
-}).setView([-29.8587, 31.0218], 12);
+    // MAP INIT
+    var eThekwiniBounds = L.latLngBounds(
+        L.latLng(-30.1500, 30.6500),
+        L.latLng(-29.5500, 31.2000)
+    );
 
-var streetLayer = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
-);
-var satelliteLayer = L.tileLayer(
-    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
-);
-streetLayer.addTo(mhMap);
+    var mhMap = L.map('mhMap', {
+        minZoom: 11, maxZoom: 18,
+        maxBounds: eThekwiniBounds,
+        maxBoundsViscosity: 1.0
+    }).setView([-29.8587, 31.0218], 12);
 
-L.control.layers(
-    { "🗺️ Street Map": streetLayer, "🛰️ Satellite": satelliteLayer },
-    null,
-    { position: 'topright', collapsed: false }
-).addTo(mhMap);
+    var streetLayer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
+    );
+    var satelliteLayer = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: 'Tiles &copy; Esri' }
+    );
+    streetLayer.addTo(mhMap);
 
-// Legend
-var mhLegend = L.control({ position: 'bottomright' });
-mhLegend.onAdd = function () {
-    var div = L.DomUtil.create('div', 'map-legend');
-    div.innerHTML = `
-        <h4>🕳️ Manhole Status</h4>
-        <div class="legend-item">
-            <div class="legend-dot" style="background:#1a56db;"></div>
-            <span class="legend-label">Inspected</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-dot" style="background:#95a5a6;"></div>
-            <span class="legend-label">Uninspected</span>
-        </div>`;
-    return div;
-};
-mhLegend.addTo(mhMap);
-setTimeout(() => mhMap.invalidateSize(), 200);
+    L.control.layers(
+        { "🗺️ Street Map": streetLayer, "🛰️ Satellite": satelliteLayer },
+        null,
+        { position: 'topright', collapsed: false }
+    ).addTo(mhMap);
 
-// STATE 
-var mhMarkerLayer = L.featureGroup().addTo(mhMap);
-var mhObjects     = [];   // { id, data, marker }
-var mhSummary     = [];
+    // Legend
+    var mhLegend = L.control({ position: 'bottomright' });
+    mhLegend.onAdd = function () {
+        var div = L.DomUtil.create('div', 'map-legend');
+        div.innerHTML = `
+            <h4>🕳️ Manhole Status</h4>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#1a56db;"></div>
+                <span class="legend-label">Inspected</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#95a5a6;"></div>
+                <span class="legend-label">Uninspected</span>
+            </div>`;
+        return div;
+    };
+    mhLegend.addTo(mhMap);
+    setTimeout(() => mhMap.invalidateSize(), 200);
 
-// ICONS
-function makeMhIcon(color, highlighted) {
-    var size = highlighted ? 18 : 12;
-    var ring = highlighted ? 4  : 2;
-    var total = size + ring * 2;
-    var cx = total / 2;
-    return L.divIcon({
-        html: `<svg xmlns="http://www.w3.org/2000/svg" width="${total}" height="${total}">
-            <circle cx="${cx}" cy="${cx}" r="${size/2}"
-                    fill="${color}" stroke="white" stroke-width="${ring}"/>
-        </svg>`,
-        className: '',
-        iconSize:   [total, total],
-        iconAnchor: [cx, cx]
-    });
-}
+    // STATE
+    var mhMarkerLayer = L.featureGroup().addTo(mhMap);
+    var mhObjects     = [];
+    var mhSummary     = [];
 
-// LOAD 
-function mhLoadData() {
-    fetch('/Manhole/GetManholeData')
-        .then(async res => {
-            if (!res.ok) { console.error('Server error:', await res.text()); return; }
-            return res.json();
-        })
-        .then(data => {
-             console.log('Loaded manholes:', data.summary?.length, data.summary?.[0]);
-            if (!data) return;
-            mhSummary = data.summary || [];
-            mhUpdateStats(mhSummary);
-            mhDrawMap(mhSummary);
-        })
-        .catch(err => console.error('Manhole load failed:', err));
-}
-window.addEventListener('load', mhLoadData);
+    // ICONS
+    function makeMhIcon(color, highlighted) {
+        var size = highlighted ? 18 : 12;
+        var ring = highlighted ? 4  : 2;
+        var total = size + ring * 2;
+        var cx = total / 2;
+        return L.divIcon({
+            html: `<svg xmlns="http://www.w3.org/2000/svg" width="${total}" height="${total}">
+                <circle cx="${cx}" cy="${cx}" r="${size/2}"
+                        fill="${color}" stroke="white" stroke-width="${ring}"/>
+            </svg>`,
+            className: '',
+            iconSize:   [total, total],
+            iconAnchor: [cx, cx]
+        });
+    }
 
-// DRAW MAP 
-function mhDrawMap(summary) {
-    mhMarkerLayer.clearLayers();
-    mhObjects = [];
+    // LOAD
+    function mhLoadData() {
+        fetch('/Manhole/GetManholeData')
+            .then(async res => {
+                if (!res.ok) { console.error('Server error:', await res.text()); return; }
+                return res.json();
+            })
+            .then(data => {
+                if (!data) return;
+                mhSummary = data.summary || [];
+                mhUpdateStats(mhSummary);
+                mhDrawMap(mhSummary);
+            })
+            .catch(err => console.error('Manhole load failed:', err));
+    }
+    window.addEventListener('load', mhLoadData);
 
-    summary.forEach(node => {
-       var wkt = reprojectWKT(node.Geometry || node.geometry);
-        if (!wkt) return;
+    // DRAW MAP
+    function mhDrawMap(summary) {
+        mhMarkerLayer.clearLayers();
+        mhObjects = [];
 
-        var geo = wktToGeoJSON(wkt);
-        if (!geo) return;
+        summary.forEach(node => {
+            var wkt = reprojectWKT(node.Geometry || node.geometry);
+            if (!wkt) return;
 
-        var isInsp = (node.Inspected || '').toLowerCase() === 'inspected';
-        var color  = isInsp ? '#1a56db' : '#95a5a6';
-        var depth  = node.Depth  != null ? node.Depth + ' m' : 'N/A';
+            var geo = wktToGeoJSON(wkt);
+            if (!geo) return;
 
-        var circleRef = null;  // ← store actual marker
+            var isInsp = (node.Inspected || '').toLowerCase() === 'inspected';
+            var color  = isInsp ? '#1a56db' : '#95a5a6';
+            var depth  = node.Depth  != null ? node.Depth + ' m' : 'N/A';
 
-        var layer = L.geoJSON(geo, {
-            pointToLayer: function(feature, latlng) {
-                circleRef = L.circleMarker(latlng, {
-                    radius:      isInsp ? 8 : 6,
-                    fillColor:   color,
-                    color:       'white',
-                    weight:      2,
-                    opacity:     1,
-                    fillOpacity: 0.9
-                });
-                return circleRef;
-            },
-            onEachFeature: function(feature, fl) {
-                fl.bindTooltip(`
-                    <b>${node.Name || node.Id}</b><br>
-                    Street: ${node.Street || 'N/A'}<br>
-                    Material: ${node.Material || 'N/A'}<br>
-                    Depth: ${depth}<br>
-                    Inspection: ${node.Inspected || 'Uninspected'}
-                `, { sticky: true, className: 'mh-tooltip' });
+            var circleRef = null;
 
-                fl.on('click', () => mhHighlight(node.Id));
+            var layer = L.geoJSON(geo, {
+                pointToLayer: function(feature, latlng) {
+                    circleRef = L.circleMarker(latlng, {
+                        radius:      isInsp ? 8 : 6,
+                        fillColor:   color,
+                        color:       'white',
+                        weight:      2,
+                        opacity:     1,
+                        fillOpacity: 0.9
+                    });
+                    return circleRef;
+                },
+                onEachFeature: function(feature, fl) {
+                    fl.bindTooltip(`
+                        <b>${node.Name || node.Id}</b><br>
+                        Street: ${node.Street || 'N/A'}<br>
+                        Material: ${node.Material || 'N/A'}<br>
+                        Depth: ${depth}<br>
+                        Inspection: ${node.Inspected || 'Uninspected'}
+                    `, { sticky: true, className: 'mh-tooltip' });
+
+                    fl.on('click', () => mhHighlight(node.Id));
+                }
+            });
+
+            layer.addTo(mhMarkerLayer);
+            mhObjects.push({ id: node.Id, data: node, layer, circleRef });
+        });
+
+        setTimeout(() => {
+            var b = mhMarkerLayer.getBounds();
+            if (b.isValid()) mhMap.fitBounds(b, { padding: [20, 20] });
+        }, 200);
+    }
+
+    function wktToGeoJSON(wkt) {
+        if (!wkt) return null;
+
+        wkt = wkt.trim()
+            .replace(/^SRID=\d+;/i, "")
+            .replace(/\bZ\b/i, "")
+            .trim();
+
+        const type = wkt.match(/^([A-Z]+)\s*\(/i)?.[1]?.toUpperCase();
+        if (!type) { console.warn("Cannot detect WKT type:", wkt); return null; }
+
+        function parsePoints(str) {
+            return str.trim().split(",").map(p => {
+                const parts = p.trim().split(/\s+/);
+                const lng = parseFloat(parts[0]);
+                const lat = parseFloat(parts[1]);
+                return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
+            }).filter(Boolean);
+        }
+
+        if (type === "POINT") {
+            const inner = wkt.replace(/^POINT\s*\(/i, "").replace(/\)\s*$/, "");
+            const coords = parsePoints(inner);
+            if (!coords.length) return null;
+            return {
+                type: "Feature",
+                geometry: { type: "Point", coordinates: coords[0] }
+            };
+        }
+
+        if (type === "LINESTRING") {
+            const inner = wkt.replace(/^LINESTRING\s*\(/i, "").replace(/\)\s*$/, "");
+            return {
+                type: "Feature",
+                geometry: { type: "LineString", coordinates: parsePoints(inner) }
+            };
+        }
+
+        if (type === "MULTILINESTRING") {
+            const inner = wkt.replace(/^MULTILINESTRING\s*\(\s*\(/i, "").replace(/\)\s*\)\s*$/, "");
+            const lines = inner.split(/\)\s*,\s*\(/).map(part => parsePoints(part));
+            return {
+                type: "Feature",
+                geometry: { type: "MultiLineString", coordinates: lines }
+            };
+        }
+
+        console.warn("Unsupported WKT type:", type, wkt);
+        return null;
+    }
+
+    // HIGHLIGHT
+    function mhHighlight(id) {
+        mhObjects.forEach(m => {
+            var isInsp = (m.data.Inspected || '').toLowerCase() === 'inspected';
+            var color  = isInsp ? '#1a56db' : '#95a5a6';
+            var radius = isInsp ? 8 : 6;
+            if (m.circleRef) {
+                m.circleRef.setStyle({ fillColor: color, color: 'white', weight: 2 });
+                m.circleRef.setRadius(radius);
             }
         });
 
-        layer.addTo(mhMarkerLayer);
-        mhObjects.push({ id: node.Id, data: node, layer, circleRef });
-    });
+        var target = mhObjects.find(m => m.id === id);
+        if (!target) return;
 
-    setTimeout(() => {
-        var b = mhMarkerLayer.getBounds();
-        if (b.isValid()) mhMap.fitBounds(b, { padding: [20, 20] });
-    }, 200);
-}
+        console.log('Selected manhole:', target.data);
 
-function wktToGeoJSON(wkt) {
-    if (!wkt) return null;
-
-    wkt = wkt.trim()
-        .replace(/^SRID=\d+;/i, "")
-        .replace(/\bZ\b/i, "")
-        .trim();
-
-    const type = wkt.match(/^([A-Z]+)\s*\(/i)?.[1]?.toUpperCase();
-    if (!type) { console.warn("Cannot detect WKT type:", wkt); return null; }
-
-    function parsePoints(str) {
-        return str.trim().split(",").map(p => {
-            const parts = p.trim().split(/\s+/);
-            const lng = parseFloat(parts[0]);
-            const lat = parseFloat(parts[1]);
-            return (!isNaN(lng) && !isNaN(lat)) ? [lng, lat] : null;
-        }).filter(Boolean);
-    }
-
-    if (type === "POINT") {
-        const inner = wkt.replace(/^POINT\s*\(/i, "").replace(/\)\s*$/, "");
-        const coords = parsePoints(inner);
-        if (!coords.length) return null;
-        return {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: coords[0] }
-        };
-    }
-
-    if (type === "LINESTRING") {
-        const inner = wkt.replace(/^LINESTRING\s*\(/i, "").replace(/\)\s*$/, "");
-        return {
-            type: "Feature",
-            geometry: { type: "LineString", coordinates: parsePoints(inner) }
-        };
-    }
-
-    if (type === "MULTILINESTRING") {
-        const inner = wkt.replace(/^MULTILINESTRING\s*\(\s*\(/i, "").replace(/\)\s*\)\s*$/, "");
-        const lines = inner.split(/\)\s*,\s*\(/).map(part => parsePoints(part));
-        return {
-            type: "Feature",
-            geometry: { type: "MultiLineString", coordinates: lines }
-        };
-    }
-
-    console.warn("Unsupported WKT type:", type, wkt);
-    return null;
-}
-
-// HIGHLIGHT
-function mhHighlight(id) {
-    // Reset all markers
-    mhObjects.forEach(m => {
-        var isInsp = (m.data.Inspected || '').toLowerCase() === 'inspected';
-        var color  = isInsp ? '#1a56db' : '#95a5a6';
-        var radius = isInsp ? 8 : 6;
-        if (m.circleRef) {
-            m.circleRef.setStyle({ fillColor: color, color: 'white', weight: 2 });
-            m.circleRef.setRadius(radius);
+        if (target.circleRef) {
+            target.circleRef.setStyle({ fillColor: '#ffdd00', color: '#ff8800', weight: 3 });
+            target.circleRef.setRadius(12);
+            mhMap.setView(target.circleRef.getLatLng(), Math.max(mhMap.getZoom(), 16));
         }
-    });
 
-    var target = mhObjects.find(m => m.id === id);
-    if (!target) return;
-
-    if (target.circleRef) {
-        target.circleRef.setStyle({ fillColor: '#ffdd00', color: '#ff8800', weight: 3 });
-        target.circleRef.setRadius(12);
-        mhMap.setView(target.circleRef.getLatLng(), Math.max(mhMap.getZoom(), 16));
+        mhRenderInspection(target.data);
     }
 
-    //mhShowSummary(target.data);
-    mhRenderInspection(target.data);
-}
+    // SUMMARY PANEL
+    function mhShowSummary(node) {
+        document.getElementById('mhSummaryPanel').classList.add('summary-visible');
+        setTimeout(() => mhMap.invalidateSize(), 300);
 
-//SUMMARY PANEL 
-function mhShowSummary(node) {
-    document.getElementById('mhSummaryPanel').classList.add('summary-visible');
-    setTimeout(() => mhMap.invalidateSize(), 300);
+        var fmt     = v => (v != null && v !== '') ? v : 'N/A';
+        var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
+        var fmtNum  = (v, unit) => v != null ? v + (unit || '') : 'N/A';
 
-    var fmt     = v => (v != null && v !== '') ? v : 'N/A';
-    var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
-    var fmtNum  = (v, unit) => v != null ? v + (unit || '') : 'N/A';
+        var rows = [
+            ["Manhole ID",       fmt(node.Id)],
+            ["Street",           fmt(node.Street)],
+            ["Material",         node.Material || fmt(node.Material)],
+            ["Type",             fmt(node.Type)],
+            ["Status",           fmt(node.Status)],
+            ["Cover",            fmt(node.Cover)],
+            ["Situation",        fmt(node.Situation)],
+            ["Depth",            fmtNum(node.Depth, ' m')],
+            ["CCTV Depth",       fmtNum(node.CctvDepth, ' m')],
+            ["Cover Level",      fmtNum(node.CoverLevel)],
+            ["Invert Level In",  fmtNum(node.PInvInl1)],
+            ["Drawing No.",      fmt(node.DrawingNumber)],
+            ["Last Inspection",  fmtDate(node.LastInspection)],
+            ["Insp. Status",     fmt(node.Inspected)],
+            ["Problem",          fmt(node.Problem)],
+            ["Comment",          fmt(node.Comment)],
+        ];
 
-    var rows = [
-        ["Manhole ID",       fmt(node.Id)],
-        ["Street",           fmt(node.Street)],
-        ["Material",         node.Material || fmt(node.Material)],
-        ["Type",             fmt(node.Type)],
-        ["Status",           fmt(node.Status)],
-        ["Cover",            fmt(node.Cover)],
-        ["Situation",        fmt(node.Situation)],
-        ["Depth",            fmtNum(node.Depth, ' m')],
-        ["CCTV Depth",       fmtNum(node.CctvDepth, ' m')],
-        ["Cover Level",      fmtNum(node.CoverLevel)],
-        ["Invert Level In",  fmtNum(node.PInvInl1)],
-        ["Drawing No.",      fmt(node.DrawingNumber)],
-        ["Last Inspection",  fmtDate(node.LastInspection)],
-        ["Insp. Status",     fmt(node.Inspected)],
-        ["Problem",          fmt(node.Problem)],
-        ["Comment",          fmt(node.Comment)],
-    ];
-
-    var html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">`;
-    rows.forEach(([label, val], i) => {
-        var bg = i % 2 === 0 ? '#fff' : '#f5f5f5';
-        html += `<tr style="background:${bg};">
-            <td style="padding:6px 8px;font-weight:600;white-space:nowrap;color:#555;">${label}</td>
-            <td style="padding:6px 8px;">${val}</td>
-        </tr>`;
-    });
-    html += `</table>`;
-
-    // Inlets
-    if (node.Inlets && node.Inlets.length > 0) {
-        html += `<div class="io-block" style="margin-top:10px;">
-            <div class="io-block-header">⬇️ Inlets (${node.Inlets.length})</div>`;
-        node.Inlets.forEach((il, i) => {
-            html += `<div class="io-row">
-                <span class="io-label">Inlet ${i+1}${il.Origin ? ' — ' + il.Origin : ''}</span>
-                <span class="io-val">${il.InvLevel != null ? il.InvLevel + ' m' : 'N/A'}</span>
-            </div>`;
+        var html = `<table style="width:100%;border-collapse:collapse;font-size:13px;">`;
+        rows.forEach(([label, val], i) => {
+            var bg = i % 2 === 0 ? '#fff' : '#f5f5f5';
+            html += `<tr style="background:${bg};">
+                <td style="padding:6px 8px;font-weight:600;white-space:nowrap;color:#555;">${label}</td>
+                <td style="padding:6px 8px;">${val}</td>
+            </tr>`;
         });
-        html += `</div>`;
+        html += `</table>`;
+
+        if (node.Inlets && node.Inlets.length > 0) {
+            html += `<div class="io-block" style="margin-top:10px;">
+                <div class="io-block-header">⬇️ Inlets (${node.Inlets.length})</div>`;
+            node.Inlets.forEach((il, i) => {
+                html += `<div class="io-row">
+                    <span class="io-label">Inlet ${i+1}${il.Origin ? ' — ' + il.Origin : ''}</span>
+                    <span class="io-val">${il.InvLevel != null ? il.InvLevel + ' m' : 'N/A'}</span>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+
+        if (node.Outlets && node.Outlets.length > 0) {
+            html += `<div class="io-block" style="margin-top:8px;">
+                <div class="io-block-header">⬆️ Outlets (${node.Outlets.length})</div>`;
+            node.Outlets.forEach((ol, i) => {
+                html += `<div class="io-row">
+                    <span class="io-label">Outlet ${i+1}${ol.Dest ? ' → ' + ol.Dest : ''}</span>
+                    <span class="io-val">${ol.InvLevel != null ? ol.InvLevel + ' m' : 'N/A'}</span>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+
+        document.getElementById('mhSummaryTable').innerHTML = html;
     }
 
-    // Outlets
-    if (node.Outlets && node.Outlets.length > 0) {
-        html += `<div class="io-block" style="margin-top:8px;">
-            <div class="io-block-header">⬆️ Outlets (${node.Outlets.length})</div>`;
-        node.Outlets.forEach((ol, i) => {
-            html += `<div class="io-row">
-                <span class="io-label">Outlet ${i+1}${ol.Dest ? ' → ' + ol.Dest : ''}</span>
-                <span class="io-val">${ol.InvLevel != null ? ol.InvLevel + ' m' : 'N/A'}</span>
-            </div>`;
-        });
-        html += `</div>`;
-    }
+    // INSPECTION REPORT
+    function mhRenderInspection(node) {
+        var panel     = document.getElementById('mhInspectionPanel');
+        var accordion = document.getElementById('mhAccordion');
+        if (!node) { panel.style.display = 'none'; return; }
+        panel.style.display = 'block';
 
-    document.getElementById('mhSummaryTable').innerHTML = html;
-}
+        var fmt     = v => (v != null && v !== '') ? v : 'N/A';
+        var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
 
-//  INSPECTION REPORT 
-function mhRenderInspection(node) {
-    var panel     = document.getElementById('mhInspectionPanel');
-    var accordion = document.getElementById('mhAccordion');
-    if (!node) { panel.style.display = 'none'; return; }
-    panel.style.display = 'block';
+        var headerHtml = `
+        <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;
+                    align-items:center;border-radius:8px 8px 0 0;">
+            <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
+                Manhole Report — ${fmt(node.Name)}
+            </span>
+            <span style="font-size:11px;color:#b5d4f4;">${fmt(node.Street)}</span>
+        </div>
+        <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
+            <div class="rh-cell"><span class="rh-label">Manhole ID</span>
+                <span class="rh-val">${fmt(node.Id)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Material</span>
+                <span class="rh-val">${fmt(node.Material)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Type</span>
+                <span class="rh-val">${fmt(node.Type)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Street</span>
+                <span class="rh-val">${fmt(node.Street)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Depth</span>
+                <span class="rh-val">${node.Depth != null ? node.Depth + ' m' : 'N/A'}</span></div>
+            <div class="rh-cell"><span class="rh-label">CCTV Depth</span>
+                <span class="rh-val">${node.CctvDepth != null ? node.CctvDepth + ' m' : 'N/A'}</span></div>
+            <div class="rh-cell"><span class="rh-label">Cover</span>
+                <span class="rh-val">${fmt(node.Cover)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Status</span>
+                <span class="rh-val">${fmt(node.Status)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Last Inspection</span>
+                <span class="rh-val">${fmtDate(node.LastInspection)}</span></div>
+        </div>`;
 
-    var fmt     = v => (v != null && v !== '') ? v : 'N/A';
-    var fmtDate = v => v ? new Date(v).toLocaleDateString() : 'N/A';
+        var ioHtml   = '';
+        var inspHtml = '';
 
-    // ── Report header ──
-    var headerHtml = `
-    <div style="background:#1a56db;padding:8px 14px;display:flex;justify-content:space-between;
-                align-items:center;border-radius:8px 8px 0 0;">
-        <span style="color:#e8f0fe;font-weight:600;font-size:14px;">
-            Manhole Report — ${fmt(node.Name)}
-        </span>
-        <span style="font-size:11px;color:#b5d4f4;">${fmt(node.Street)}</span>
-    </div>
-    <div class="report-header-grid" style="border:1px solid #ddd;border-top:none;">
-        <div class="rh-cell"><span class="rh-label">Manhole ID</span>
-            <span class="rh-val">${fmt(node.Id)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Material</span>
-            <span class="rh-val">${fmt(node.Material)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Type</span>
-            <span class="rh-val">${fmt(node.Type)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Street</span>
-            <span class="rh-val">${fmt(node.Street)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Depth</span>
-            <span class="rh-val">${node.Depth != null ? node.Depth + ' m' : 'N/A'}</span></div>
-        <div class="rh-cell"><span class="rh-label">CCTV Depth</span>
-            <span class="rh-val">${node.CctvDepth != null ? node.CctvDepth + ' m' : 'N/A'}</span></div>
-        <div class="rh-cell"><span class="rh-label">Cover</span>
-            <span class="rh-val">${fmt(node.Cover)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Status</span>
-            <span class="rh-val">${fmt(node.Status)}</span></div>
-        <div class="rh-cell"><span class="rh-label">Last Inspection</span>
-            <span class="rh-val">${fmtDate(node.LastInspection)}</span></div>
-    </div>`;
+        if (node.Inspections && node.Inspections.length > 0) {
+            node.Inspections.forEach((insp, idx) => {
+                var dateStr = insp.InspectionDate
+                    ? new Date(insp.InspectionDate).toLocaleDateString() : 'No date';
 
-    var ioHtml = '';
-    var hasInlets  = node.Inlets  && node.Inlets.length  > 0;
-    var hasOutlets = node.Outlets && node.Outlets.length > 0;
+                var diagramSvg = mhRenderDiagram(node, insp);
 
-    // if (hasInlets || hasOutlets) {
-    //     ioHtml = `<div class="inlet-outlet-grid" style="margin-bottom:12px;">`;
+                var obsRows = '';
+                if (insp.Observations && insp.Observations.length > 0) {
+                    insp.Observations.forEach(o => {
+                        var images = (o.Media || [])
+                            .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
+                        if (!images.length) return;
 
-    //     if (hasInlets) {
-    //         ioHtml += `<div class="io-block">
-    //             <div class="io-block-header">⬇️ Inlets</div>`;
-    //         node.Inlets.forEach((il, i) => {
-    //             ioHtml += `<div class="io-row">
-    //                 <span class="io-label">In ${i+1}${il.Origin ? ' — ' + il.Origin : ''}</span>
-    //                 <span class="io-val">${il.InvLevel != null ? il.InvLevel + ' m' : 'N/A'}</span>
-    //             </div>`;
-    //         });
-    //         ioHtml += `</div>`;
-    //     }
+                        var mediaHtml = images.map(m => `
+                            <img src="/Manhole/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+                                 onclick="openImageModal(this.src)" style="width:100px;height:80px;object-fit:cover;
+                                 border-radius:6px;border:1px solid #ddd; cursor:pointer;" />`
+                        ).join('');
 
-    //     if (hasOutlets) {
-    //         ioHtml += `<div class="io-block">
-    //             <div class="io-block-header">⬆️ Outlets</div>`;
-    //         node.Outlets.forEach((ol, i) => {
-    //             ioHtml += `<div class="io-row">
-    //                 <span class="io-label">Out ${i+1}${ol.Dest ? ' → ' + ol.Dest : ''}</span>
-    //                 <span class="io-val">${ol.InvLevel != null ? ol.InvLevel + ' m' : 'N/A'}</span>
-    //             </div>`;
-    //         });
-    //         ioHtml += `</div>`;
-    //     }
-
-    //     ioHtml += `</div>`;
-    // }
-
-    // Inspection blocks
-    var inspHtml = '';
-
-    if (node.Inspections && node.Inspections.length > 0) {
-        node.Inspections.forEach((insp, idx) => {
-            var dateStr = insp.InspectionDate
-                ? new Date(insp.InspectionDate).toLocaleDateString() : 'No date';
-
-            // Cross-section diagram
-            var diagramSvg = mhRenderDiagram(node, insp);
-
-            // Observation rows (images only)
-            var obsRows = '';
-            if (insp.Observations && insp.Observations.length > 0) {
-                insp.Observations.forEach(o => {
-                    var images = (o.Media || [])
-                        .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
-                    if (!images.length) return;
-
-                    var mediaHtml = images.map(m => `
-                        <img src="/Manhole/GetImage?fileName=${encodeURIComponent(m.FileName)}"
-                             style="width:100px;height:80px;object-fit:cover;
-                                    border-radius:6px;border:1px solid #ddd;" />`
-                    ).join('');
-
-                    obsRows += `
-                    <tr>
-                        <td style="white-space:nowrap;font-weight:600;color:#555;">
-                            ${o.Depth ?? '?'}m
-                        </td>
-                        <td>
-                            <div style="display:flex;gap:10px;align-items:flex-start;">
-                                <div style="flex-shrink:0;">${mediaHtml}</div>
-                                <div style="font-size:12px;color:#333;">
-                                    ${(o.Observation || 'No description').replace(/</g,'&lt;')}
-                                    ${o.O3Value
-                                        ? `<br><span style="color:#888;font-size:11px;">
-                                               O3: ${o.O3Value}</span>`
-                                        : ''}
+                        obsRows += `
+                        <tr>
+                            <td style="white-space:nowrap;font-weight:600;color:#555;">
+                                ${o.Depth ?? '?'}m
+                            </td>
+                            <td>
+                                <div style="display:flex;gap:10px;align-items:flex-start;">
+                                    <div style="flex-shrink:0;">${mediaHtml}</div>
+                                    <div style="font-size:12px;color:#333;">
+                                        ${(o.Observation || 'No description').replace(/</g,'&lt;')}
+                                        ${o.O3Value
+                                            ? `<br><span style="color:#888;font-size:11px;">
+                                                   O3: ${o.O3Value}</span>`
+                                            : ''}
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>`;
-                });
+                            </td>
+                        </tr>`;
+                    });
 
-                if (!obsRows)
+                    if (!obsRows)
+                        obsRows = `<tr><td colspan="2"
+                            style="color:#999;text-align:center;padding:10px;">
+                            No observations with images.</td></tr>`;
+                } else {
                     obsRows = `<tr><td colspan="2"
                         style="color:#999;text-align:center;padding:10px;">
-                        No observations with images.</td></tr>`;
-            } else {
-                obsRows = `<tr><td colspan="2"
-                    style="color:#999;text-align:center;padding:10px;">
-                    No observations recorded.</td></tr>`;
-            }
+                        No observations recorded.</td></tr>`;
+                }
 
-            inspHtml += `
-            <!-- Diagram -->
-            <div style="margin-bottom:16px;border:1px solid #d0e4ff;
-                        border-radius:8px;overflow:hidden;">
-                <div style="background:#e8f0fe;padding:6px 10px;font-size:11px;
-                            font-weight:600;color:#1a56db;border-bottom:1px solid #d0e4ff;">
-                    Inspection ${insp.InspectionNumber ?? idx + 1} — Cross-Section Diagram
+                inspHtml += `
+                <!-- Diagram -->
+                <div style="margin-bottom:16px;border:1px solid #d0e4ff;
+                            border-radius:8px;overflow:hidden;">
+                    <div style="background:#e8f0fe;padding:6px 10px;font-size:11px;
+                                font-weight:600;color:#1a56db;border-bottom:1px solid #d0e4ff;">
+                        Inspection ${insp.InspectionNumber ?? idx + 1} — Cross-Section Diagram
+                    </div>
+                    <div style="padding:8px;overflow-x:auto;">${diagramSvg}</div>
                 </div>
-                <div style="padding:8px;overflow-x:auto;">${diagramSvg}</div>
-            </div>
 
-            <!-- Detail block -->
-            <div class="insp-block">
-                <div class="insp-block-header">
-                    <span>Inspection ${insp.InspectionNumber ?? idx + 1}
-                        <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
-                    </span>
-                    <span style="font-size:11px;color:#378ADD;">
-                        ${insp.InspectedLength != null
-                            ? 'Depth: ' + insp.InspectedLength + 'm' : ''}
-                    </span>
-                </div>
-                <div style="padding:8px 10px 10px;">
-                    <!-- Meta chips -->
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);
-                                gap:6px;margin-bottom:10px;font-size:12px;">
-                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
-                            <span style="color:#888;display:block;font-size:10px;">Method</span>
-                            <span style="font-weight:500;">${fmt(insp.Method)}</span>
-                        </div>
-                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
-                            <span style="color:#888;display:block;font-size:10px;">Drainage</span>
-                            <span style="font-weight:500;">${fmt(insp.Drainage)}</span>
-                        </div>
-                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
-                            <span style="color:#888;display:block;font-size:10px;">Direction</span>
-                            <span style="font-weight:500;">${fmt(insp.InspectionDir)}</span>
-                        </div>
-                        <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
-                            <span style="color:#888;display:block;font-size:10px;">Equipment</span>
-                            <span style="font-weight:500;">${fmt(insp.Equipment)}</span>
+                <!-- Detail block -->
+                <div class="insp-block">
+                    <div class="insp-block-header">
+                        <span>Inspection ${insp.InspectionNumber ?? idx + 1}
+                            <span style="font-weight:400;color:#378ADD;">(${dateStr})</span>
+                        </span>
+                        <span style="font-size:11px;color:#378ADD;">
+                            ${insp.InspectedLength != null
+                                ? 'Depth: ' + insp.InspectedLength + 'm' : ''}
+                        </span>
+                    </div>
+                    <div style="padding:8px 10px 10px;">
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);
+                                    gap:6px;margin-bottom:10px;font-size:12px;">
+                            <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                                <span style="color:#888;display:block;font-size:10px;">Method</span>
+                                <span style="font-weight:500;">${fmt(insp.Method)}</span>
+                            </div>
+                            <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                                <span style="color:#888;display:block;font-size:10px;">Drainage</span>
+                                <span style="font-weight:500;">${fmt(insp.Drainage)}</span>
+                            </div>
+                            <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                                <span style="color:#888;display:block;font-size:10px;">Direction</span>
+                                <span style="font-weight:500;">${fmt(insp.InspectionDir)}</span>
+                            </div>
+                            <div style="background:#f5f7fa;padding:6px 8px;border-radius:6px;">
+                                <span style="color:#888;display:block;font-size:10px;">Equipment</span>
+                                <span style="font-weight:500;">${fmt(insp.Equipment)}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>`;
-        });
-    } else {
-        inspHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">
-            No inspections recorded for this manhole.</p>`;
-    }
-
-    accordion.innerHTML = headerHtml
-        + `<div style="padding:12px 0;">${ioHtml}${inspHtml}</div>`;
-
-    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// CROSS-SECTION DIAGRAM
-function mhRenderDiagram(node, insp) {
-    var obs        = insp?.Observations || [];
-    var totalDepth = parseFloat(insp?.InspectedLength ?? node?.Depth ?? 0);
-    var mhName     = node?.Name     || 'MH';
-    var material   = node?.Material || '—';
-    var street     = node?.Street   || '—';
-    var cover      = node?.Cover    || '—';
-    var depth      = node?.Depth    != null ? node.Depth + ' m' : '—';
-
-    var SVG_W       = 760;
-    var HEADER_H    = 34;
-    var MH_W        = 56;
-    var MH_TOP_H    = 20;
-    var SHAFT_X     = 150;
-    var SHAFT_MID_X = SHAFT_X + MH_W / 2;
-    var SHAFT_TOP   = HEADER_H + MH_TOP_H + 10;
-    var SHAFT_H     = Math.max(320, obs.length * 45 + 60);
-    var SHAFT_BOT   = SHAFT_TOP + SHAFT_H;
-
-    var IMG_W       = 90;
-    var IMG_H       = 65;
-    var IMG_X       = 610;
-    var MIN_SPACING = IMG_H + 18;
-
-    function depthToY(d) {
-        if (!totalDepth) return SHAFT_TOP + 20;
-        return SHAFT_TOP + (parseFloat(d || 0) / totalDepth) * SHAFT_H;
-    }
-
-    // Sort & place labels
-    var sorted = [...obs].sort((a, b) =>
-        (parseFloat(a.Depth) || 0) - (parseFloat(b.Depth) || 0)
-    );
-    var placed = [];
-    sorted.forEach(o => {
-        var baseY  = depthToY(o.Depth);
-        var labelY = baseY;
-        var tries  = 0;
-        while (placed.some(p => Math.abs(p.labelY - labelY) < MIN_SPACING) && tries < 500) {
-            labelY += MIN_SPACING;
-            tries++;
-        }
-        placed.push({ obs: o, baseY, labelY });
-    });
-
-    var lowestLabel = placed.length > 0
-        ? Math.max(...placed.map(p => p.labelY + IMG_H + 10)) : SHAFT_BOT;
-
-    var SVG_H = Math.max(SHAFT_BOT + 80, lowestLabel + 40);
-
-    // Draw inlets on the shaft wall (left side)
-    var inletMarks = '';
-    var inlets  = node?.Inlets  || [];
-    var outlets = node?.Outlets || [];
-
-    // Outlet mark at bottom of shaft
-    var outletMarks = '';
-    outlets.forEach((ol, i) => {
-        if (ol.InvLevel == null) return;
-        var oy = SHAFT_BOT - 10 - i * 14;
-        outletMarks += `
-        <line x1="${SHAFT_X + MH_W}" y1="${oy}" x2="${SHAFT_X + MH_W + 20}" y2="${oy}"
-              stroke="#1a56db" stroke-width="1.5" marker-end="url(#mhArr)"/>
-        <text x="${SHAFT_X + MH_W + 24}" y="${oy}" dominant-baseline="central"
-              font-size="9" fill="#1a56db">Out${i+1} ${ol.InvLevel}m</text>`;
-    });
-
-    inlets.forEach((il, i) => {
-        if (il.InvLevel == null) return;
-        var iy = depthToY(il.InvLevel);
-        inletMarks += `
-        <line x1="${SHAFT_X - 20}" y1="${iy}" x2="${SHAFT_X}" y2="${iy}"
-              stroke="#E8593C" stroke-width="1.5" marker-end="url(#mhArr2)"/>
-        <text x="${SHAFT_X - 24}" y="${iy}" text-anchor="end" dominant-baseline="central"
-              font-size="9" fill="#E8593C">In${i+1} ${il.InvLevel}m</text>`;
-    });
-
-    // Observation marks
-    var obsRows = '';
-    placed.forEach(({ obs: o, baseY, labelY }) => {
-        var imgObj  = (o.Media || []).find(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
-        var imgHref = imgObj
-            ? `/Manhole/GetImage?fileName=${encodeURIComponent(imgObj.FileName)}` : null;
-        var desc    = (o.Observation || 'No description').replace(/</g, '&lt;');
-
-        // Leader
-        obsRows += `
-        <line x1="${SHAFT_X + MH_W}" y1="${baseY}" x2="${SHAFT_X + MH_W + 40}" y2="${labelY}"
-              stroke="#ccc" stroke-width="0.5" stroke-dasharray="3 3"/>`;
-
-        // Ring marker on shaft
-        obsRows += `
-        <circle cx="${SHAFT_X + MH_W}" cy="${baseY}" r="4"
-                fill="none" stroke="#E8593C" stroke-width="1.5"/>
-        <circle cx="${SHAFT_X}" cy="${baseY}" r="4"
-                fill="none" stroke="#E8593C" stroke-width="1.5"/>
-        <line x1="${SHAFT_X}" y1="${baseY}" x2="${SHAFT_X + MH_W}" y2="${baseY}"
-              stroke="#E8593C" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/>`;
-
-        // Depth on left axis
-        obsRows += `
-        <text x="${SHAFT_X - 28}" y="${baseY}" text-anchor="end" dominant-baseline="central"
-              font-size="10" fill="#E8593C" font-family="monospace">
-            ${parseFloat(o.Depth || 0).toFixed(2)}m
-        </text>`;
-
-        // Description
-        var lx = SHAFT_X + MH_W + 46;
-        obsRows += `
-        <text x="${lx}" y="${labelY}" dominant-baseline="central" font-size="10" fill="#333">
-            ${desc.length > 50 ? desc.substring(0, 50) + '…' : desc}
-        </text>`;
-
-        if (o.O3Value != null) {
-            obsRows += `
-            <text x="${lx}" y="${labelY + 13}" dominant-baseline="central"
-                  font-size="9" fill="#888">O3: ${o.O3Value}</text>`;
-        }
-
-        if (imgHref) {
-            obsRows += `
-            <image href="${imgHref}" x="${IMG_X}" y="${labelY - 8}"
-                   width="${IMG_W}" height="${IMG_H}"
-                   preserveAspectRatio="xMidYMid slice"/>
-            <rect x="${IMG_X}" y="${labelY - 8}" width="${IMG_W}" height="${IMG_H}"
-                  fill="none" stroke="#ccc" stroke-width="0.8" rx="4"/>`;
-        }
-    });
-
-    return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%"
-         viewBox="0 0 ${SVG_W} ${SVG_H}" style="font-family:sans-serif;display:block;">
-
-      <!-- Header -->
-      <rect x="0" y="0" width="${SVG_W}" height="${HEADER_H}" fill="#1a56db" rx="6"/>
-      <rect x="0" y="${HEADER_H - 6}" width="${SVG_W}" height="6" fill="#1a56db"/>
-      <text x="14" y="12" font-size="7" font-weight="600" fill="#e8f0fe"
-            dominant-baseline="central">Manhole Inspection</text>
-      <text x="14" y="24" font-size="9" fill="#90b8f8" dominant-baseline="central">
-          ${street} · ${material} · Cover: ${cover} · Depth: ${depth}
-      </text>
-      <text x="${SVG_W - 14}" y="12" font-size="9" fill="#90b8f8"
-            text-anchor="end" dominant-baseline="central">${mhName}</text>
-      <text x="${SVG_W - 14}" y="24" font-size="9" fill="#90b8f8"
-            text-anchor="end" dominant-baseline="central">
-          ${insp?.InspectionDate
-              ? new Date(insp.InspectionDate).toLocaleDateString() : ''}
-      </text>
-
-      <!-- Depth axis label -->
-      <text x="${SHAFT_X - 28}" y="${SHAFT_TOP - 12}" text-anchor="end"
-            font-size="9" fill="#888">Depth (m)</text>
-
-      <!-- Cover / frame -->
-      <rect x="${SHAFT_X - 8}" y="${HEADER_H + 10}"
-            width="${MH_W + 16}" height="${MH_TOP_H}"
-            rx="3" fill="#888" stroke="#555" stroke-width="1"/>
-      <text x="${SHAFT_MID_X}" y="${HEADER_H + 10 + MH_TOP_H / 2}"
-            text-anchor="middle" dominant-baseline="central"
-            font-size="8" fill="white" font-weight="600">COVER</text>
-
-      <!-- Shaft walls -->
-      <rect x="${SHAFT_X}" y="${SHAFT_TOP}"
-            width="8" height="${SHAFT_H}" fill="#bbb" stroke="#999" stroke-width="0.8"/>
-      <rect x="${SHAFT_X + MH_W - 8}" y="${SHAFT_TOP}"
-            width="8" height="${SHAFT_H}" fill="#bbb" stroke="#999" stroke-width="0.8"/>
-      <!-- Interior -->
-      <rect x="${SHAFT_X + 8}" y="${SHAFT_TOP}"
-            width="${MH_W - 16}" height="${SHAFT_H}"
-            fill="#1a56db" opacity="0.05"/>
-
-      <!-- 0m label -->
-      <text x="${SHAFT_X - 28}" y="${SHAFT_TOP}" text-anchor="end"
-            dominant-baseline="central" font-size="9" fill="#888"
-            font-family="monospace">0.00m</text>
-
-      <!-- Base -->
-      <rect x="${SHAFT_X}" y="${SHAFT_BOT}"
-            width="${MH_W}" height="8"
-            fill="#888" stroke="#555" stroke-width="1"/>
-      <text x="${SHAFT_X - 28}" y="${SHAFT_BOT}" text-anchor="end"
-            dominant-baseline="central" font-size="9" fill="#555"
-            font-family="monospace">${totalDepth.toFixed(2)}m</text>
-
-      <!-- Flow arrow -->
-      <defs>
-        <marker id="mhArr" viewBox="0 0 10 10" refX="8" refY="5"
-                markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="#1a56db"
-                stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-        <marker id="mhArr2" viewBox="0 0 10 10" refX="8" refY="5"
-                markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="#E8593C"
-                stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-      </defs>
-      <line x1="${SHAFT_MID_X}" y1="${SHAFT_TOP + 20}"
-            x2="${SHAFT_MID_X}" y2="${SHAFT_BOT - 14}"
-            stroke="#1a56db" stroke-width="1" opacity="0.2"
-            marker-end="url(#mhArr)"/>
-
-      <!-- Inlets -->
-      ${inletMarks}
-
-      <!-- Outlets -->
-      ${outletMarks}
-
-      <!-- Observations -->
-      ${obsRows}
-
-    </svg>`;
-}
-
-// FILTER
-function mhFilter(filter, btn) {
-    document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    mhObjects.forEach(m => {
-        var c    = (m.data.Inspected || '').toLowerCase();
-        var show = filter === 'all'
-            || (filter === 'inspected'   && c === 'inspected')
-            || (filter === 'uninspected' && c === 'uninspected');
-        show ? mhMarkerLayer.addLayer(m.layer) : mhMarkerLayer.removeLayer(m.layer);
-    });
-}
-
-//RESET VIEW
-function mhResetView() {
-    try { mhMap.fitBounds(mhMarkerLayer.getBounds(), { padding: [20, 20] }); }
-    catch { mhMap.setView([-29.8587, 31.0218], 12); }
-}
-
-// STATS
-function mhUpdateStats(summary) {
-    var ins   = summary.filter(x => (x.Inspected || '').toLowerCase() === 'inspected').length;
-    var unins = summary.filter(x => (x.Inspected || '').toLowerCase() === 'uninspected').length;
-    document.getElementById('mhStatTotal').textContent       = `🔢 Manholes: ${summary.length}`;
-    document.getElementById('mhStatInspected').textContent   = `🔵 Inspected: ${ins}`;
-    document.getElementById('mhStatUninspected').textContent = `⚪ Uninspected: ${unins}`;
-}
-
-// SEARCH
-function mhSearch() {
-    var query      = document.getElementById('mhSearchBox').value.trim().toLowerCase();
-    var resultsDiv = document.getElementById('mhSearchResults');
-    resultsDiv.innerHTML = '';
-    resultsDiv.style.display = 'block';
-    if (!query) { resultsDiv.style.display = 'none'; return; }
-
-    var results = mhSummary.filter(x =>
-        (x.Id       && x.Id.toLowerCase().includes(query))       ||
-        (x.Name     && x.Name.toLowerCase().includes(query))     ||
-        (x.Street   && x.Street.toLowerCase().includes(query))   ||
-        (x.Material && x.Material.toLowerCase().includes(query)) ||
-        (x.Type     && x.Type.toLowerCase().includes(query))     ||
-        (x.Status   && x.Status.toLowerCase().includes(query))   ||
-        (x.Cover    && x.Cover.toLowerCase().includes(query))
-    );
-
-    if (!results.length) {
-        resultsDiv.innerHTML =
-            `<p style="padding:10px;color:#999;margin:0;">No results found.</p>`;
-        return;
-    }
-
-    // Group by street
-    var byStreet = {};
-    results.forEach(n => {
-        var s = n.Street || '(No Street)';
-        if (!byStreet[s]) byStreet[s] = [];
-        byStreet[s].push(n);
-    });
-
-    Object.entries(byStreet).forEach(([street, nodes]) => {
-        if (nodes.length > 1) {
-            var isCollapsed = false;
-            var roadDiv = document.createElement('div');
-            roadDiv.style.cssText =
-                'border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;';
-            roadDiv.innerHTML = `
-            <div class="roadHeader"
-                 style="display:flex;align-items:center;justify-content:space-between;
-                        background:#d4edda;padding:8px 12px;cursor:pointer;">
-                <span style="font-weight:600;color:#28a745;font-size:13px;">
-                    🛣️ ${street}
-                    <span style="font-weight:400;color:#555;margin-left:6px;">
-                        (${nodes.length} manholes)
-                    </span>
-                </span>
-                <span class="toggleIcon"
-                      style="font-size:16px;color:#555;font-weight:700;">▾</span>
-            </div>
-            <div class="nodeList"
-                 style="max-height:160px;overflow-y:auto;display:block;background:#fff;"></div>`;
-
-            var nodeList   = roadDiv.querySelector('.nodeList');
-            var toggleIcon = roadDiv.querySelector('.toggleIcon');
-            roadDiv.querySelector('.roadHeader').onclick = () => {
-                isCollapsed = !isCollapsed;
-                nodeList.style.display = isCollapsed ? 'none' : 'block';
-                toggleIcon.textContent = isCollapsed ? '▸' : '▾';
-            };
-
-            nodes.forEach(n => {
-                var row = document.createElement('div');
-                row.style.cssText =
-                    'display:flex;align-items:center;justify-content:space-between;' +
-                    'padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;' +
-                    'font-size:13px;transition:background 0.15s;';
-                row.innerHTML = `
-                <span style="color:#007bff;">↳ ${n.Name || n.Id}</span>
-                <span style="color:#999;font-size:11px;">${n.Inspected || 'Uninspected'}</span>`;
-                row.onmouseenter = () => row.style.background = '#f0f7ff';
-                row.onmouseleave = () => row.style.background = '';
-                row.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
-                nodeList.appendChild(row);
+                </div>`;
             });
-            resultsDiv.appendChild(roadDiv);
         } else {
-            nodes.forEach(n => {
-                var div = document.createElement('div');
-                div.style.cssText =
-                    'padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;' +
-                    'font-size:13px;transition:background 0.15s;';
-                div.innerHTML = `
-                <span style="color:#007bff;">
-                    🕳️ ${n.Name || n.Id}
-                    ${n.Street ? '— ' + n.Street : ''}
-                    ${n.Type   ? '· ' + n.Type   : ''}
-                </span>`;
-                div.onmouseenter = () => div.style.background = '#f0f7ff';
-                div.onmouseleave = () => div.style.background = '';
-                div.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
-                resultsDiv.appendChild(div);
-            });
+            inspHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">
+                No inspections recorded for this manhole.</p>`;
         }
+
+        accordion.innerHTML = headerHtml
+            + `<div style="padding:12px 0;">${ioHtml}${inspHtml}</div>`;
+
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // CROSS-SECTION DIAGRAM
+    function mhRenderDiagram(node, insp) {
+    var obs      = insp?.Observations || [];
+    var inlets   = (node?.Inlets  || []).filter(il => il.InvLevel != null && il.InvLevel !== 0);
+    var outlets  = (node?.Outlets || []).filter(ol => ol.InvLevel != null && ol.InvLevel !== 0);
+ 
+    var totalDepth = parseFloat(insp?.InspectedLength ?? null)
+        || parseFloat(node?.Depth ?? null)
+        || parseFloat(node?.CctvDepth ?? null)
+        || (obs.length > 0 ? Math.max(...obs.map(o => parseDepth(o.Depth) ?? 0)) : 3);
+ 
+    var refVal = inlets.length > 0
+        ? parseFloat(inlets[0].InvLevel)
+        : outlets.length > 0 ? parseFloat(outlets[0].InvLevel) : null;
+    var invLevelsAreAbsolute = refVal != null ? Math.abs(refVal) > 20 : false;
+ 
+    var coverLevel = parseFloat(node?.CoverLevel ?? null) || null;
+    var pInvInl1   = parseFloat(node?.PInvInl1   ?? null) || null;
+    var effectiveCoverLevel = null;
+ 
+    if (invLevelsAreAbsolute) {
+        if (coverLevel != null) {
+            effectiveCoverLevel = coverLevel;
+        } else if (inlets.length > 0 && pInvInl1 != null) {
+            effectiveCoverLevel = parseFloat(inlets[0].InvLevel) + pInvInl1;
+        } else if (outlets.length > 0) {
+            effectiveCoverLevel = Math.min(...outlets.map(ol => parseFloat(ol.InvLevel))) + totalDepth;
+        } else if (inlets.length > 0) {
+            effectiveCoverLevel = Math.max(...inlets.map(il => parseFloat(il.InvLevel))) + totalDepth;
+        }
+    }
+ 
+    function invToDepth(val) {
+        if (invLevelsAreAbsolute && effectiveCoverLevel != null)
+            return Math.max(0, Math.min(totalDepth, effectiveCoverLevel - parseFloat(val)));
+        return Math.max(0, Math.min(totalDepth, parseFloat(val)));
+    }
+ 
+    // SVG layout
+    var SVG_W  = 520;   // narrower so image fits beside it
+    var CX     = 210;   // circle centre X (shifted left to leave right margin for obs labels)
+    var CY     = 240;   // circle centre Y
+    var R      = 120;   // shaft inner radius
+    var RW     = 18;    // shaft wall thickness
+    var PIPE_W = 11;    // pipe rect width
+    var PIPE_L = 50;    // pipe length outside circle
+ 
+    var mhName   = node?.Name     || node?.Id || 'MH';
+    var material = node?.Material || '—';
+    var street   = node?.Street   || '—';
+    var cover    = node?.Cover    || '—';
+    var depth    = node?.Depth    != null ? node.Depth + ' m' : '—';
+    var fmt      = v => (v != null && v !== '') ? v : 'N/A';
+    var fmtDate  = v => v ? new Date(v).toLocaleDateString() : 'N/A';
+ 
+    // Observation rings
+    var sortedObs = [...obs]
+        .filter(o => parseDepth(o.Depth) != null)
+        .sort((a, b) => (parseDepth(b.Depth) ?? 0) - (parseDepth(a.Depth) ?? 0));
+ 
+    var obsRings  = '';
+    var obsLabels = '';
+    var obsColors = ['#E8593C','#1a56db','#E8A020','#6B3FA0','#1D9E75'];
+ 
+    sortedObs.forEach((o, i) => {
+    var d     = parseDepth(o.Depth) ?? 0;
+    var ratio = totalDepth > 0 ? Math.max(0.12, 1 - (d / totalDepth)) : 0.5;
+    var r     = Math.round(R * ratio);
+    var col   = obsColors[i % obsColors.length];
+
+    var desc = (o.Observation || 'No description').replace(/</g, '&lt;');
+
+    // Wrap long text
+    var maxChars = 34;
+    var lines = [];
+
+    while (desc.length > maxChars) {
+        lines.push(desc.substring(0, maxChars));
+        desc = desc.substring(maxChars);
+    }
+    lines.push(desc);
+
+    obsRings += `
+    <circle cx="${CX}" cy="${CY}" r="${r}"
+            fill="none" stroke="${col}" stroke-width="1.5"
+            stroke-dasharray="6 4" opacity="0.7"/>
+    <circle cx="${CX}" cy="${CY - r}" r="4" fill="${col}" opacity="0.85"/>`;
+
+    // Better spacing between labels
+    var dotCX = CX + R + RW + 18;
+
+    // Dynamic spacing based on previous items
+    var labelY = 150 + (i * 70);
+
+    // Connector line
+    obsLabels += `
+    <line x1="${CX}" y1="${CY - r}" x2="${dotCX - 4}" y2="${labelY}"
+          stroke="${col}" stroke-width="0.5"
+          stroke-dasharray="3 3" opacity="0.6"/>
+
+    <circle cx="${dotCX}" cy="${labelY}" r="4" fill="${col}"/>
+
+    <text x="${dotCX + 10}" y="${labelY - 10}"
+          font-family="sans-serif"
+          font-size="10"
+          font-weight="600"
+          fill="${col}">
+        ${d.toFixed(2)}m depth
+    </text>`;
+
+    // Multi-line description
+    lines.forEach((line, lineIndex) => {
+        obsLabels += `
+        <text x="${dotCX + 10}"
+              y="${labelY + 8 + (lineIndex * 12)}"
+              font-family="sans-serif"
+              font-size="9"
+              fill="#444">
+            ${line}
+        </text>`;
     });
+});
+ 
+    // Inlet / outlet pipes
+    var pipeSvg = '';
+ 
+    function pipeAtAngle(angleDeg, isInlet, label) {
+        var rad = (angleDeg - 90) * Math.PI / 180;
+        var x1 = CX + (R + RW) * Math.cos(rad);
+        var y1 = CY + (R + RW) * Math.sin(rad);
+        var x2 = CX + (R + RW + PIPE_L) * Math.cos(rad);
+        var y2 = CY + (R + RW + PIPE_L) * Math.sin(rad);
+        var px = -Math.sin(rad) * (PIPE_W / 2);
+        var py =  Math.cos(rad) * (PIPE_W / 2);
+ 
+        var col   = isInlet ? '#E8593C' : '#1a56db';
+        var arrow = isInlet
+            ? `<line x1="${x2}" y1="${y2}" x2="${x1}" y2="${y1}"
+                     stroke="${col}" stroke-width="1.5"
+                     marker-end="url(#pArr${isInlet ? 'In' : 'Out'})"/>`
+            : `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
+                     stroke="${col}" stroke-width="1.5"
+                     marker-end="url(#pArr${isInlet ? 'In' : 'Out'})"/>`;
+ 
+        var lx     = CX + (R + RW + PIPE_L + 14) * Math.cos(rad);
+        var ly     = CY + (R + RW + PIPE_L + 14) * Math.sin(rad);
+        var anchor = Math.cos(rad) < -0.1 ? 'end' : Math.cos(rad) > 0.1 ? 'start' : 'middle';
+ 
+        // label so it never leaves left edge
+        var safeX = anchor === 'end' ? Math.max(lx, 6) : lx;
+ 
+        return `
+        <polygon points="${x1+px},${y1+py} ${x2+px},${y2+py} ${x2-px},${y2-py} ${x1-px},${y1-py}"
+                 fill="${col}" opacity="0.18"/>
+        <polygon points="${x1+px},${y1+py} ${x2+px},${y2+py} ${x2-px},${y2-py} ${x1-px},${y1-py}"
+                 fill="none" stroke="${col}" stroke-width="1"/>
+        ${arrow}
+        <text x="${safeX}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central"
+              font-family="sans-serif" font-size="9" fill="${col}" font-weight="600">${label}</text>`;
+    }
+ 
+    // Inlets on the left-bottom half, outlets on the right-bottom half
+    // angles away from the bottom (270°) to avoid the legend at top-left
+    var inletAngles  = [200, 225, 250, 275, 300];
+    var outletAngles = [ 40,  65,  90, 115, 140];
+ 
+    inlets.forEach((il, i) => {
+        pipeSvg += pipeAtAngle(
+            inletAngles[i % inletAngles.length], true,
+            `In${i+1}: ${il.InvLevel}m`
+        );
+    });
+    outlets.forEach((ol, i) => {
+        pipeSvg += pipeAtAngle(
+            outletAngles[i % outletAngles.length], false,
+            `Out${i+1}: ${ol.InvLevel}m`
+        );
+    });
+ 
+    // Legend — TOP-LEFT corner, away from pipe labels 
+    var legend = `
+        <rect x="8" y="50" width="168" height="56" rx="6"
+              fill="#f5f7fa" stroke="#ddd" stroke-width="0.5"/>
+        <circle cx="22" cy="65" r="5" fill="none" stroke="#E8593C" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="32" y="70" font-family="sans-serif" font-size="10" fill="#555">Observation ring </text>
+        <rect x="12" y="80" width="10" height="10" rx="2" fill="#E8593C" opacity="0.2" stroke="#E8593C" stroke-width="1"/>
+        <text x="27" y="90"  font-family="sans-serif" font-size="10" fill="#E8593C">Inlet</text>
+        <rect x="75" y="80" width="10" height="10" rx="2" fill="#1a56db" opacity="0.2" stroke="#1a56db" stroke-width="1"/>
+        <text x="90" y="90"  font-family="sans-serif" font-size="10" fill="#1a56db">Outlet</text>`;
+ 
+    // ViewBox height 
+    var SVG_H = Math.max(
+    CY + R + RW + 60,
+    180 + sortedObs.length * 80
+);
+ 
+    // SVG string 
+    var svgHtml = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%"
+             viewBox="0 0 ${SVG_W} ${SVG_H}" style="font-family:sans-serif;display:block;">
+ 
+          <defs>
+            <marker id="pArrIn" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#E8593C" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="pArrOut" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#1a56db" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <clipPath id="shaftClip">
+              <circle cx="${CX}" cy="${CY}" r="${R}"/>
+            </clipPath>
+          </defs>
+ 
+          <!-- Header bar -->
+          <rect x="0" y="0" width="${SVG_W}" height="44" fill="#1a56db" rx="6"/>
+          <rect x="0" y="38" width="${SVG_W}" height="6" fill="#1a56db"/>
+          <text x="14" y="15" font-size="11" font-weight="700" fill="white" dominant-baseline="central">
+              Manhole plan view — ${fmt(mhName)}
+          </text>
+          <text x="14" y="32" font-size="9" fill="#b8d4f8" dominant-baseline="central">
+              ${street} · ${material} · Cover: ${cover} · Depth: ${depth}
+          </text>
+          <text x="${SVG_W - 14}" y="24" font-size="9" fill="#b8d4f8"
+                text-anchor="end" dominant-baseline="central">
+              ${fmtDate(insp?.InspectionDate)}
+          </text>
+ 
+          <!-- Shaft -->
+          <circle cx="${CX}" cy="${CY}" r="${R + RW}"
+                  fill="#bbb" stroke="#999" stroke-width="0.5"/>
+          <circle cx="${CX}" cy="${CY}" r="${R}"
+                  fill="#e8f4fb" stroke="#c5dff0" stroke-width="0.5"/>
+          <line x1="${CX - R}" y1="${CY}" x2="${CX + R}" y2="${CY}"
+                stroke="#c5dff0" stroke-width="0.5" clip-path="url(#shaftClip)"/>
+          <line x1="${CX}" y1="${CY - R}" x2="${CX}" y2="${CY + R}"
+                stroke="#c5dff0" stroke-width="0.5" clip-path="url(#shaftClip)"/>
+ 
+          ${obsRings}
+ 
+          <!-- Cover -->
+          <circle cx="${CX}" cy="${CY}" r="14" fill="#888" stroke="#555" stroke-width="1"/>
+          <text x="${CX}" y="${CY}" text-anchor="middle" dominant-baseline="central"
+                font-size="6" fill="white" font-weight="600">CVR</text>
+ 
+          <!-- North label -->
+          <text x="${CX}" y="${CY - R - RW - 8}" text-anchor="middle"
+                font-size="10" fill="#888">N</text>
+ 
+          <!-- Diameter annotation -->
+          <line x1="${CX - R}" y1="${CY + R + RW + 10}" x2="${CX + R}" y2="${CY + R + RW + 10}"
+                stroke="#999" stroke-width="0.5"/>
+          <circle cx="${CX - R}" cy="${CY + R + RW + 10}" r="2" fill="#999"/>
+          <circle cx="${CX + R}" cy="${CY + R + RW + 10}" r="2" fill="#999"/>
+          <text x="${CX}" y="${CY + R + RW + 22}" text-anchor="middle"
+                font-size="9" fill="#777">
+              Shaft diameter. ${((R * 2) / 40).toFixed(1)}m (approx) 
+          </text>
+ 
+          ${pipeSvg}
+          ${obsLabels}
+          ${legend}
+ 
+        </svg>`;
+ 
+    // Image strip 
+    var imageStrip = '';
+    sortedObs.forEach(o => {
+        var images = (o.Media || [])
+            .filter(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ''));
+        if (!images.length) return;
+ 
+        var d    = parseDepth(o.Depth) ?? 0;
+        var desc = (o.Observation || 'No description').replace(/</g, '&lt;');
+        var col  = obsColors[sortedObs.indexOf(o) % obsColors.length];
+ 
+        var imgs = images.map(m => `
+            <img src="/Manhole/GetImage?fileName=${encodeURIComponent(m.FileName)}"
+     onclick="openImageModal(this.src)"
+     style="width:100px;height:80px;object-fit:cover;
+            border-radius:6px;border:1px solid #ddd;
+            cursor:pointer;" />`
+        ).join('');
+ 
+        imageStrip += `
+        <div style="margin-bottom:10px;padding:8px 10px;border-radius:8px;
+                    border-left:4px solid ${col};background:#fafafa;">
+            <div style="font-size:11px;font-weight:600;color:${col};margin-bottom:5px;">
+                ${d.toFixed(2)}m — ${desc}
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                ${imgs}
+            </div>
+        </div>`;
+    });
+ 
+    // Wrap SVG + images side by side
+    var imageSidePanel = imageStrip
+        ? `<div style="flex:0 0 240px;min-width:180px;max-height:500px;overflow-y:auto;
+                       padding-left:12px;border-left:1px solid #e8e8e8;">
+               <div style="font-size:11px;font-weight:600;color:#555;
+                           margin-bottom:8px;padding-bottom:4px;
+                           border-bottom:1px solid #eee;">
+                   Observation images
+               </div>
+               ${imageStrip}
+           </div>`
+        : '';
+ 
+    return `<div style="display:flex;gap:0;align-items:flex-start;">
+        <div style="flex:1;min-width:0;">${svgHtml}</div>
+        ${imageSidePanel}
+    </div>`;
 }
 
-document.getElementById('mhSearchBox').addEventListener('keydown', e => {
-    if (e.key === 'Enter') mhSearch();
-});
 
-document.addEventListener('click', e => {
-    var sr = document.getElementById('mhSearchResults');
-    if (!sr.contains(e.target) &&
-        e.target.id !== 'mhSearchBox' &&
-        !e.target.classList.contains('infra-btn')) {
-        sr.style.display = 'none';
+    // FILTER
+    function mhFilter(filter, btn) {
+        document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mhObjects.forEach(m => {
+            var c    = (m.data.Inspected || '').toLowerCase();
+            var show = filter === 'all'
+                || (filter === 'inspected'   && c === 'inspected')
+                || (filter === 'uninspected' && c === 'uninspected');
+            show ? mhMarkerLayer.addLayer(m.layer) : mhMarkerLayer.removeLayer(m.layer);
+        });
     }
-});
+
+    // RESET VIEW
+    function mhResetView() {
+        try { mhMap.fitBounds(mhMarkerLayer.getBounds(), { padding: [20, 20] }); }
+        catch { mhMap.setView([-29.8587, 31.0218], 12); }
+    }
+
+    // STATS
+    function mhUpdateStats(summary) {
+        var ins   = summary.filter(x => (x.Inspected || '').toLowerCase() === 'inspected').length;
+        var unins = summary.filter(x => (x.Inspected || '').toLowerCase() === 'uninspected').length;
+        document.getElementById('mhStatTotal').textContent       = `🔢 Manholes: ${summary.length}`;
+        document.getElementById('mhStatInspected').textContent   = `🔵 Inspected: ${ins}`;
+        document.getElementById('mhStatUninspected').textContent = `⚪ Uninspected: ${unins}`;
+    }
+
+    // SEARCH
+    function mhSearch() {
+        var query      = document.getElementById('mhSearchBox').value.trim().toLowerCase();
+        var resultsDiv = document.getElementById('mhSearchResults');
+        resultsDiv.innerHTML = '';
+        resultsDiv.style.display = 'block';
+        if (!query) { resultsDiv.style.display = 'none'; return; }
+
+        var results = mhSummary.filter(x =>
+            (x.Id       && x.Id.toLowerCase().includes(query))       ||
+            (x.Name     && x.Name.toLowerCase().includes(query))     ||
+            (x.Street   && x.Street.toLowerCase().includes(query))   ||
+            (x.Material && x.Material.toLowerCase().includes(query)) ||
+            (x.Type     && x.Type.toLowerCase().includes(query))     ||
+            (x.Status   && x.Status.toLowerCase().includes(query))   ||
+            (x.Cover    && x.Cover.toLowerCase().includes(query))
+        );
+
+        if (!results.length) {
+            resultsDiv.innerHTML =
+                `<p style="padding:10px;color:#999;margin:0;">No results found.</p>`;
+            return;
+        }
+
+        var byStreet = {};
+        results.forEach(n => {
+            var s = n.Street || '(No Street)';
+            if (!byStreet[s]) byStreet[s] = [];
+            byStreet[s].push(n);
+        });
+
+        Object.entries(byStreet).forEach(([street, nodes]) => {
+            if (nodes.length > 1) {
+                var isCollapsed = false;
+                var roadDiv = document.createElement('div');
+                roadDiv.style.cssText =
+                    'border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;';
+                roadDiv.innerHTML = `
+                <div class="roadHeader"
+                     style="display:flex;align-items:center;justify-content:space-between;
+                            background:#d4edda;padding:8px 12px;cursor:pointer;">
+                    <span style="font-weight:600;color:#28a745;font-size:13px;">
+                        🛣️ ${street}
+                        <span style="font-weight:400;color:#555;margin-left:6px;">
+                            (${nodes.length} manholes)
+                        </span>
+                    </span>
+                    <span class="toggleIcon"
+                          style="font-size:16px;color:#555;font-weight:700;">▾</span>
+                </div>
+                <div class="nodeList"
+                     style="max-height:160px;overflow-y:auto;display:block;background:#fff;"></div>`;
+
+                var nodeList   = roadDiv.querySelector('.nodeList');
+                var toggleIcon = roadDiv.querySelector('.toggleIcon');
+                roadDiv.querySelector('.roadHeader').onclick = () => {
+                    isCollapsed = !isCollapsed;
+                    nodeList.style.display = isCollapsed ? 'none' : 'block';
+                    toggleIcon.textContent = isCollapsed ? '▸' : '▾';
+                };
+
+                nodes.forEach(n => {
+                    var row = document.createElement('div');
+                    row.style.cssText =
+                        'display:flex;align-items:center;justify-content:space-between;' +
+                        'padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;' +
+                        'font-size:13px;transition:background 0.15s;';
+                    row.innerHTML = `
+                    <span style="color:#007bff;">↳ ${n.Name || n.Id}</span>
+                    <span style="color:#999;font-size:11px;">${n.Inspected || 'Uninspected'}</span>`;
+                    row.onmouseenter = () => row.style.background = '#f0f7ff';
+                    row.onmouseleave = () => row.style.background = '';
+                    row.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
+                    nodeList.appendChild(row);
+                });
+                resultsDiv.appendChild(roadDiv);
+            } else {
+                nodes.forEach(n => {
+                    var div = document.createElement('div');
+                    div.style.cssText =
+                        'padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;' +
+                        'font-size:13px;transition:background 0.15s;';
+                    div.innerHTML = `
+                    <span style="color:#007bff;">
+                        🕳️ ${n.Name || n.Id}
+                        ${n.Street ? '— ' + n.Street : ''}
+                        ${n.Type   ? '· ' + n.Type   : ''}
+                    </span>`;
+                    div.onmouseenter = () => div.style.background = '#f0f7ff';
+                    div.onmouseleave = () => div.style.background = '';
+                    div.onclick = () => { mhHighlight(n.Id); resultsDiv.style.display = 'none'; };
+                    resultsDiv.appendChild(div);
+                });
+            }
+        });
+    }
+
+    document.getElementById('mhSearchBox').addEventListener('keydown', e => {
+        if (e.key === 'Enter') mhSearch();
+    });
+
+    document.addEventListener('click', e => {
+        var sr = document.getElementById('mhSearchResults');
+        if (!sr.contains(e.target) &&
+            e.target.id !== 'mhSearchBox' &&
+            !e.target.classList.contains('infra-btn')) {
+            sr.style.display = 'none';
+        }
+    });
+
+    // IMAGE MODAL
+    function openImageModal(src) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+
+        modalImg.src = src;
+        modal.style.display = "flex";
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none";
+    }
+
+    // Prevent closing when clicking actual image
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("modalImage").addEventListener("click", e => {
+            e.stopPropagation();
+        });
+    });
 </script>

@@ -23,8 +23,18 @@ namespace AssetManagement.Controllers
         }
 
         [HttpPost]
+        [RequestSizeLimit(104857600)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
         public IActionResult Upload(IFormFile file)
         {
+            Console.WriteLine($"File is null: {file == null}");
+
+            if (file != null)
+            {
+                Console.WriteLine($"File name: {file.FileName}");
+                Console.WriteLine($"File size: {file.Length}");
+            }
+
             if (file == null || file.Length == 0)
                 return BadRequest("No file selected.");
 

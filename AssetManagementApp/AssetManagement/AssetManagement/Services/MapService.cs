@@ -21,6 +21,9 @@ namespace AssetManagement.Services
                     MATERIAL,
                     InspectedL  AS InspectedLength,
                     InspectedD  AS InspectedDate,
+                    X, 
+                    Y,
+                    DESDATE,
                     STR_SCORE,
                     STR_GRADE,
                     SER_SCORE,
@@ -143,10 +146,14 @@ namespace AssetManagement.Services
                 {
                     OBJ_PK = segId,
                     Geometry = (string)geo.GeometryWKT,
+
                     STR_SCORE = geo.STR_SCORE,
                     STR_GRADE = geo.STR_GRADE,
                     SER_SCORE = geo.SER_SCORE,
-                    SER_GRADE = geo.SER_GRADE
+                    SER_GRADE = geo.SER_GRADE,
+                    DesDate = geo.DESDATE,
+                    XCoord = geo.X,
+                    YCoord = geo.Y
                 });
 
                 dbLookup.TryGetValue(segId, out var dbRows);

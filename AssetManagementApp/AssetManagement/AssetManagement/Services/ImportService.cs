@@ -18,7 +18,7 @@ namespace AssetManagement.Services
 
         public ImportResult ImportGeoJson(string geoJson)
         {
-            EnsureGeoJsonTableExists();
+            RecreateGeoJsonTable();
 
             var reader = new GeoJsonReader();
             var features = reader.Read<FeatureCollection>(geoJson);
@@ -52,21 +52,22 @@ namespace AssetManagement.Services
             };
         }
 
-        private void EnsureGeoJsonTableExists()
+        private void RecreateGeoJsonTable()
         {
             _db.Execute(@"
-                IF OBJECT_ID('GEOJSON', 'U') IS NULL
-                BEGIN
-                    CREATE TABLE GEOJSON
-                    (
-                        GEO_PK INT IDENTITY(1,1) PRIMARY KEY,
-                        SEGID NVARCHAR(100) NOT NULL UNIQUE,
-                        GEOMETRY_DATA geometry NOT NULL,
-                        DATE_IMPORTED DATETIME DEFAULT GETDATE()
-                    )
-                END
+                IF OBJECT_ID('GEOJSON', 'U') IS NOT NULL
+                    DROP TABLE GEOJSON;
+
+                CREATE TABLE GEOJSON
+                (
+                    GEO_PK INT IDENTITY(1,1) PRIMARY KEY,
+                    SEGID NVARCHAR(100) NOT NULL UNIQUE,
+                    GEOMETRY_DATA geometry NOT NULL,
+                    DATE_IMPORTED DATETIME DEFAULT GETDATE()
+                )
             ");
         }
+
         private List<string> ExtractProperties(FeatureCollection features)
         {
             var props = new List<string>();

@@ -6,10 +6,12 @@ namespace AssetManagement.Controllers
     public class MapController : Controller
     {
         private readonly MapService _mapService;
+        private readonly ManholeService _manholeService;
 
-        public MapController(MapService mapService)
+        public MapController(MapService mapService, ManholeService manholeService)
         {
             _mapService = mapService;
+            _manholeService = manholeService;
         }
 
         public IActionResult Index()
@@ -32,6 +34,13 @@ namespace AssetManagement.Controllers
             {
                 return StatusCode(500, ex.ToString());
             }
+        }
+
+        [HttpGet]
+        public IActionResult GetManholeData()
+        {
+            var data = _manholeService.GetManholeData();
+            return Json(data);
         }
 
         [HttpGet]

@@ -22,10 +22,6 @@ namespace AssetManagement.Services
                     GEOMETRY_DATA.STAsText() AS GeometryWKT,
                     [DEPTH],
                     INVINL1, INLORIG1,
-                    INVINL2, INLORIG2,
-                    INVINL3, INLORIG3,
-                    INVINL4, INLORIG4,
-                    INVINL5, INLORIG5,
                     INVOUT1, OUTDEST1,
                     INVOUT2, OUTDEST2,
                     TYPE_,
@@ -41,6 +37,7 @@ namespace AssetManagement.Services
                     P_COVLEVEL,
                     P_DEPTH,
                     P_INVINL1
+
                 FROM MGEOJSON
                 WHERE GEOMETRY_DATA IS NOT NULL
             ").ToList();
@@ -60,7 +57,7 @@ namespace AssetManagement.Services
             var manIds = geoByManId.Keys.ToList();
             string manIdList = string.Join(",", manIds.Select(id => $"'{id}'"));
 
-            // NODE — material / situation / street (keyed by OBJ_Key = MANID) ──
+            // NODE — material / situation / street (keyed by OBJ_Key = MANID) 
             var nodeByManId = new Dictionary<string, dynamic>(StringComparer.OrdinalIgnoreCase);
             if (manIds.Any())
             {
@@ -256,21 +253,20 @@ namespace AssetManagement.Services
 
                 bool isInspected = orderedInsp.Any();
 
-                // Inlets / outlets from MGEOJSON
                 var inlets = new[]
                 {
-                    new { InvLevel = TryDouble(geo.INVINL1), Origin = Convert.ToString(geo.INLORIG1 ?? "") },
-                    new { InvLevel = TryDouble(geo.INVINL2), Origin = Convert.ToString(geo.INLORIG2 ?? "") },
-                    new { InvLevel = TryDouble(geo.INVINL3), Origin = Convert.ToString(geo.INLORIG3 ?? "") },
-                    new { InvLevel = TryDouble(geo.INVINL4), Origin = Convert.ToString(geo.INLORIG4 ?? "") },
-                    new { InvLevel = TryDouble(geo.INVINL5), Origin = Convert.ToString(geo.INLORIG5 ?? "") },
-                }.Where(x => x.InvLevel != null || !string.IsNullOrEmpty(x.Origin)).ToList();
+                    new { Index = 1, InvLevel = TryDouble(geo.INVINL1), Origin = Convert.ToString(geo.INLORIG1 ?? "") }
+                }
+                .Where(x => (x.InvLevel != null && x.InvLevel != 0) || !string.IsNullOrEmpty(x.Origin))
+                .ToList();
 
                 var outlets = new[]
                 {
-                    new { InvLevel = TryDouble(geo.INVOUT1), Dest = Convert.ToString(geo.OUTDEST1 ?? "") },
-                    new { InvLevel = TryDouble(geo.INVOUT2), Dest = Convert.ToString(geo.OUTDEST2 ?? "") },
-                }.Where(x => x.InvLevel != null || !string.IsNullOrEmpty(x.Dest)).ToList();
+                    new { Index = 1, InvLevel = TryDouble(geo.INVOUT1), Dest = Convert.ToString(geo.OUTDEST1 ?? "") },
+                    new { Index = 2, InvLevel = TryDouble(geo.INVOUT2), Dest = Convert.ToString(geo.OUTDEST2 ?? "") },
+                }
+                .Where(x => (x.InvLevel != null && x.InvLevel != 0) || !string.IsNullOrEmpty(x.Dest))
+                .ToList();
 
                 summary.Add(new
                 {
@@ -309,7 +305,21 @@ namespace AssetManagement.Services
         private static double? TryDouble(object val)
         {
             if (val == null) return null;
-            return double.TryParse(Convert.ToString(val), out double d) ? d : (double?)null;
+            var str = Convert.ToString(val).Trim();
+            if (string.IsNullOrWhiteSpace(str)) return null;
+
+            // 1. Try invariant with dot decimal only (no thousands separator)
+            if (double.TryParse(str, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double d))
+                return d;
+
+            // 2. Comma is decimal separator — replace and retry
+            var normalized = str.Replace(',', '.');
+            if (double.TryParse(normalized, System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out double d2))
+                return d2;
+
+            return null;
         }
     }
 }
