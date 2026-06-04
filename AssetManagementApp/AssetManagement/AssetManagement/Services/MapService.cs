@@ -28,6 +28,16 @@ namespace AssetManagement.Services
                     STR_GRADE,
                     SER_SCORE,
                     SER_GRADE,
+                    Expected,
+                    AGE, 
+                    ConditionR,
+                    RemainingUL,
+                    DisposalD,
+                    DisposalY,
+                    AdjustedBRE,
+                    Impairment,
+                    CurrentRV,
+                    DepreciatedRV,
                     GEOMETRY_DATA.STAsText() AS GeometryWKT
                 FROM GEOJSON
                 WHERE GEOMETRY_DATA IS NOT NULL
@@ -153,7 +163,17 @@ namespace AssetManagement.Services
                     SER_GRADE = geo.SER_GRADE,
                     DesDate = geo.DESDATE,
                     XCoord = geo.X,
-                    YCoord = geo.Y
+                    YCoord = geo.Y,
+                    Expected = geo.Expected, 
+                    Age = geo.AGE,
+                    ConditionR = geo.ConditionR,
+                    RemainingUL = geo.RemainingUL,
+                    DisposalDate = geo.DisposalD,
+                    DisposalYear = geo.DisposalY,
+                    AdjustedBusinessRiskExpense = geo.AdjustedBRE,
+                    Impairment = geo.Impairment,
+                    CurrentReplacementValue = geo.CurrentRV,
+                    DepreciatedReplacementValue = geo.DepreciatedRV
                 });
 
                 dbLookup.TryGetValue(segId, out var dbRows);

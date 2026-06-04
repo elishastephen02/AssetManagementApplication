@@ -448,9 +448,26 @@
     </div>
 
     <!-- Asset management summary panel -->
-    <div class="infra-panel" id="summaryPanel" style="max-height: 450px; overflow-y: auto; padding-right: 4px;">
+    <div class="infra-panel" id="summaryPanel" style="max-height:450px; overflow-y:auto; padding-right:4px;">
         <h3 class="infra-title">Asset Management</h3>
-        <div id="summaryTable"></div>
+        <div style="display:flex; gap:20px; align-items:flex-start;">
+            <!-- Table -->
+            <div id="summaryTable" style="flex:1;"></div>
+        </div>
+    </div>
+
+    <div class="infra-panel" style="margin-top:15px;">
+        <h3 class="infra-title">Condition Overview</h3>
+        <div style="display:flex; gap:20px; align-items:flex-start;">
+            <!-- LEFT: Gauge -->
+            <div style="width:280px; flex-shrink:0;">
+                <div id="conditionGaugeContainer"></div>
+            </div>
+            <!-- RIGHT: Chart -->
+            <div style="flex:1;">
+                <canvas id="lifeCycleChart" style="max-height:300px; width:100%;"></canvas>
+            </div>
+        </div>
     </div>
 
     <div class="infra-panel" id="inspectionPanel">
@@ -465,6 +482,7 @@
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
@@ -875,24 +893,38 @@
         let fmt = v => (v != null && v !== "") ? v : "N/A";
 
         let rows = [
-            ["Pipe ID", fmt(pipe.Id)],
+            ["Asset ID", fmt(pipe.Id)],
 
-            ["Des Date", fmt(section?.DesDate)],
-            ["Des Year", section?.DesDate ? new Date(section.DesDate).getFullYear() : "N/A"],
+            ["Acquisition Date", fmt(section?.DesDate)],
+            ["Acquisition Year",
+                section?.DesDate
+                    ? new Date(section.DesDate).getFullYear()
+                    : "N/A"],
 
-            ["Condition Rating", "N/A"],
-            ["Expected Useful Life", "N/A"],
-            ["Remaining Useful Life", "N/A"],
-            ["Disposal Date", "N/A"],
-            ["Disposal Year", "N/A"],
-            ["Adjusted Business Risk", "N/A"],
-            ["Impairment", "N/A"],
+            ["Condition Rating", fmt(section?.ConditionR)],
+            ["Expected Useful Life", fmt(section?.Expected)],
+            ["Remaining Useful Life", fmt(section?.RemainingUL)],
+            ["Age", fmt(section?.Age)],
+
+            ["Disposal Date", fmt(section?.DisposalDate)],
+            ["Disposal Year",
+                section?.DisposalDate
+                    ? new Date(section.DisposalDate).getFullYear()
+                    : "N/A"],
+
+            ["Adjusted Business Risk Expense",
+                fmt(section?.AdjustedBusinessRiskExpense)],
+
+            ["Impairment", fmt(section?.Impairment)],
 
             ["X Coordinate", fmt(section?.XCoord)],
             ["Y Coordinate", fmt(section?.YCoord)],
 
-            ["Current Replacement Value", "N/A"],
-            ["Depreciated Value", "N/A"]
+            ["Current Replacement Value",
+                fmt(section?.CurrentReplacementValue)],
+
+            ["Depreciated Replacement Value",
+                fmt(section?.DepreciatedReplacementValue)]
         ];
 
         let html = `
@@ -913,6 +945,141 @@
         html += `</div>`;
 
         document.getElementById("summaryTable").innerHTML = html;
+
+        // CONDITION VALUE (from DB)
+        let conditionValue = parseFloat(section?.ConditionR);
+        if (isNaN(conditionValue)) conditionValue = 0;
+        renderConditionGauge(conditionValue);
+
+        // AGE (from DB)
+        const age = parseFloat(section?.Age);
+        const pipeAge = isNaN(age) ? 0 : age;
+
+        // EXPECTED LIFE
+        const maxLife = 80;
+
+        // RED LINE slope
+        const slope = -100 / maxLife;
+
+        // Start point
+        const x0 = pipeAge;
+        const y0 = conditionValue;
+
+        // Solve for x when y = 0:  y0 + slope * (endX - x0) = 0
+        // endX = x0 - (y0 / slope)
+        const projectedEndX = x0 - (y0 / slope);
+        const projectedEndY = 0;
+
+        const expectedUsefulLife = Math.round(projectedEndX);
+
+        const canvas = document.getElementById("lifeCycleChart");
+
+        if (canvas) {
+            const ctx = canvas.getContext("2d");
+
+            if (window.lifeChart && typeof window.lifeChart.destroy === "function") {
+                window.lifeChart.destroy();
+            }
+
+            window.lifeChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+
+                        // RED: expected deterioration line
+                        {
+                            label: "Expected Condition Line",
+                            type: "line",
+                            data: [
+                                { x: 0, y: 100 },
+                                { x: maxLife, y: 0 }
+                            ],
+                            borderColor: "red",
+                            backgroundColor: "red",   
+                            borderWidth: 1, 
+                            pointRadius: 0,
+                            pointStyle: 'rect'
+                        },
+
+                        // BLUE: actual pipe state
+                        {
+                            label: "Current Pipe Condition",
+                            type: "scatter",
+                            data: [
+                                { x: pipeAge, y: conditionValue }
+                            ],
+                            pointBackgroundColor: "blue",
+                            pointRadius: 6,
+                            pointStyle: 'circle'
+                        },
+
+                        // GREEN: parallel projection line
+                        {
+                            label: "Condition Projection",
+                            type: "line",
+                            data: [
+                                { x: x0, y: y0 },
+                                { x: projectedEndX, y: projectedEndY }  
+                            ],
+                            borderColor: "green",
+                            backgroundColor: "green", 
+                            borderWidth: 1, 
+                            pointRadius: 0,
+                            pointStyle: 'rect', 
+                        },
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                usePointStyle: true, 
+                                boxWidth: 8,  
+                                boxHeight: 8,
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Expected Useful Life (Years)"
+                            },
+                            min: 0,
+                            max: 120   // fixed as you specified
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: "Condition (%)"
+                            },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'usefulLifeLabel',
+                    afterDraw(chart) {
+                        const ctx = chart.ctx;
+                        const xScale = chart.scales.x;
+                        const yScale = chart.scales.y;
+
+                        const labelX = xScale.getPixelForValue(projectedEndX);
+                        const labelY = yScale.getPixelForValue(10);
+
+                        ctx.save();
+                        ctx.fillStyle = 'green';
+                        ctx.font = 'bold 12px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`EUL: ${expectedUsefulLife} yrs`, labelX, labelY);
+                        ctx.restore();
+                    }
+                }]
+            });
+        }
     }
     // FILTER PIPES
     function filterPipes(filter, btn) {
@@ -1261,24 +1428,20 @@
         const obs = (insp?.Observations || []);
         const totalLength = parseFloat(insp?.InspectedLength || item?.InspectedLength || 0);
 
-        const upNode = item?.UpstreamNode || "MH-UP";
-        const downNode = item?.DownstreamNode || "MH-DN";
+        const upNode = item?.UpstreamNode || "Upstream";
+        const downNode = item?.DownstreamNode || "Downstream";
 
         const material = item?.Material || "—";
         const diameter = item?.PipeDiameter ? item.PipeDiameter + " mm" : "—";
         const address = item?.Address || "—";
 
         const SVG_W = 1400;
-        let SVG_H = 900;
-        SVG_H += obs.length * 90;
 
         const MH_R = 28;
 
-        // Pipe positions
         const START_X = 100;
         const END_X = 1180;
 
-        // slight downward angle
         const START_Y = 170;
         const END_Y = 240;
 
@@ -1295,14 +1458,7 @@
 
         function posToX(metres) {
             if (!totalLength) return START_X;
-
             return START_X + ((parseFloat(metres) || 0) / totalLength) * (END_X - START_X);
-        }
-
-        function posToY(metres) {
-            if (!totalLength) return START_Y;
-
-            return START_Y + ((parseFloat(metres) || 0) / totalLength) * (END_Y - START_Y);
         }
 
         function obsColor(code) {
@@ -1320,76 +1476,48 @@
 
         function gradeColor(g) {
             const n = parseFloat(g);
-
             if (isNaN(n)) return "#555";
 
-            return n >= 4
-                ? "#A32D2D"
-                : n >= 3
-                    ? "#854F0B"
-                    : "#3B6D11";
+            return n >= 4 ? "#A32D2D"
+                : n >= 3 ? "#854F0B"
+                : "#3B6D11";
         }
 
         function gradeBg(g) {
             const n = parseFloat(g);
-
             if (isNaN(n)) return "#f0f0f0";
 
-            return n >= 4
-                ? "#FCEBEB"
-                : n >= 3
-                    ? "#FAEEDA"
-                    : "#EAF3DE";
+            return n >= 4 ? "#FCEBEB"
+                : n >= 3 ? "#FAEEDA"
+                : "#EAF3DE";
         }
-
-        const getRank = (code) => {
-            code = (code || "").toUpperCase();
-
-            if (code === "START" || code === "MH") return 0;
-            if (code === "WL") return 1;
-            return 2;
-        };
-
-        const sortedObs = [...obs].sort((a, b) => {
-            const codeA = (a.Code || "").toUpperCase();
-            const codeB = (b.Code || "").toUpperCase();
-
-            const rankA = getRank(codeA);
-            const rankB = getRank(codeB);
-
-            const distA = parseFloat(a.Distance) || 0;
-            const distB = parseFloat(b.Distance) || 0;
-
-            // 1. STRICT priority first (this fixes your flip issue)
-            if (rankA !== rankB) return rankA - rankB;
-
-            // 2. THEN distance
-            if (distA !== distB) return distA - distB;
-
-            return 0;
-        });
 
         let obsSvg = "";
 
-        sortedObs.forEach((o, idx) => {
+        let yCursor = OBS_START_Y;
+
+        obs.forEach((o) => {
 
             const x = posToX(o.Distance);
-            const y = posToY(o.Distance);
+            const y = START_Y + ((parseFloat(o.Distance) || 0) / totalLength) * (END_Y - START_Y);
 
             const color = obsColor(o.Code);
 
-            const desc = (o.Observation || "No description")
-                .replace(/</g, "&lt;");
+            const desc = (o.Observation || "No description").replace(/</g, "&lt;");
 
-            const image = (o.Media || [])
-                .find(m => /\.(jpg|jpeg|png)$/i.test(m.FileName || ""));
+            const images = (o.Media || []).filter(m =>
+                /\.(jpg|jpeg|png)$/i.test(m.FileName || "")
+            );
 
-            const imageHref = image
-                ? `/Map/GetImage?fileName=${encodeURIComponent(image.FileName)}`
-                : null;
+            const hasImage = images.length > 0;
 
-            const ROW_HEIGHT = 170;
-            const labelY = OBS_START_Y + (idx * ROW_HEIGHT);
+            const ROW_BASE = 120;
+            const IMG_SPACE = hasImage ? 80 : 0;
+            const ROW_GAP = 50;
+
+            const rowHeight = ROW_BASE + IMG_SPACE + ROW_GAP;
+
+            const labelY = yCursor;
 
             // leader line
             obsSvg += `
@@ -1404,7 +1532,7 @@
                 />
             `;
 
-            // pipe defect marker
+            // defect marker
             obsSvg += `
                 <circle
                     cx="${x}"
@@ -1418,264 +1546,255 @@
 
             // code pill
             obsSvg += `
-                <rect
-                    x="${x - 18}"
-                    y="${labelY - 14}"
-                    width="36"
-                    height="18"
-                    rx="6"
-                    fill="${color}"
-                    opacity="0.15"
-                />
+                <rect x="${x - 18}" y="${labelY - 14}" width="36" height="18"
+                      rx="6" fill="${color}" opacity="0.15"/>
 
-                <text
-                    x="${x}"
-                    y="${labelY - 1}"
-                    text-anchor="middle"
-                    font-size="10"
-                    font-weight="700"
-                    fill="${color}">
+                <text x="${x}" y="${labelY - 1}"
+                      text-anchor="middle"
+                      font-size="10"
+                      font-weight="700"
+                      fill="${color}">
                     ${(o.Code || "").substring(0, 5)}
                 </text>
             `;
 
             // distance
             obsSvg += `
-                <text
-                    x="${x}"
-                    y="${labelY + 18}"
-                    text-anchor="middle"
-                    font-size="10"
-                    fill="#777">
+                <text x="${x}" y="${labelY + 18}"
+                      text-anchor="middle"
+                      font-size="10"
+                      fill="#777">
                     ${(parseFloat(o.Distance || 0)).toFixed(2)}m
                 </text>
             `;
 
             // description
             obsSvg += `
-                <foreignObject
-                    x="${x - 70}"
-                    y="${labelY + 24}"
-                    width="140"
-                    height="50">
-
+                <foreignObject x="${x - 70}" y="${labelY + 30}" width="140" height="60">
                     <div xmlns="http://www.w3.org/1999/xhtml"
-                         style="
-                            font-size:11px;
-                            text-align:center;
-                            color:#333;
-                            line-height:1.3;
-                            font-family:sans-serif;
-                         ">
+                         style="font-size:11px;text-align:center;color:#333;line-height:1.3;">
                         ${desc.length > 60 ? desc.substring(0, 60) + "…" : desc}
                     </div>
-
                 </foreignObject>
             `;
 
-            // grade badge
+            // grade
             if (o.Grade != null) {
-
                 obsSvg += `
-                    <rect
-                        x="${x - 14}"
-                        y="${labelY + 78}"
-                        width="28"
-                        height="18"
-                        rx="8"
-                        fill="${gradeBg(o.Grade)}"
-                    />
+                    <rect x="${x - 14}" y="${labelY + 90}"
+                          width="28" height="18" rx="8"
+                          fill="${gradeBg(o.Grade)}"/>
 
-                    <text
-                        x="${x}"
-                        y="${labelY + 91}"
-                        text-anchor="middle"
-                        font-size="10"
-                        font-weight="700"
-                        fill="${gradeColor(o.Grade)}">
+                    <text x="${x}" y="${labelY + 103}"
+                          text-anchor="middle"
+                          font-size="10"
+                          font-weight="700"
+                          fill="${gradeColor(o.Grade)}">
                         ${o.Grade}
                     </text>
                 `;
             }
 
-            // image directly underneath
-            if (imageHref) {
+            // images (STACKED properly)
+            if (hasImage) {
+                images.forEach((img, i) => {
+                    const imgY = labelY + 140 + (i * 75);
 
-                obsSvg += `
-                    <a href="javascript:void(0)"
-                       onclick="openImageModal('${imageHref}')">
+                    const href = `/Map/GetImage?fileName=${encodeURIComponent(img.FileName)}`;
 
-                        <image
-                            href="${imageHref}"
-                            x="${x - 55}"
-                            y="${labelY + 150}"
-                            height="60"
-                            width="110"
-                            preserveAspectRatio="xMidYMid slice"
-                            style="cursor:pointer;"
-                        />
-
-                        <rect
-                            x="${x - 55}"
-                            y="${labelY + 150}"
-                            height="60"
-                            width="110"
-                            rx="6"
-                            fill="transparent"
-                            stroke="#ccc"
-                            stroke-width="1"
-                        />
-                    </a>
-                `;
+                    obsSvg += `
+                        <a href="javascript:void(0)" onclick="openImageModal('${href}')">
+                            <image
+                                href="${href}"
+                                x="${x - 55}"
+                                y="${imgY}"
+                                width="110"
+                                height="60"
+                                preserveAspectRatio="xMidYMid slice"
+                                style="cursor:pointer;"
+                            />
+                            <rect
+                                x="${x - 55}"
+                                y="${imgY}"
+                                width="110"
+                                height="60"
+                                fill="transparent"
+                                stroke="#ccc"
+                            />
+                        </a>
+                    `;
+                });
             }
+
+            // advance cursor (CRITICAL FIX)
+            yCursor += rowHeight;
         });
 
-        return `
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="100%"
-            viewBox="0 0 ${SVG_W} ${SVG_H}"
-            style="font-family:sans-serif;display:block;overflow:visible;">
+        const SVG_H = Math.max(900, yCursor + 200);
 
-            <!-- Header -->
+        return `
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="100%"
+             viewBox="0 0 ${SVG_W} ${SVG_H}"
+             style="font-family:sans-serif;display:block;overflow:visible;">
+
+            <!-- HEADER -->
             <rect x="0" y="0" width="${SVG_W}" height="48" fill="#1a56db" rx="8"/>
 
-            <text
-                x="18"
-                y="18"
-                font-size="10"
-                font-weight="700"
-                fill="#dbeafe">
+            <text x="18" y="18" font-size="10" font-weight="700" fill="#dbeafe">
                 CCTV INSPECTION
             </text>
 
-            <text
-                x="18"
-                y="35"
-                font-size="11"
-                fill="#bfdbfe">
+            <text x="18" y="35" font-size="11" fill="#bfdbfe">
                 ${address} · ${material} · Ø ${diameter}
             </text>
 
-            <text
-                x="${SVG_W - 18}"
-                y="28"
-                text-anchor="end"
-                font-size="11"
-                fill="#bfdbfe">
+            <text x="${SVG_W - 18}" y="28"
+                  text-anchor="end"
+                  font-size="11"
+                  fill="#bfdbfe">
                 ${totalLength} m
             </text>
 
-            <!-- Pipe walls -->
-            <line
-                x1="${START_X}"
-                y1="${PIPE_TOP_START}"
-                x2="${END_X}"
-                y2="${PIPE_TOP_END}"
-                stroke="#cfcfcf"
-                stroke-width="${PIPE_WALL}"
-                stroke-linecap="round"
-            />
+            <!-- PIPE -->
+            <line x1="${START_X}" y1="${PIPE_TOP_START}"
+                  x2="${END_X}" y2="${PIPE_TOP_END}"
+                  stroke="#cfcfcf" stroke-width="${PIPE_WALL}" />
 
-            <line
-                x1="${START_X}"
-                y1="${PIPE_BOTTOM_START}"
-                x2="${END_X}"
-                y2="${PIPE_BOTTOM_END}"
-                stroke="#cfcfcf"
-                stroke-width="${PIPE_WALL}"
-                stroke-linecap="round"
-            />
+            <line x1="${START_X}" y1="${PIPE_BOTTOM_START}"
+                  x2="${END_X}" y2="${PIPE_BOTTOM_END}"
+                  stroke="#cfcfcf" stroke-width="${PIPE_WALL}" />
 
-            <!-- Flow direction -->
-            <defs>
-                <marker id="flowArrow"
-                        viewBox="0 0 10 10"
-                        refX="8"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
-                        orient="auto">
-
-                    <path
-                        d="M 0 0 L 10 5 L 0 10 z"
-                        fill="#1a56db"/>
-                </marker>
-            </defs>
-
-            <line
-                x1="${START_X + 40}"
-                y1="${START_Y}"
-                x2="${END_X - 40}"
-                y2="${END_Y}"
-                stroke="#1a56db"
-                stroke-width="2"
-                opacity="0.35"
-                marker-end="url(#flowArrow)"
-            />
-
-            <!-- Observations -->
+            <!-- OBS -->
             ${obsSvg}
 
-            <!-- Upstream MH -->
-            <circle
-                cx="${START_X}"
-                cy="${START_Y}"
-                r="${MH_R}"
-                fill="#f3f4f6"
-                stroke="#555"
-                stroke-width="2"
-            />
+            <!-- Upstream MH --> 
+            <circle cx="${START_X}" 
+                cy="${START_Y}" 
+                r="${MH_R}" 
+                fill="#f3f4f6" 
+                stroke="#555" 
+                stroke-width="2" /> 
+                
+            <text x="${START_X}" 
+                y="${START_Y - 5}" 
+                text-anchor="middle" 
+                font-size="10" 
+                font-weight="700" 
+                fill="#333"> MH </text> 
+                
+                <text x="${START_X}" 
+                    y="${START_Y + 10}" 
+                    text-anchor="middle" 
+                    font-size="9" 
+                    fill="#555"> ${upNode} </text> 
+                    
+            <!-- Downstream MH --> 
+            <circle cx="${END_X}" 
+                cy="${END_Y}" 
+                r="${MH_R}" 
+                fill="#f3f4f6" 
+                stroke="#555" 
+                stroke-width="2" /> 
 
-            <text
-                x="${START_X}"
-                y="${START_Y - 5}"
-                text-anchor="middle"
-                font-size="10"
-                font-weight="700"
-                fill="#333">
-                MH
-            </text>
-
-            <text
-                x="${START_X}"
-                y="${START_Y + 10}"
-                text-anchor="middle"
-                font-size="9"
-                fill="#555">
-                ${upNode}
-            </text>
-
-            <!-- Downstream MH -->
-            <circle
-                cx="${END_X}"
-                cy="${END_Y}"
-                r="${MH_R}"
-                fill="#f3f4f6"
-                stroke="#555"
-                stroke-width="2"
-            />
-
-            <text
-                x="${END_X}"
-                y="${END_Y - 5}"
-                text-anchor="middle"
-                font-size="10"
-                font-weight="700"
-                fill="#333">
-                MH
-            </text>
-
-            <text
-                x="${END_X}"
-                y="${END_Y + 10}"
-                text-anchor="middle"
-                font-size="9"
-                fill="#555">
-                ${downNode}
-            </text>
+            <text x="${END_X}" 
+                y="${END_Y - 5}" 
+                text-anchor="middle" 
+                font-size="10" 
+                font-weight="700" 
+                fill="#333"> MH </text> 
+                
+            <text x="${END_X}" 
+                y="${END_Y + 10}" 
+                text-anchor="middle" 
+                font-size="9" 
+                fill="#555"> ${downNode} </text>
 
         </svg>`;
+    }
+
+    function renderConditionGauge(percent) {
+        // If no value is provided, don't guess (use 0 or show blank state)
+        if (percent === undefined || percent === null || isNaN(percent)) {
+            percent = 0;
+        }
+
+        // clamp between 0 and 100
+        percent = Math.max(0, Math.min(100, percent));
+
+        const radius = 90;
+        const circumference = Math.PI * radius;
+
+        const progress = circumference * (percent / 100);
+        const offset = circumference - progress;
+
+        let color = "#28a745";
+
+        if (percent >= 70) {
+            color = "#dc3545"; // bad condition (high rating)
+        } 
+        else if (percent >= 30) {
+            color = "#ffc107"; // medium condition
+        } 
+        else {
+            color = "#28a745"; // good condition (low rating)
+        }
+
+        document.getElementById("conditionGaugeContainer").innerHTML = `
+            <div style="text-align:center;">
+
+                <svg width="240" height="140" viewBox="0 0 240 140">
+
+                    <!-- Background arc -->
+                    <path
+                        d="M30 120 A90 90 0 0 1 210 120"
+                        fill="none"
+                        stroke="#e5e7eb"
+                        stroke-width="14"
+                        stroke-linecap="round"/>
+
+                    <!-- Progress arc -->
+                    <path
+                        d="M30 120 A90 90 0 0 1 210 120"
+                        fill="none"
+                        stroke="${color}"
+                        stroke-width="14"
+                        stroke-linecap="round"
+                        stroke-dasharray="${circumference}"
+                        stroke-dashoffset="${offset}"/>
+
+                    <!-- Percentage -->
+                    <text x="120"
+                          y="95"
+                          text-anchor="middle"
+                          font-size="34"
+                          font-weight="700"
+                          fill="${color}">
+                        ${percent}%
+                    </text>
+
+                    <text x="120"
+                          y="118"
+                          text-anchor="middle"
+                          font-size="12"
+                          fill="#666">
+                        Condition Rating
+                    </text>
+
+                </svg>
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    margin-top:-8px;
+                    font-size:12px;
+                    color:#777;">
+                    <span>Poor</span>
+                    <span>Excellent</span>
+                </div>
+
+            </div>
+        `;
     }
 
     // IMAGE MODAL
