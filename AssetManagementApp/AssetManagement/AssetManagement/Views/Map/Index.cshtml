@@ -456,7 +456,7 @@
         </div>
     </div>
 
-    <div class="infra-panel" style="margin-top:15px;">
+    <div id="conditionPanel" class="infra-panel" style="margin-top:15px; display:none;">
         <h3 class="infra-title">Condition Overview</h3>
         <div style="display:flex; gap:20px; align-items:flex-start;">
             <!-- LEFT: Gauge -->
@@ -886,11 +886,20 @@
 
     // SHOW PIPE DETAILS (asset management) 
     function showPipeDetails(pipe, section) {
+        document.getElementById("conditionPanel").style.display = "block";
         document.getElementById("summaryPanel").classList.add("summary-visible");
         document.getElementById("mapPanel").classList.add("map-split");
         setTimeout(() => map.invalidateSize(), 300);
 
         let fmt = v => (v != null && v !== "") ? v : "N/A";
+        let fmtPercent = v => {
+            if (v == null || v === "") return "N/A";
+
+            let n = Number(v);
+            if (!Number.isFinite(n)) return "N/A";
+
+            return `${n.toFixed(2)}%`;
+        };
 
         let rows = [
             ["Asset ID", fmt(pipe.Id)],
@@ -901,7 +910,8 @@
                     ? new Date(section.DesDate).getFullYear()
                     : "N/A"],
 
-            ["Condition Rating", fmt(section?.ConditionR)],
+            ["STR Score", fmt(section?.STR_SCORE)],
+            ["Condition Rating", fmtPercent(section?.ConditionR)],
             ["Expected Useful Life", fmt(section?.Expected)],
             ["Remaining Useful Life", fmt(section?.RemainingUL)],
             ["Age", fmt(section?.Age)],
@@ -915,7 +925,7 @@
             ["Adjusted Business Risk Expense",
                 fmt(section?.AdjustedBusinessRiskExpense)],
 
-            ["Impairment", fmt(section?.Impairment)],
+            ["Impairment", fmtPercent(section?.Impairment)],,
 
             ["X Coordinate", fmt(section?.XCoord)],
             ["Y Coordinate", fmt(section?.YCoord)],
@@ -949,6 +959,7 @@
         // CONDITION VALUE (from DB)
         let conditionValue = parseFloat(section?.ConditionR);
         if (isNaN(conditionValue)) conditionValue = 0;
+
         renderConditionGauge(conditionValue);
 
         // AGE (from DB)
@@ -1039,6 +1050,19 @@
                                 boxWidth: 8,  
                                 boxHeight: 8,
                             }
+                        },
+                        tooltip: {
+                            filter: function(tooltipItem) {
+                                // Only show tooltip for the blue scatter dot (dataset index 1)
+                                return tooltipItem.datasetIndex === 1;
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    const age = context.parsed.x;
+                                    const condition = context.parsed.y;
+                                    return `Age: ${age} yrs | Condition: ${condition}%`;
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -1067,7 +1091,7 @@
                         const xScale = chart.scales.x;
                         const yScale = chart.scales.y;
 
-                        const labelX = xScale.getPixelForValue(projectedEndX);
+                        const labelX = xScale.getPixelForValue(projectedEndX) - 80;
                         const labelY = yScale.getPixelForValue(10);
 
                         ctx.save();
@@ -1713,31 +1737,30 @@
         </svg>`;
     }
 
-    function renderConditionGauge(percent) {
-        // If no value is provided, don't guess (use 0 or show blank state)
-        if (percent === undefined || percent === null || isNaN(percent)) {
-            percent = 0;
+    function renderConditionGauge(condition) {
+        if (condition === undefined || condition === null || isNaN(condition)) {
+            condition = 0;
         }
 
-        // clamp between 0 and 100
-        percent = Math.max(0, Math.min(100, percent));
+        // keep full DB precision (no rounding)
+        condition = Number(condition);
+
+        // only clamp
+        condition = Math.max(0, Math.min(100, condition));
 
         const radius = 90;
         const circumference = Math.PI * radius;
 
-        const progress = circumference * (percent / 100);
+        const progress = circumference * (condition / 100);
         const offset = circumference - progress;
 
-        let color = "#28a745";
-
-        if (percent >= 70) {
-            color = "#dc3545"; // bad condition (high rating)
-        } 
-        else if (percent >= 30) {
-            color = "#ffc107"; // medium condition
-        } 
-        else {
-            color = "#28a745"; // good condition (low rating)
+        let color;
+        if (condition > 70) {
+            color = "#28a745";
+        } else if (condition > 40) {
+            color = "#ffc107";
+        } else {
+            color = "#dc3545";
         }
 
         document.getElementById("conditionGaugeContainer").innerHTML = `
@@ -1745,53 +1768,30 @@
 
                 <svg width="240" height="140" viewBox="0 0 240 140">
 
-                    <!-- Background arc -->
-                    <path
-                        d="M30 120 A90 90 0 0 1 210 120"
-                        fill="none"
-                        stroke="#e5e7eb"
-                        stroke-width="14"
-                        stroke-linecap="round"/>
+                    <path d="M30 120 A90 90 0 0 1 210 120"
+                          fill="none"
+                          stroke="#e5e7eb"
+                          stroke-width="14"
+                          stroke-linecap="round"/>
 
-                    <!-- Progress arc -->
-                    <path
-                        d="M30 120 A90 90 0 0 1 210 120"
-                        fill="none"
-                        stroke="${color}"
-                        stroke-width="14"
-                        stroke-linecap="round"
-                        stroke-dasharray="${circumference}"
-                        stroke-dashoffset="${offset}"/>
+                    <path d="M30 120 A90 90 0 0 1 210 120"
+                          fill="none"
+                          stroke="${color}"
+                          stroke-width="14"
+                          stroke-linecap="round"
+                          stroke-dasharray="${circumference}"
+                          stroke-dashoffset="${offset}"/>
 
-                    <!-- Percentage -->
                     <text x="120"
                           y="95"
                           text-anchor="middle"
                           font-size="34"
                           font-weight="700"
                           fill="${color}">
-                        ${percent}%
-                    </text>
-
-                    <text x="120"
-                          y="118"
-                          text-anchor="middle"
-                          font-size="12"
-                          fill="#666">
-                        Condition Rating
+                        ${condition}%
                     </text>
 
                 </svg>
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    margin-top:-8px;
-                    font-size:12px;
-                    color:#777;">
-                    <span>Poor</span>
-                    <span>Excellent</span>
-                </div>
 
             </div>
         `;
