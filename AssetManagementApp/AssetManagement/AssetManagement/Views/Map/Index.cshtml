@@ -373,7 +373,7 @@
 <div class="infra-container">
     <div class="infra-row">
         <div class="infra-panel infra-col search-panel">
-            <h3 class="infra-title">Search Pipes</h3>
+            <h3 class="infra-title" style="text-align:center;">Search Pipes</h3>
             <input type="text" id="searchBox" class="infra-input" placeholder="Search by pipe ID, name, material or road" />
             <button class="infra-btn" onclick="search()">Search</button>
             <div id="searchResults"></div>
@@ -384,7 +384,7 @@
     <div class="infra-row" id="mapRow" style="align-items: flex-start;">
 
         <div class="infra-panel" id="mapPanel" style="flex: 1;">
-            <h3 class="infra-title">Infrastructure Map</h3>
+            <h3 class="infra-title" style="text-align:center;">Infrastructure Map</h3>
 
             <!-- Stats -->
             <div class="map-stats">
@@ -449,7 +449,7 @@
 
     <!-- Asset management summary panel -->
     <div class="infra-panel" id="summaryPanel" style="max-height:450px; overflow-y:auto; padding-right:4px;">
-        <h3 class="infra-title">Asset Management</h3>
+        <h3 class="infra-title" style="text-align:center;">Asset Management</h3>
         <div style="display:flex; gap:20px; align-items:flex-start;">
             <!-- Table -->
             <div id="summaryTable" style="flex:1;"></div>
@@ -457,7 +457,7 @@
     </div>
 
     <div id="conditionPanel" class="infra-panel" style="margin-top:15px; display:none;">
-        <h3 class="infra-title">Condition Overview</h3>
+         <h3 class="infra-title" style="text-align:center;">Condition Overview</h3>
         <div style="display:flex; gap:20px; align-items:flex-start;">
             <!-- LEFT: Gauge -->
             <div style="width:280px; flex-shrink:0;">
@@ -471,7 +471,7 @@
     </div>
 
     <div class="infra-panel" id="inspectionPanel">
-        <h3 class="infra-title">Inspection Details</h3>
+        <h3 class="infra-title" style="text-align:center;">Inspection Details</h3>
         <div id="accordion" style="max-height: 450px; overflow-y: auto; padding-right: 4px;"></div>
     </div>
 
@@ -969,15 +969,14 @@
         // EXPECTED LIFE
         const maxLife = 80;
 
-        // RED LINE slope
-        const slope = -100 / maxLife;
-
-        // Start point
+        // CURRENT POINT
         const x0 = pipeAge;
         const y0 = conditionValue;
 
-        // Solve for x when y = 0:  y0 + slope * (endX - x0) = 0
-        // endX = x0 - (y0 / slope)
+        // RED LINE slope
+        const slope = -100 / maxLife;
+
+        // Solve for x when y = 0
         const projectedEndX = x0 - (y0 / slope);
         const projectedEndY = 0;
 
@@ -1006,73 +1005,75 @@
                                 { x: maxLife, y: 0 }
                             ],
                             borderColor: "red",
-                            backgroundColor: "red",   
-                            borderWidth: 1, 
-                            pointRadius: 0,
-                            pointStyle: 'rect'
+                            backgroundColor: "red",
+                            borderWidth: 1,
+                            pointRadius: 0
                         },
 
-                        // BLUE: actual pipe state
+                        // BLUE: current pipe condition
                         {
                             label: "Current Pipe Condition",
                             type: "scatter",
                             data: [
-                                { x: pipeAge, y: conditionValue }
+                                { x: x0, y: y0 }
                             ],
                             pointBackgroundColor: "blue",
-                            pointRadius: 6,
-                            pointStyle: 'circle'
+                            pointRadius: 6
                         },
 
-                        // GREEN: parallel projection line
+                        // GREEN: COMBINED PROJECTION (both directions)
                         {
                             label: "Condition Projection",
                             type: "line",
                             data: [
+                                // direction 1 (up to ideal condition)
                                 { x: x0, y: y0 },
-                                { x: projectedEndX, y: projectedEndY }  
+                                { x: 0, y: 100 },
+
+                                // direction 2 (down to failure point)
+                                { x: x0, y: y0 },
+                                { x: projectedEndX, y: 0 }
                             ],
                             borderColor: "green",
-                            backgroundColor: "green", 
-                            borderWidth: 1, 
+                            backgroundColor: "green",
+                            borderWidth: 1,
                             pointRadius: 0,
-                            pointStyle: 'rect', 
-                        },
+                            tension: 0
+                        }
                     ]
                 },
+
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+
                     plugins: {
                         legend: {
                             labels: {
-                                usePointStyle: true, 
-                                boxWidth: 8,  
-                                boxHeight: 8,
+                                usePointStyle: true
                             }
                         },
+
                         tooltip: {
-                            filter: function(tooltipItem) {
-                                // Only show tooltip for the blue scatter dot (dataset index 1)
+                            filter: function (tooltipItem) {
                                 return tooltipItem.datasetIndex === 1;
                             },
                             callbacks: {
-                                label: function(context) {
-                                    const age = context.parsed.x;
-                                    const condition = context.parsed.y;
-                                    return `Age: ${age} yrs | Condition: ${condition}%`;
+                                label: function (context) {
+                                    return `Age: ${context.parsed.x} yrs | Condition: ${context.parsed.y}%`;
                                 }
                             }
                         }
                     },
+
                     scales: {
                         x: {
                             title: {
                                 display: true,
-                                text: "Expected Useful Life (Years)"
+                                text: "Age (Years)"
                             },
                             min: 0,
-                            max: 120   // fixed as you specified
+                            max: 120
                         },
                         y: {
                             title: {
@@ -1084,6 +1085,7 @@
                         }
                     }
                 },
+
                 plugins: [{
                     id: 'usefulLifeLabel',
                     afterDraw(chart) {
@@ -1105,6 +1107,7 @@
             });
         }
     }
+
     // FILTER PIPES
     function filterPipes(filter, btn) {
         document.querySelectorAll('.map-control-btn').forEach(b => b.classList.remove('active'));
