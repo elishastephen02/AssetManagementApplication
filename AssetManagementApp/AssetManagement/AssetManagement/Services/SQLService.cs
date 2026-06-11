@@ -17,37 +17,55 @@ namespace AssetManagement.Services
             using var conn = new SqlConnection(_connectionString);
             conn.Open();
 
-            // Drop table if exists
-            var dropCmd = new SqlCommand(
-                $"IF OBJECT_ID('{tableName}', 'U') IS NOT NULL DROP TABLE [{tableName}]",
-                conn);
-            dropCmd.ExecuteNonQuery();
+            // Get existing SQL table columns
+            var existingColumns = new List<string>();
 
-            // Create table
-            var columnsSql = string.Join(", ",
-                data.Columns.Cast<DataColumn>()
-                .Select(c => $"[{c.ColumnName}] NVARCHAR(MAX)")
-            );
+            using (var cmd = new SqlCommand(@"
+                SELECT COLUMN_NAME
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = @TableName", conn))
+            {
+                cmd.Parameters.AddWithValue("@TableName", tableName);
 
-            var createCmd = new SqlCommand(
-                $"CREATE TABLE [{tableName}] ({columnsSql})",
-                conn);
+                using var reader = cmd.ExecuteReader();
 
-            createCmd.ExecuteNonQuery();
+                while (reader.Read())
+                {
+                    existingColumns.Add(reader.GetString(0));
+                }
+            }
 
-            // Insert data
+            // Keep only columns that exist in SQL Server
+            var validColumns = data.Columns.Cast<DataColumn>()
+                .Where(c => existingColumns.Contains(c.ColumnName))
+                .ToList();
+
+            if (!validColumns.Any())
+            {
+                throw new Exception($"No matching columns found in table {tableName}");
+            }
+
             foreach (DataRow row in data.Rows)
             {
-                var colNames = string.Join(",", data.Columns.Cast<DataColumn>().Select(c => $"[{c.ColumnName}]"));
-                var paramNames = string.Join(",", data.Columns.Cast<DataColumn>().Select(c => $"@{c.ColumnName}"));
+                var colNames = string.Join(",",
+                    validColumns.Select(c => $"[{c.ColumnName}]"));
 
-                var insertCmd = new SqlCommand(
-                    $"INSERT INTO [{tableName}] ({colNames}) VALUES ({paramNames})",
-                    conn);
+                var paramNames = string.Join(",",
+                    validColumns.Select(c => $"@{c.ColumnName}"));
 
-                foreach (DataColumn col in data.Columns)
+                var sql = $@"
+                    INSERT INTO [{tableName}]
+                    ({colNames})
+                    VALUES
+                    ({paramNames})";
+
+                using var insertCmd = new SqlCommand(sql, conn);
+
+                foreach (var col in validColumns)
                 {
-                    insertCmd.Parameters.AddWithValue("@" + col.ColumnName, row[col] ?? DBNull.Value);
+                    insertCmd.Parameters.AddWithValue(
+                        "@" + col.ColumnName,
+                        row[col.ColumnName] ?? DBNull.Value);
                 }
 
                 insertCmd.ExecuteNonQuery();

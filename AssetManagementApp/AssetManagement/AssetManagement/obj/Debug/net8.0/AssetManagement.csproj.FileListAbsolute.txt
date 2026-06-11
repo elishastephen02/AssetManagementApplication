@@ -360,6 +360,7 @@ C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\Ass
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NetTopologySuite.dll
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NetTopologySuite.Features.dll
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NetTopologySuite.IO.GeoJSON.dll
+C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NetTopologySuite.IO.SqlServerBytes.dll
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NuGet.Common.dll
 C:\Users\elishastephen\Desktop\AssetManagementApplication\AssetManagementApp\AssetManagement\AssetManagement\bin\Debug\net8.0\NuGet.Configuration.dll

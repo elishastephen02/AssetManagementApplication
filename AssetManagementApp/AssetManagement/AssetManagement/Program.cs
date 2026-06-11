@@ -41,6 +41,8 @@ builder.Services.AddScoped<MapService>();
 builder.Services.AddScoped<ImportService>();
 builder.Services.AddScoped<ManholeImportService>();
 builder.Services.AddScoped<ManholeService>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<BlocksService>();
 
 var app = builder.Build();
 

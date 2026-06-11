@@ -2202,6 +2202,22 @@
           }
         }
       },
+      "NetTopologySuite.IO.SqlServerBytes/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "NetTopologySuite": "[2.0.0, 3.0.0-A)"
+        },
+        "compile": {
+          "lib/netstandard2.0/NetTopologySuite.IO.SqlServerBytes.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NetTopologySuite.IO.SqlServerBytes.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -6569,6 +6585,20 @@
         "nettopologysuite.io.geojson.nuspec"
       ]
     },
+    "NetTopologySuite.IO.SqlServerBytes/2.1.0": {
+      "sha512": "R4BcV19f2l6EjHSjh/EHwLhYQHrOov9vig1EW5oBm0iqlZOgaIJm5tBnlbFnYlvdYOPuf5p0Qtf8PCVwH77Wbg==",
+      "type": "package",
+      "path": "nettopologysuite.io.sqlserverbytes/2.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/NetTopologySuite.IO.SqlServerBytes.dll",
+        "lib/netstandard2.0/NetTopologySuite.IO.SqlServerBytes.xml",
+        "nettopologysuite.io.sqlserverbytes.2.1.0.nupkg.sha512",
+        "nettopologysuite.io.sqlserverbytes.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -7526,6 +7556,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.23",
       "NetTopologySuite >= 2.6.0",
       "NetTopologySuite.IO.GeoJSON >= 4.0.0",
+      "NetTopologySuite.IO.SqlServerBytes >= 2.1.0",
       "ProjNET >= 2.1.0"
     ]
   },
@@ -7630,6 +7661,10 @@
           "NetTopologySuite.IO.GeoJSON": {
             "target": "Package",
             "version": "[4.0.0, )"
+          },
+          "NetTopologySuite.IO.SqlServerBytes": {
+            "target": "Package",
+            "version": "[2.1.0, )"
           },
           "ProjNET": {
             "target": "Package",

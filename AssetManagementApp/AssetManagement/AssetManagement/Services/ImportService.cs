@@ -16,9 +16,9 @@ namespace AssetManagement.Services
             _logger = logger;
         }
 
-        public ImportResult ImportGeoJson(string geoJson)
+        public ImportResult ImportGeoJson(string geoJson, string blockName)
         {
-            RecreateGeoJsonTable();
+            EnsureGeoJsonTableExists();
 
             var reader = new GeoJsonReader();
             var features = reader.Read<FeatureCollection>(geoJson);
@@ -34,7 +34,7 @@ namespace AssetManagement.Services
             {
                 try
                 {
-                    InsertFeature(feature, writer);
+                    InsertFeature(feature, writer, blockName);
                     inserted++;
                 }
                 catch (Exception ex)
@@ -52,19 +52,19 @@ namespace AssetManagement.Services
             };
         }
 
-        private void RecreateGeoJsonTable()
+        private void EnsureGeoJsonTableExists()
         {
             _db.Execute(@"
-                IF OBJECT_ID('GEOJSON', 'U') IS NOT NULL
-                    DROP TABLE GEOJSON;
-
-                CREATE TABLE GEOJSON
-                (
-                    GEO_PK INT IDENTITY(1,1) PRIMARY KEY,
-                    SEGID NVARCHAR(100) NOT NULL UNIQUE,
-                    GEOMETRY_DATA geometry NOT NULL,
-                    DATE_IMPORTED DATETIME DEFAULT GETDATE()
-                )
+                IF OBJECT_ID('GEOJSON', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE GEOJSON
+                    (
+                        GEO_PK INT IDENTITY(1,1) PRIMARY KEY,
+                        SEGID NVARCHAR(100) NOT NULL,
+                        BlockName NVARCHAR(255) NULL,
+                        GEOMETRY_DATA geometry NOT NULL
+                    )
+                END
             ");
         }
 
@@ -96,43 +96,66 @@ namespace AssetManagement.Services
             foreach (var prop in properties)
             {
                 var exists = _db.QuerySingle<int>(@"
-            SELECT COUNT(*)
-            FROM INFORMATION_SCHEMA.COLUMNS
-            WHERE TABLE_NAME = 'GEOJSON'
-            AND COLUMN_NAME = @Col",
-                    new { Col = prop });
+                    SELECT COUNT(*)
+                    FROM INFORMATION_SCHEMA.COLUMNS
+                    WHERE TABLE_NAME = 'GEOJSON'
+                    AND COLUMN_NAME = @Col",
+                new { Col = prop });
 
                 if (exists == 0)
                 {
                     _db.Execute($@"
-                ALTER TABLE GEOJSON
-                ADD [{prop}] NVARCHAR(255) NULL
-            ");
+                        ALTER TABLE GEOJSON
+                        ADD [{prop}] NVARCHAR(255) NULL
+                    ");
                 }
             }
         }
 
-        private void InsertFeature(IFeature feature, WKTWriter writer)
+        private void InsertFeature(IFeature feature, WKTWriter writer, string blockName)
         {
             var segId = feature.Attributes["SEGID"]?.ToString();
+
+            var exists = _db.QuerySingle<int>(@"
+                SELECT COUNT(*)
+                FROM GEOJSON
+                WHERE SEGID = @SegId",
+                            new { SegId = segId });
+
+                        if (exists > 0)
+                        {
+                            return; // skip duplicate
+                        }
+
             var wkt = writer.Write(feature.Geometry);
 
-            var columns = new List<string> { "SEGID", "GEOMETRY_DATA" };
+            var columns = new List<string>
+            {
+                "SEGID",
+                "BlockName",
+                "GEOMETRY_DATA"
+            };
+
             var values = new List<string>
             {
                 "@SegId",
+                "@BlockName",
                 "geometry::STGeomFromText(@Wkt, 4326)"
             };
 
             var parameters = new Dictionary<string, object>
             {
                 ["SegId"] = segId,
+                ["BlockName"] = blockName,
                 ["Wkt"] = wkt
             };
 
             var reservedColumns = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "SEGID", "GEOMETRY_DATA", "GEO_PK", "DATE_IMPORTED"
+                "SEGID",
+                "BlockName",
+                "GEOMETRY_DATA",
+                "GEO_PK"
             };
 
             foreach (var name in feature.Attributes.GetNames())

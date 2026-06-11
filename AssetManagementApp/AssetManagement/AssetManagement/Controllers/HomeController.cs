@@ -1,4 +1,5 @@
 using AssetManagement.Models;
+using AssetManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -17,6 +18,8 @@ namespace AssetManagement.Controllers
         {
             return View();
         }
+
+        
 
         public IActionResult Privacy()
         {

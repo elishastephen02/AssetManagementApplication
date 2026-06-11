@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-header">
+    <h1>Dashboard</h1>
+</div>
+<div class="dashboard-container">
+    <div class="map-panel">
+        <div id="map"></div>
+    </div>
+    <div class="side-panel">
+        <h2>Blocks</h2>
+        <div id="blockList"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+    /* PAGE TITLE */
+    .page-header {
+    padding: 15px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    }
+
+    .page-header h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    }
+
+    /* MAIN LAYOUT */
+    .dashboard-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px; /* space above footer */
+    }
+
+    /* MAP SECTION */
+    .map-panel {
+    flex: 3; 
+    }
+
+    #map {
+    width: 100%;
+    height: 650px; /* larger map */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    }
+
+    /* SIDE PANEL */
+    .side-panel {
+    flex: 1; /* blocks panel gets 20% */
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 750px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    }
+
+    .side-panel h2 {
+    margin-top: 0;
+    }
+
+    .block-item {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: white;
+    cursor: pointer;
+    border-left: 4px solid #ccc;
+    transition: background 0.2s;
+    }
+
+    .block-item:hover {
+    background: #eaeaea;
+    }
+</style>
+
+<script>
+    var eThekwiniBounds = L.latLngBounds(
+    L.latLng(-30.1500, 30.6500),
+    L.latLng(-29.5500, 31.2000)
+    );
+
+    var map = L.map('map', {
+    minZoom: 11,
+    maxZoom: 18,
+    maxBounds: eThekwiniBounds,
+    maxBoundsViscosity: 1.0
+    }).setView([-29.8587, 31.0218], 12);
+
+    var streetLayer = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    { maxZoom: 19, attribution: '© OpenStreetMap contributors' }
+    );
+
+    var satelliteLayer = L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    { maxZoom: 19, attribution: 'Tiles © Esri' }
+    );
+
+    streetLayer.addTo(map);
+
+    L.control.layers(
+    { "Street Map": streetLayer, "Satellite": satelliteLayer },
+    null,
+    { position: 'topright', collapsed: false }
+    ).addTo(map);
+
+    function getColor(value) {
+    if (value == null || isNaN(value)) return "#9E9E9E";
+    if (value >= 70) return "#4CAF50";
+    if (value >= 50) return "#FFC107";
+    return "#F44336";
+    }
+
+    fetch('/Dashboard/GetDashboardMap')
+    .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+    })
+    .then(data => {
+    console.log(`Loaded ${data.features?.length ?? 0} features`);
+
+    if (!data.features || data.features.length === 0) {
+    console.warn("No features returned from API");
+    return;
+    }
+
+    var geojsonLayer = L.geoJSON(data, {
+    style: function (feature) {
+    return {
+    fillColor: getColor(feature.properties.condition),
+    color: "#333",
+    weight: 1,
+    fillOpacity: 0.65
+    };
+    },
+    onEachFeature: function (feature, layer) {
+    const name = feature.properties.blockName ?? "Unknown";
+    const condition = feature.properties.condition ?? 0;
+
+    layer.bindPopup(`<b>${name}</b><br>Avg Condition: ${condition.toFixed(1)}%`);
+
+    const div = document.createElement("div");
+    div.className = "block-item";
+    div.style.borderLeftColor = getColor(condition);
+    div.innerHTML = `<b>${name}</b><br><small>${condition.toFixed(1)}%</small>`;
+    div.onclick = function () {
+    map.fitBounds(layer.getBounds(), { padding: [20, 20] });
+    layer.openPopup();
+    };
+
+    document.getElementById("blockList").appendChild(div);
+    }
+    }).addTo(map);
+
+    // Zoom to fit all blocks on load
+    map.fitBounds(geojsonLayer.getBounds(), { padding: [20, 20] });
+    })
+    .catch(err => console.error("Failed to load map data:", err));
+</script>

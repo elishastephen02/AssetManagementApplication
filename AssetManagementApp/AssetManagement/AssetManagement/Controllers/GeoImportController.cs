@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace AssetManagement.Controllers
 {
@@ -25,7 +26,7 @@ namespace AssetManagement.Controllers
         [HttpPost]
         [RequestSizeLimit(104857600)]
         [RequestFormLimits(MultipartBodyLengthLimit = 104857600)]
-        public IActionResult Upload(IFormFile file)
+        public IActionResult Upload(IFormFile file, string? blockName)
         {
             Console.WriteLine($"File is null: {file == null}");
 
@@ -50,7 +51,23 @@ namespace AssetManagement.Controllers
             if (!geoJson.StartsWith("{"))
                 return BadRequest("Invalid GeoJSON file.");
 
-            var result = _importService.ImportGeoJson(geoJson);
+            if (string.IsNullOrWhiteSpace(blockName))
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+                var match = Regex.Match(fileName, @"^[^_]+_([^_]+)_Pipes$", RegexOptions.IgnoreCase);
+
+                if (match.Success)
+                {
+                    blockName = match.Groups[1].Value;
+                }
+                else
+                {
+                    blockName = fileName;
+                }
+            }
+
+            var result = _importService.ImportGeoJson(geoJson, blockName);
 
             return Ok(result);
         }

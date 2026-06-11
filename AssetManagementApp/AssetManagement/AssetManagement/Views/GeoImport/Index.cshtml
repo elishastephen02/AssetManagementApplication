@@ -79,6 +79,11 @@
             <input type="file" id="geoFile" accept=".geojson,.json" class="form-control" />
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Block Name (optional)</label>
+            <input type="text" id="blockName" class="form-control" placeholder="Leave blank to use file name" />
+        </div>
+
         <button type="button" class="btn btn-primary" onclick="uploadGeo()">
             Upload File
         </button>
@@ -100,6 +105,8 @@
 
         const formData = new FormData();
         formData.append("file", fileInput.files[0]);
+        formData.append("blockName",
+                document.getElementById("blockName").value);
 
         statusDiv.innerHTML = `<div class="alert alert-info mt-3">Uploading and processing...</div>`;
 
