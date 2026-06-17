@@ -51,33 +51,45 @@ namespace AssetManagement.Controllers
         }
 
         // Select Table → Show Columns
-        public IActionResult Columns(string tableName, string filePath)
+        [HttpPost]
+        public IActionResult Columns(List<string> selectedTables, string filePath)
         {
-            var adapter = new SQLiteAdapter(filePath);
-            var columns = adapter.GetColumns(tableName);
-
-            var vm = new SelectionViewModel
+            if (selectedTables == null || !selectedTables.Any())
             {
-                TableName = tableName,
+                ModelState.AddModelError("", "Select at least one table.");
+                return RedirectToAction("Upload");
+            }
+
+            var adapter = new SQLiteAdapter(filePath);
+
+            var vm = new MultiSelectionViewModel
+            {
                 FilePath = filePath,
-                Columns = columns
+                Tables = selectedTables.Select(t => new SelectionViewModel
+                {
+                    TableName = t,
+                    Columns = adapter.GetColumns(t)
+                }).ToList()
             };
 
             return View(vm);
         }
 
-        // Import Selected Data
+        // Step 3: import each table's selected columns
         [HttpPost]
-        public IActionResult Import(SelectionViewModel model)
+        public IActionResult Import(MultiSelectionViewModel model)
         {
             var adapter = new SQLiteAdapter(model.FilePath);
+            var sqlService = new SQLService(_config.GetConnectionString("DefaultConnection"));
 
-            var data = adapter.GetTableData(model.TableName, model.SelectedColumns);
+            foreach (var table in model.Tables)
+            {
+                if (table.SelectedColumns == null || !table.SelectedColumns.Any())
+                    continue; // skipped table — nothing to import
 
-            var sqlService = new SQLService(
-                _config.GetConnectionString("DefaultConnection"));
-
-            sqlService.SaveTable(model.TableName, data);
+                var data = adapter.GetTableData(table.TableName, table.SelectedColumns);
+                sqlService.SaveTable(table.TableName, data);
+            }
 
             return View("Success");
         }

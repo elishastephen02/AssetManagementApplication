@@ -1,4 +1,5 @@
-﻿using AssetManagement.Services;
+﻿using AssetManagement.Models;
+using AssetManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssetManagement.Controllers
@@ -15,7 +16,20 @@ namespace AssetManagement.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new DashboardViewModel
+            {
+                TotalPipes = _db.QuerySingle<int>(
+                    "SELECT COUNT(*) FROM GEOJSON"),
+
+                TotalCR = _db.QuerySingle<decimal?>(
+                    "SELECT AVG(CAST(ConditionR AS DECIMAL(10,2))) FROM GEOJSON"
+                ) ?? 0,
+                TotalCRC = _db.QuerySingle<decimal?>(
+                    @"SELECT AVG(TRY_CAST(REPLACE(REPLACE(REPLACE(CurrentRC, 'R', ''),',', ''),' ', '')AS DECIMAL(18,2))) FROM GEOJSON"
+                ) ?? 0
+            };
+
+            return View(model);
         }
 
         [HttpGet]

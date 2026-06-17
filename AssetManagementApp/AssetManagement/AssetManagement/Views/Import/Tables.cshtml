@@ -2,18 +2,21 @@
 
 <div class="container mt-4">
     <div class="card shadow p-4">
-        <h2 class="text-success mb-3">Select a Table</h2>
+        <h2 class="text-success mb-3">Select Tables</h2>
 
-        <div class="list-group">
+        <form asp-action="Columns" method="post">
+            <input type="hidden" name="filePath" value="@ViewBag.FilePath" />
+
             @foreach (var table in Model)
             {
-                <a class="list-group-item list-group-item-action"
-                       asp-action="Columns"
-                       asp-route-tableName="@table"
-                       asp-route-filePath="@ViewBag.FilePath">
-                    @table
-                </a>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           name="selectedTables" value="@table" id="tbl_@table" />
+                    <label class="form-check-label" for="tbl_@table">@table</label>
+                </div>
             }
-        </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Next: Choose Columns</button>
+        </form>
     </div>
 </div>

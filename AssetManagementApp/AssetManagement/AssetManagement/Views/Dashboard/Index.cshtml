@@ -1,4 +1,6 @@
-﻿@{
+﻿@model DashboardViewModel;
+
+@{
     ViewData["Title"] = "Dashboard";
 }
 
@@ -11,7 +13,96 @@
     </div>
     <div class="side-panel">
         <h2>Blocks</h2>
-        <div id="blockList"></div>
+        <div class="block-grid-wrapper">
+            <div class="asset-row">
+                <div class="summary-block">
+                    <span class="block-title">Pipes (m)</span>
+                    <span class="block-value">@Model.TotalPipes</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">@Model.TotalCR.ToString("0.00")%</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">R @Model.TotalCRC.ToString("0.00")</span>
+                </div>
+            </div>
+            <div class="asset-row inactive">
+                <div class="summary-block">
+                    <span class="block-title">Manholes</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">--</span>
+                </div>
+            </div>
+            <div class="asset-row inactive">
+                <div class="summary-block">
+                    <span class="block-title">Canals</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">--</span>
+                </div>
+            </div>
+            <div class="asset-row inactive">
+                <div class="summary-block">
+                    <span class="block-title">Culverts</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">--</span>
+                </div>
+            </div>
+            <div class="asset-row inactive">
+                <div class="summary-block">
+                    <span class="block-title">Outfall</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">--</span>
+                </div>
+            </div>
+            <div class="asset-row inactive">
+                <div class="summary-block">
+                    <span class="block-title">Pump stations</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Avg Condition Rating</span>
+                    <span class="block-value">--</span>
+                </div>
+                <div class="summary-block">
+                    <span class="block-title">Current Replacement Cost</span>
+                    <span class="block-value">--</span>
+                </div>
+            </div>
+
+            <hr />
+            <h3>Map Blocks</h3>
+            <div id="blockList"></div>
+        </div>
     </div>
 </div>
 
@@ -19,7 +110,6 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
-    /* PAGE TITLE */
     .page-header {
     padding: 15px 20px;
     background: #ffffff;
@@ -33,38 +123,115 @@
     font-weight: 600;
     }
 
-    /* MAIN LAYOUT */
     .dashboard-container {
     display: flex;
     gap: 15px;
-    margin-bottom: 20px; /* space above footer */
+    margin-bottom: 20px;
     }
 
-    /* MAP SECTION */
     .map-panel {
-    flex: 3; 
+    flex: 3;
     }
 
     #map {
     width: 100%;
-    height: 650px; /* larger map */
+    height: 650px;
     border-radius: 8px;
     border: 1px solid #ddd;
     }
 
-    /* SIDE PANEL */
     .side-panel {
-    flex: 1; /* blocks panel gets 20% */
+    flex: 1;
     background: #f4f4f4;
     padding: 15px;
     border-radius: 8px;
-    max-height: 750px;
-    overflow-y: auto;
+    height: 650px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     box-sizing: border-box;
     }
 
     .side-panel h2 {
     margin-top: 0;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    text-align: center;
+    }
+
+    .block-grid-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    padding-right: 5px;
+    }
+
+    .asset-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: stretch;
+    }
+
+    .summary-block {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 6px;
+    height: 80px;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .asset-row.inactive .summary-block {
+    background: #f0f0f0;
+    color: #aaa;
+    box-shadow: none;
+    }
+
+    .block-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.3;
+    }
+
+    .asset-row.inactive .block-title {
+    color: #bbb;
+    }
+
+    .block-value {
+    font-size: 15px;
+    font-weight: bold;
+    color: #222;
+    word-break: break-word;
+    }
+
+    .asset-row.inactive .block-value {
+    color: #bbb;
+    }
+
+    .side-panel hr {
+    margin: 12px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+    flex-shrink: 0;
+    }
+
+    .side-panel h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    text-align: center;
     }
 
     .block-item {
@@ -73,11 +240,29 @@
     background: white;
     cursor: pointer;
     border-left: 4px solid #ccc;
+    border-radius: 0 4px 4px 0;
     transition: background 0.2s;
     }
 
     .block-item:hover {
     background: #eaeaea;
+    }
+
+    .block-grid-wrapper::-webkit-scrollbar {
+    width: 6px;
+    }
+
+    .block-grid-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    }
+
+    .block-grid-wrapper::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 4px;
+    }
+
+    .block-grid-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #999;
     }
 </style>
 
@@ -160,7 +345,6 @@
     }
     }).addTo(map);
 
-    // Zoom to fit all blocks on load
     map.fitBounds(geojsonLayer.getBounds(), { padding: [20, 20] });
     })
     .catch(err => console.error("Failed to load map data:", err));
