@@ -368,6 +368,50 @@
     .leaflet-interactive {
         outline: none !important;
     }
+
+    .map-loading-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255,255,255,0.88);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        border-radius: 12px;
+        pointer-events: all;
+    }
+
+    .map-loading-spinner {
+        width: 44px;
+        height: 44px;
+        border: 4px solid #d0e4ff;
+        border-top-color: #007bff;
+        border-radius: 50%;
+        animation: mapSpin 0.8s linear infinite;
+        margin-bottom: 14px;
+    }
+
+    @@keyframes mapSpin {
+        to { transform: rotate(360deg); }
+    }
+
+    .map-loading-text {
+        font-size: 13px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .map-loading-sub {
+        font-size: 11px;
+        color: #888;
+        margin-top: 4px;
+    }
+
+    .map-loading-overlay.error .map-loading-spinner {
+        border-top-color: #dc3545;
+    }
+
 </style>
 
 <div class="infra-container">
@@ -443,7 +487,15 @@
                 <button class="map-control-btn" onclick="resetMapView()" style="margin-left:auto;">🔍 Reset View</button>
             </div>
 
-            <div id="map"></div>
+            <div id="mapWrapper" style="position:relative;">
+                <div id="map"></div>
+
+                <div id="mapLoadingOverlay" class="map-loading-overlay">
+                    <div class="map-loading-spinner"></div>
+                    <div class="map-loading-text" id="mapLoadingText">Loading pipe network…</div>
+                    <div class="map-loading-sub" id="mapLoadingSub">This can take a moment for large datasets</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -608,31 +660,106 @@
         return null;
     }
 
+    function hasInspectionData(item) {
+        if (!item || !Array.isArray(item.Inspections) || item.Inspections.length === 0) return false;
+        return item.Inspections.some(insp => Array.isArray(insp.Observations) && insp.Observations.length > 0);
+    }
+
     // LOAD ALL DATA
+    let mapLoadingTimer = null;
+
+    function showMapLoading() {
+        const overlay = document.getElementById('mapLoadingOverlay');
+        overlay.classList.remove('error');
+        overlay.style.display = 'flex';
+
+        let elapsed = 0;
+        clearInterval(mapLoadingTimer);
+        mapLoadingTimer = setInterval(() => {
+            elapsed += 3;
+            const sub = document.getElementById('mapLoadingSub');
+            if (!sub) return;
+            if (elapsed >= 20) sub.textContent = `Still loading… ${elapsed}s — large dataset, hang tight`;
+            else if (elapsed >= 8) sub.textContent = `Fetching pipe geometry…`;
+        }, 3000);
+    }
+
+    function hideMapLoading() {
+        clearInterval(mapLoadingTimer);
+        document.getElementById('mapLoadingOverlay').style.display = 'none';
+    }
+
+    function showMapLoadError(msg) {
+        clearInterval(mapLoadingTimer);
+        const overlay = document.getElementById('mapLoadingOverlay');
+        overlay.classList.add('error');
+        overlay.style.display = 'flex';
+        document.getElementById('mapLoadingText').textContent = 'Couldn\'t load map data';
+        document.getElementById('mapLoadingSub').textContent = msg || 'Please try refreshing the page';
+    }
+
     function loadAllData() {
-        // Load pipes
+        showMapLoading();
+
         fetch("/Map/GetMapData")
             .then(async res => {
-                if (!res.ok) { console.error("Pipe server error:", await res.text()); return; }
+                if (!res.ok) {
+                    const text = await res.text();
+                    console.error("Pipe server error:", text);
+                    throw new Error("Server returned an error");
+                }
                 return res.json();
             })
             .then(data => {
-                if (!data) return;
+                if (!data) { showMapLoadError(); return; }
                 allSummary = data.summary || [];
                 pipeColors = {};
-                allSummary.forEach(x => {
-                    const condition = (x.Condition || "").toLowerCase().trim();
-                    const inspected = (x.Inspected || "").toLowerCase().trim();
-                    if      (condition === "good")         pipeColors[x.Id] = "#28a745";
-                    else if (condition === "okay")         pipeColors[x.Id] = "#ffc107";
-                    else if (condition === "bad")          pipeColors[x.Id] = "#dc3545";
-                    else if (inspected === "inspected")    pipeColors[x.Id] = "#1a56db";
-                    else                                   pipeColors[x.Id] = "#95a5a6";
+
+                // Map each pipe's numeric Condition Rating from the sections array
+                const conditionRById = {};
+                (data.sections || []).forEach(s => {
+                    const id = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+                    if (id != null && s.ConditionR != null && s.ConditionR !== "") {
+                        const r = parseFloat(s.ConditionR);
+                        if (!isNaN(r)) conditionRById[id] = r;
+                    }
                 });
+
+                function colorFromRating(rating) {
+                    if (rating > 70) return "#28a745"; // good
+                    if (rating > 40) return "#ffc107"; // okay
+                    return "#dc3545";                  // bad
+                }
+
+                allSummary.forEach(x => {
+                    const inspected = hasInspectionData(x);
+
+                    if (!inspected) {
+                        // No inspections or observations recorded -> grey, dashed
+                        pipeColors[x.Id] = "#95a5a6";
+                        return;
+                    }
+
+                    const rating = conditionRById[x.Id];
+                    if (rating != null) {
+                        pipeColors[x.Id] = colorFromRating(rating);
+                    } else {
+                        const condition = (x.Condition || "").toLowerCase().trim();
+                        if      (condition === "good") pipeColors[x.Id] = "#28a745";
+                        else if (condition === "okay") pipeColors[x.Id] = "#ffc107";
+                        else if (condition === "bad")  pipeColors[x.Id] = "#dc3545";
+                        else                            pipeColors[x.Id] = "#1a56db"; // has inspection data but no rating yet
+                    }
+                });
+
                 updatePipeStats(allSummary);
                 drawPipes(data);
+                hideMapLoading();
             })
-            .catch(err => console.error("Pipe data load failed:", err));
+            .catch(err => {
+                console.error("Pipe data load failed:", err);
+                showMapLoadError();
+            });
     }
 
     window.onload = loadAllData;
@@ -654,7 +781,7 @@
 
             let color       = pipeColors[id] || "#95a5a6";
             let summaryItem = allSummary.find(x => x.Id === id);
-            let isInspected = (summaryItem?.Inspected || "").toLowerCase() === "inspected";
+            let isInspected = hasInspectionData(summaryItem);
 
             let layer = L.geoJSON(geo, {
                 style: {
@@ -828,7 +955,7 @@
     // PIPE HIGHLIGHT
     function highlightPipe(id) {
         pipeObjects.forEach(p => {
-            let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
+            let isInsp = hasInspectionData(p.data);
             p.layer.setStyle({
                 color:     pipeColors[p.id] || "#95a5a6",
                 weight:    isInsp ? 5 : 3,
@@ -872,7 +999,7 @@
     // HIGHLIGHT MULTIPLE PIPES (road search)
     function highlightMultiplePipes(pipeList) {
         pipeObjects.forEach(p => {
-            let isInsp = (p.data.Inspected || "").toLowerCase() === "inspected";
+            let isInsp = hasInspectionData(p.data);
             p.layer.setStyle({ color: pipeColors[p.id] || "#95a5a6", weight: isInsp ? 5 : 3 });
         });
         let layers = [];
@@ -1452,7 +1579,28 @@
 
     // CCTV DIAGRAM
     function renderCCTVDiagram(item, insp) {
-        const obs = (insp?.Observations || []);
+        function isStartNodeObs(o) {
+            const code = (o.Code || "").toUpperCase();
+            if (["MH", "MHF"].includes(code)) return true;
+
+            const text = (o.Observation || "").toLowerCase();
+            return text.includes("start node");
+        }
+
+        const obs = (insp?.Observations || [])
+        .slice()
+        .sort((a, b) => {
+            const da = parseFloat(a.Distance) || 0;
+            const db = parseFloat(b.Distance) || 0;
+            if (da !== db) return da - db;
+
+            const aIsStart = isStartNodeObs(a);
+            const bIsStart = isStartNodeObs(b);
+            if (aIsStart && !bIsStart) return -1;
+            if (!aIsStart && bIsStart) return 1;
+            return 0;
+        });
+
         const totalLength = parseFloat(insp?.InspectedLength || item?.InspectedLength || 0);
 
         const upNode = item?.UpstreamNode || "Upstream";

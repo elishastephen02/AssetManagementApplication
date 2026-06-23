@@ -9920,6 +9920,15 @@ wwwroot\uploads\Folweni 3_2024-01-30.db3
 wwwroot\uploads\Folweni 4_2024-01-19.db3
 wwwroot\uploads\Folweni 5_2024-01-24.db3
 wwwroot\uploads\Folweni 6_2023-01-23.db3
+wwwroot\uploads\Mpumalanga 12_2025-08-13.db3
+wwwroot\uploads\Mpumalanga 13_2025-07-31.db3
+wwwroot\uploads\Mpumalanga 14_2025-07-23.db3
+wwwroot\uploads\Mpumalanga 16_2025-08-20.db3
+wwwroot\uploads\Mpumalanga 1_2025-06-17.db3
+wwwroot\uploads\Mpumalanga 2_2025-07-21.db3
+wwwroot\uploads\Mpumalanga 3_2025-07-17.db3
+wwwroot\uploads\Mpumalanga 4_2025-06-25.db3
+wwwroot\uploads\Mpumalanga 5_2025-08-25.db3
 wwwroot\uploads\RedHill 1_2025-01-07.db3
 wwwroot\uploads\Redhill 2_2025-01-13.db3
 wwwroot\uploads\Redhill 3_2025-01-09.db3
@@ -9928,3 +9937,6 @@ wwwroot\uploads\Redhill 5_2025-01-07.db3
 wwwroot\uploads\Redhill 6_2025-01-14.db3
 wwwroot\uploads\Westridge 1_2024-04-09.db3
 wwwroot\uploads\Westridge 2_2024-04-22.db3
+wwwroot\uploads\Wiggins 1_2024-02-22.db3
+wwwroot\uploads\Wiggins 2_2024-02-13.db3
+wwwroot\uploads\Wiggins 3_2024-03-18.db3
