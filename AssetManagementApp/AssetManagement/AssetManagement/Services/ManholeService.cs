@@ -37,7 +37,6 @@ namespace AssetManagement.Services
                     P_COVLEVEL,
                     P_DEPTH,
                     P_INVINL1
-
                 FROM MGEOJSON
                 WHERE GEOMETRY_DATA IS NOT NULL
             ").ToList();

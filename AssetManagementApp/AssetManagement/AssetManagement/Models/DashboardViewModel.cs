@@ -2,7 +2,7 @@
 {
     public class DashboardViewModel
     {
-        public int TotalPipes { get; set; }
+        public int TotalLength { get; set; }
         public decimal TotalCR { get; set; }
         public decimal TotalCRC { get; set; }
     }

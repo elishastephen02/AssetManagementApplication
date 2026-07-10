@@ -20,12 +20,62 @@ namespace AssetManagement.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMapData()
+        public IActionResult GetMapData(double north, double south, double east, double west)
         {
             try
             {
-                var result = _mapService.GetMapData();
+                if (north <= south || east <= west)
+                {
+                    return BadRequest("Invalid bounding box: north/south/east/west are required and must form a valid box.");
+                }
+
+                var result = _mapService.GetMapData(north, south, east, west);
                 return Json(result, new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Search(string term)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(term))
+                    return Json(new List<object>());
+
+                var results = _mapService.SearchPipes(term);
+
+                return Json(results, new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetPipe(string id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(id))
+                    return BadRequest();
+
+                var pipe = _mapService.GetPipe(id);
+
+                if (pipe == null)
+                    return NotFound();
+
+                return Json(pipe, new System.Text.Json.JsonSerializerOptions
                 {
                     PropertyNamingPolicy = null
                 });
@@ -56,11 +106,11 @@ namespace AssetManagement.Controllers
             var mimeType = ext switch
             {
                 ".jpg" or ".jpeg" => "image/jpeg",
-                ".png"            => "image/png",
-                ".gif"            => "image/gif",
-                ".bmp"            => "image/bmp",
-                ".webp"           => "image/webp",
-                _                 => "application/octet-stream"
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                ".bmp" => "image/bmp",
+                ".webp" => "image/webp",
+                _ => "application/octet-stream"
             };
 
             return PhysicalFile(imagePath, mimeType);

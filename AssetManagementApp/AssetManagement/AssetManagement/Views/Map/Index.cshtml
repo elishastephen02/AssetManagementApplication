@@ -396,6 +396,27 @@
         to { transform: rotate(360deg); }
     }
 
+    .map-loading-progress-track {
+        width: 220px;
+        height: 6px;
+        background: #e5eefc;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 12px 0 6px;
+    }
+
+    .map-loading-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: #007bff;
+        border-radius: 4px;
+        transition: width 0.2s ease;
+    }
+
+    .map-loading-overlay.error .map-loading-progress-fill {
+        background: #dc3545;
+    }
+
     .map-loading-text {
         font-size: 13px;
         color: #333;
@@ -493,6 +514,9 @@
                 <div id="mapLoadingOverlay" class="map-loading-overlay">
                     <div class="map-loading-spinner"></div>
                     <div class="map-loading-text" id="mapLoadingText">Loading pipe network…</div>
+                    <div class="map-loading-progress-track">
+                        <div class="map-loading-progress-fill" id="mapLoadingProgressFill"></div>
+                    </div>
                     <div class="map-loading-sub" id="mapLoadingSub">This can take a moment for large datasets</div>
                 </div>
             </div>
@@ -617,6 +641,148 @@
     let pipesVisible    = true;
     let manholesVisible = false;
 
+    //search
+    let searchResults = [];
+    let selectedSearchIndex = -1;
+
+    let searchRequestToken = 0; // guards against a slow older request overwriting a newer one
+
+    async function searchServer(term) {
+        if (!term || term.length < 2) {
+            hideSearchResults();
+            return;
+        }
+
+        const myToken = ++searchRequestToken;
+        const response = await fetch("/Map/Search?term=" + encodeURIComponent(term));
+
+        if (myToken !== searchRequestToken) return; // stale response, ignore
+        if (!response.ok) return;
+
+        searchResults = await response.json();
+        renderSearchResults();
+    }
+
+    function addSinglePipeToMap(pipeData) {
+        const id = pipeData.OBJ_PK || pipeData.Id;
+        if (pipeObjects.some(p => p.id === id)) return; // already drawn
+
+        const geo = wktToGeoJSON(pipeData.Geometry);
+        if (!geo) { console.warn("Search result has no usable geometry:", id); return; }
+
+        const inspected = (pipeData.Inspected || "").toLowerCase() === "inspected";
+        const rating = parseFloat(pipeData.ConditionR);
+
+        let color;
+        if (!inspected) {
+            color = "#95a5a6";
+        } else if (!isNaN(rating)) {
+            color = rating > 70 ? "#28a745" : rating > 40 ? "#ffc107" : "#dc3545";
+        } else {
+            const condition = (pipeData.Condition || "").toLowerCase().trim();
+            color = condition === "good" ? "#28a745"
+                  : condition === "okay" ? "#ffc107"
+                  : condition === "bad"  ? "#dc3545"
+                  : "#1a56db";
+        }
+        pipeColors[id] = color;
+
+        if (!allSummary.some(x => x.Id === id)) allSummary.push(pipeData);
+
+        const layer = L.geoJSON(geo, {
+            style: {
+                color,
+                weight: inspected ? 5 : 3,
+                opacity: 0.9,
+                dashArray: inspected ? "" : "6,4",
+                lineCap: 'round',
+                lineJoin: 'round',
+                className: 'pipe-line'
+            },
+            onEachFeature: function (feature, fl) {
+                fl.bindTooltip(
+                    `<b>${pipeData.Name || id}</b><br>
+                    Road: ${pipeData.Address || 'N/A'}<br>
+                    Inspection: ${pipeData.Inspected || 'Uninspected'}<br>
+                    Condition: ${pipeData.Condition || 'N/A'}`,
+                    { sticky: true, className: 'pipe-tooltip' }
+                );
+                fl.on("click", () => highlightPipe(id));
+            }
+        });
+
+        layer.addTo(pipeLayer);
+        pipeObjects.push({ id, data: pipeData, section: pipeData, layer });
+        updatePipeStats(allSummary);
+    }
+
+    async function selectSearchResult(index) {
+        const result = searchResults[index];
+        if (!result) return;
+
+        hideSearchResults();
+        document.getElementById("searchBox").value = result.Name || result.Id;
+
+        const existing = pipeObjects.find(p => p.id === result.Id);
+        if (existing) {
+            highlightPipe(result.Id);
+            return;
+        }
+
+        try {
+            const res = await fetch(`/Map/GetPipe?id=${encodeURIComponent(result.Id)}`);
+            if (!res.ok) throw new Error(`GetPipe failed: ${res.status}`);
+            const pipeData = await res.json();
+
+            if (!pipesVisible) {
+                pipesVisible = true;
+                map.addLayer(pipeLayer);
+                document.getElementById('togglePipesBtn').classList.add('layer-active');
+                document.getElementById('pipeFilters').style.display = 'flex';
+                document.getElementById('manholeFilters').style.display = 'none';
+            }
+
+            addSinglePipeToMap(pipeData);
+            highlightPipe(pipeData.Id);
+        } catch (err) {
+            console.error("Failed to load pipe from search result:", err);
+        }
+    }
+
+    function renderSearchResults() {
+        const resultsDiv = document.getElementById("searchResults");
+        resultsDiv.innerHTML = "";
+
+        if (searchResults.length === 0) {
+            resultsDiv.innerHTML = `<p style="padding:10px;color:#999;margin:0;">No matches found.</p>`;
+            resultsDiv.style.display = "block";
+            return;
+        }
+
+        searchResults.forEach((pipe, index) => {
+            const row = document.createElement("div");
+            row.style.cssText =
+                "padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;" +
+                "font-size:13px;transition:background 0.15s;";
+            row.innerHTML = `
+                <span style="color:#007bff;font-weight:600;">📍 ${pipe.Name || pipe.Id}</span><br>
+                <span style="font-size:12px;color:#555;">${pipe.RoadName || "N/A"}</span>
+                <span style="font-size:11px;color:#999;"> · ${pipe.Material || "N/A"}</span>
+            `;
+            row.onmouseenter = () => row.style.background = "#f0f7ff";
+            row.onmouseleave = () => row.style.background = "";
+            row.onclick = () => selectSearchResult(index);
+            resultsDiv.appendChild(row);
+        });
+
+        resultsDiv.style.display = "block";
+    }
+
+    function hideSearchResults() {
+        const resultsDiv = document.getElementById("searchResults");
+        if (resultsDiv) resultsDiv.style.display = "none";
+    }
+
     // WKT → GeoJSON (handles POINT, LINESTRING, MULTILINESTRING)
     function wktToGeoJSON(wkt) {
         if (!wkt) return null;
@@ -667,26 +833,78 @@
 
     // LOAD ALL DATA
     let mapLoadingTimer = null;
+    let mapLoadStartTime = null;
+    let mapLoadEstimateMs = 6000;   // first-ever guess, refined after that
+    let mapLoadHasRealProgress = false;
+
+    // Rolling average of the last few load times, used to estimate
+    // "About Ns remaining" when we don't have real byte progress to go on.
+    function getLoadDurationHistory() {
+        try { return JSON.parse(localStorage.getItem('mapLoadDurations') || '[]'); }
+        catch { return []; }
+    }
+    function recordLoadDuration(ms) {
+        try {
+            let hist = getLoadDurationHistory();
+            hist.push(ms);
+            if (hist.length > 5) hist.shift();
+            localStorage.setItem('mapLoadDurations', JSON.stringify(hist));
+        } catch { /* storage unavailable — estimate just won't improve over time */ }
+    }
+    function estimatedLoadDuration() {
+        let hist = getLoadDurationHistory();
+        if (!hist.length) return mapLoadEstimateMs;
+        return hist.reduce((a, b) => a + b, 0) / hist.length;
+    }
+
+    function setLoadProgress(pct) {
+        const fill = document.getElementById('mapLoadingProgressFill');
+        if (fill) fill.style.width = `${Math.max(0, Math.min(100, pct))}%`;
+    }
 
     function showMapLoading() {
         const overlay = document.getElementById('mapLoadingOverlay');
         overlay.classList.remove('error');
         overlay.style.display = 'flex';
+        setLoadProgress(0);
 
-        let elapsed = 0;
+        mapLoadStartTime = Date.now();
+        mapLoadEstimateMs = estimatedLoadDuration();
+        mapLoadHasRealProgress = false;
+
         clearInterval(mapLoadingTimer);
         mapLoadingTimer = setInterval(() => {
-            elapsed += 3;
+            const elapsedMs   = Date.now() - mapLoadStartTime;
+            const remainingMs = mapLoadEstimateMs - elapsedMs;
             const sub = document.getElementById('mapLoadingSub');
+
+            // Only drive the bar off elapsed time if we're not getting real
+            // byte-level progress from the response itself. Cap at 90% so it
+            // never claims "done" before the data has actually arrived.
+            if (!mapLoadHasRealProgress) {
+                setLoadProgress(Math.min(90, (elapsedMs / mapLoadEstimateMs) * 90));
+            }
+
             if (!sub) return;
-            if (elapsed >= 20) sub.textContent = `Still loading… ${elapsed}s — large dataset, hang tight`;
-            else if (elapsed >= 8) sub.textContent = `Fetching pipe geometry…`;
-        }, 3000);
+            if (remainingMs > 1500) {
+                sub.textContent = `About ${Math.ceil(remainingMs / 1000)}s remaining…`;
+            } else if (remainingMs > 0) {
+                sub.textContent = `Almost there…`;
+            } else {
+                sub.textContent = `Still loading… ${Math.round(elapsedMs / 1000)}s — large dataset, hang tight`;
+            }
+        }, 200);
     }
 
     function hideMapLoading() {
         clearInterval(mapLoadingTimer);
-        document.getElementById('mapLoadingOverlay').style.display = 'none';
+        if (mapLoadStartTime) recordLoadDuration(Date.now() - mapLoadStartTime);
+        setLoadProgress(100);
+        // let the bar visibly hit 100% before the overlay disappears
+        setTimeout(() => {
+            document.getElementById('mapLoadingOverlay').style.display = 'none';
+            setLoadProgress(0);
+        }, 150);
     }
 
     function showMapLoadError(msg) {
@@ -694,22 +912,79 @@
         const overlay = document.getElementById('mapLoadingOverlay');
         overlay.classList.add('error');
         overlay.style.display = 'flex';
+        setLoadProgress(100);
         document.getElementById('mapLoadingText').textContent = 'Couldn\'t load map data';
         document.getElementById('mapLoadingSub').textContent = msg || 'Please try refreshing the page';
     }
 
-    function loadAllData() {
-        showMapLoading();
+    // Fetches a URL and reports real download progress when the server sends
+    // a Content-Length header; otherwise resolves normally and the caller
+    // falls back to the time-based estimate above.
+    async function fetchJsonWithProgress(url) {
+        const res = await fetch(url);
 
-        fetch("/Map/GetMapData")
-            .then(async res => {
-                if (!res.ok) {
-                    const text = await res.text();
-                    console.error("Pipe server error:", text);
-                    throw new Error("Server returned an error");
-                }
-                return res.json();
-            })
+        if (!res.ok) {
+            const text = await res.text();
+            console.error("Pipe server error:", text);
+            throw new Error("Server returned an error");
+        }
+
+        const contentLength = res.headers.get('Content-Length');
+        if (!res.body || !contentLength) {
+            return res.json();
+        }
+
+        const total = parseInt(contentLength, 10);
+        let received = 0;
+        const reader = res.body.getReader();
+        const chunks = [];
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            received += value.length;
+            mapLoadHasRealProgress = true;
+            setLoadProgress((received / total) * 100);
+        }
+
+        const text = await new Blob(chunks).text();
+        return JSON.parse(text);
+    }
+
+    // VIEWPORT-BASED LOADING
+    // Only the pipes currently visible (plus a buffer) are fetched. Panning
+    // or zooming re-fetches automatically. allSummary therefore only ever
+    // contains what's on screen right now — search works the same way.
+    let lastLoadedBounds = null;
+    let viewportLoadTimer = null;
+    let isFirstLoad = true;
+
+    function needsReload(viewBounds) {
+        if (!lastLoadedBounds) return true;
+        return !lastLoadedBounds.contains(viewBounds);
+    }
+
+    function loadVisibleData() {
+        const viewBounds = map.getBounds();
+
+        if (!isFirstLoad && !needsReload(viewBounds)) return;
+
+        // Fetch a bit more than what's on screen so small pans don't
+        // immediately trigger another request.
+        const fetchBounds = viewBounds.pad(0.5);
+        lastLoadedBounds = fetchBounds;
+
+        const north = fetchBounds.getNorth();
+        const south = fetchBounds.getSouth();
+        const east  = fetchBounds.getEast();
+        const west  = fetchBounds.getWest();
+
+        if (isFirstLoad) showMapLoading();
+
+        const url = `/Map/GetMapData?north=${north}&south=${south}&east=${east}&west=${west}`;
+
+        fetchJsonWithProgress(url)
             .then(data => {
                 if (!data) { showMapLoadError(); return; }
                 allSummary = data.summary || [];
@@ -753,8 +1028,9 @@
                 });
 
                 updatePipeStats(allSummary);
-                drawPipes(data);
+                drawPipes(data, isFirstLoad);
                 hideMapLoading();
+                isFirstLoad = false;
             })
             .catch(err => {
                 console.error("Pipe data load failed:", err);
@@ -762,10 +1038,18 @@
             });
     }
 
-    window.onload = loadAllData;
+    window.onload = loadVisibleData;
+
+    // Re-fetch whenever the user finishes panning or zooming. moveend fires
+    // once the map has settled (after both pans and zooms), so a short
+    // debounce is just a safety margin, not the primary throttle.
+    map.on('moveend', () => {
+        clearTimeout(viewportLoadTimer);
+        viewportLoadTimer = setTimeout(loadVisibleData, 250);
+    });
 
     // DRAW PIPES
-    function drawPipes(data) {
+    function drawPipes(data, fitToData) {
         pipeLayer.clearLayers();
         pipeObjects = [];
 
@@ -811,12 +1095,17 @@
 
         drawManholesFromPipes(data.sections);
 
-        setTimeout(() => {
-            if (pipeLayer.getLayers().length > 0) {
-                let bounds = pipeLayer.getBounds();
-                if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-            }
-        }, 200);
+        // Only auto-fit on the very first load. On every later viewport
+        // refresh, fitting to the (viewport-limited) data would fight the
+        // user's own pan/zoom and could trigger another reload loop.
+        if (fitToData) {
+            setTimeout(() => {
+                if (pipeLayer.getLayers().length > 0) {
+                    let bounds = pipeLayer.getBounds();
+                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+                }
+            }, 200);
+        }
     }
 
     // DRAW MANHOLES from pipe geometry endpoints
@@ -1327,91 +1616,15 @@
     }
 
     function search() {
-        let query      = document.getElementById("searchBox").value.trim().toLowerCase();
-        let resultsDiv = document.getElementById("searchResults");
-        resultsDiv.innerHTML = "";
-        resultsDiv.style.display = "block";
-        if (!query) { resultsDiv.style.display = "none"; return; }
-
-        let pipeResults = allSummary.filter(x =>
-            (x.Id       && x.Id.toLowerCase().includes(query)) ||
-            (x.Name     && x.Name.toLowerCase().includes(query)) ||
-            (x.Material && x.Material.toLowerCase().includes(query))
-        );
-
-        let roadResults = allSummary.filter(x =>
-            normalizeRoad(x.Address).includes(normalizeRoad(query))
-        );
-
-        // Road group
-        if (roadResults.length > 0) {
-            let roadName    = roadResults[0].Address || "Selected Road";
-            let isCollapsed = false;
-            let roadDiv     = document.createElement("div");
-            roadDiv.style.cssText = "border:1px solid #d4edda;border-radius:8px;overflow:hidden;margin-bottom:8px;";
-            roadDiv.innerHTML = `
-            <div class="roadHeader"
-                 style="display:flex;align-items:center;justify-content:space-between;
-                        background:#d4edda;padding:8px 12px;cursor:pointer;">
-                <span style="font-weight:600;color:#28a745;font-size:13px;">
-                    🛣️ ${roadName}
-                    <span style="font-weight:400;color:#555;margin-left:6px;">(${roadResults.length} pipes)</span>
-                </span>
-                <div style="display:flex;align-items:center;gap:8px;">
-                    <span class="zoomAllBtn" style="font-size:11px;color:#007bff;text-decoration:underline;white-space:nowrap;">Zoom All</span>
-                    <span class="toggleIcon" style="font-size:16px;color:#555;font-weight:700;">▾</span>
-                </div>
-            </div>
-            <div class="pipeList" style="max-height:160px;overflow-y:auto;display:block;background:#fff;"></div>`;
-
-            const zoomBtn   = roadDiv.querySelector(".zoomAllBtn");
-            const pipeList  = roadDiv.querySelector(".pipeList");
-            const toggleIcon = roadDiv.querySelector(".toggleIcon");
-            const roadHeader = roadDiv.querySelector(".roadHeader");
-
-            zoomBtn.onclick = e => { e.stopPropagation(); highlightMultiplePipes(roadResults); };
-            roadHeader.onclick = e => {
-                if (e.target.classList.contains("zoomAllBtn")) return;
-                isCollapsed = !isCollapsed;
-                pipeList.style.display = isCollapsed ? "none" : "block";
-                toggleIcon.textContent = isCollapsed ? "▸" : "▾";
-            };
-
-            roadResults.forEach(pipe => {
-                let row = document.createElement("div");
-                row.style.cssText = "display:flex;align-items:center;justify-content:space-between;" +
-                    "padding:6px 12px;border-bottom:1px solid #f0f0f0;cursor:pointer;" +
-                    "font-size:13px;transition:background 0.15s;";
-                row.innerHTML = `
-                <span style="color:#007bff;">↳ ${pipe.Name || pipe.Id}</span>
-                <span style="color:#999;font-size:11px;">${pipe.Inspected || "Uninspected"}</span>`;
-                row.onmouseenter = () => row.style.background = "#f0f7ff";
-                row.onmouseleave = () => row.style.background = "";
-                row.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
-                pipeList.appendChild(row);
-            });
-            resultsDiv.appendChild(roadDiv);
-        }
-
-        // Individual pipe results
-        pipeResults.forEach(pipe => {
-            let div = document.createElement("div");
-            div.style.cssText = "padding:8px 12px;border-bottom:1px solid #eee;cursor:pointer;" +
-                "font-size:13px;transition:background 0.15s;";
-            div.innerHTML = `<span style="color:#007bff;">📍 ${pipe.Name || pipe.Id} — ${pipe.Address || ""}</span>`;
-            div.onmouseenter = () => div.style.background = "#f0f7ff";
-            div.onmouseleave = () => div.style.background = "";
-            div.onclick = () => { highlightPipe(pipe.Id); resultsDiv.style.display = "none"; };
-            resultsDiv.appendChild(div);
-        });
-
-        if (pipeResults.length === 0 && roadResults.length === 0) {
-            resultsDiv.innerHTML = `<p style="padding:10px;color:#999;margin:0;">No results found.</p>`;
-        }
+        const term = document.getElementById("searchBox").value.trim();
+        searchServer(term);
     }
 
-    document.getElementById("searchBox").addEventListener("keydown", e => {
-        if (e.key === "Enter") search();
+    document.getElementById("searchBox").addEventListener("input", () => {
+        clearTimeout(window.__searchDebounce);
+        window.__searchDebounce = setTimeout(() => {
+            searchServer(document.getElementById("searchBox").value.trim());
+        }, 300);
     });
 
     document.addEventListener("click", e => {

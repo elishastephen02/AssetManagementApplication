@@ -18,8 +18,8 @@ namespace AssetManagement.Controllers
         {
             var model = new DashboardViewModel
             {
-                TotalPipes = _db.QuerySingle<int>(
-                    "SELECT COUNT(*) FROM GEOJSON"),
+                TotalLength = _db.QuerySingle<int>(
+                    "SELECT SUM(CAST(LENGTH AS DECIMAL(10,2))) FROM GEOJSON"),
 
                 TotalCR = _db.QuerySingle<decimal?>(
                     "SELECT AVG(CAST(ConditionR AS DECIMAL(10,2))) FROM GEOJSON"

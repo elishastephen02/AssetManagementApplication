@@ -1,5 +1,7 @@
-﻿using NetTopologySuite.Features;
+﻿using Microsoft.Data.SqlClient;
+using NetTopologySuite.Features;
 using NetTopologySuite.IO;
+using static System.Collections.Specialized.BitVector32;
 
 namespace AssetManagement.Services
 {
@@ -12,16 +14,27 @@ namespace AssetManagement.Services
             _db = db;
         }
 
-        public object GetMapData()
+        public object GetMapData(double north, double south, double east, double west)
         {
+            string bbox =
+                $"POLYGON((" +
+                $"{west} {north}," +
+                $"{east} {north}," +
+                $"{east} {south}," +
+                $"{west} {south}," +
+                $"{west} {north}))";
+
             var geoRows = _db.Query(@"
+                DECLARE @bboxGeom geometry =
+                geometry::STGeomFromText(@bbox,4326);
+
                 SELECT
                     SEGID,
                     RoadName,
                     MATERIAL,
-                    InspectedL  AS InspectedLength,
-                    InspectedD  AS InspectedDate,
-                    X, 
+                    InspectedL AS InspectedLength,
+                    InspectedD AS InspectedDate,
+                    X,
                     Y,
                     DESDATE,
                     STR_SCORE,
@@ -29,7 +42,7 @@ namespace AssetManagement.Services
                     SER_SCORE,
                     SER_GRADE,
                     Expected,
-                    AGE, 
+                    AGE,
                     ConditionR,
                     RemainingUL,
                     DisposalD,
@@ -37,42 +50,45 @@ namespace AssetManagement.Services
                     Impairment,
                     CurrentRV,
                     DepreciatedRV,
-                    GEOMETRY_DATA.STAsText() AS GeometryWKT
+                    GEOMETRY_DATA.Reduce(0.00001).STAsText() AS GeometryWKT
                 FROM GEOJSON
-                WHERE GEOMETRY_DATA IS NOT NULL
-            ").ToList();
+                WHERE
+                    GEOMETRY_DATA.Filter(@bboxGeom)=1
+                AND
+                    GEOMETRY_DATA.STIntersects(@bboxGeom)=1;
+                ", new { bbox }).ToList();
+
+            var segIds = geoRows
+            .Select(g => Convert.ToString(g.SEGID))
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .Distinct()
+            .ToList();
+
+            // Nothing in this viewport — bail out before building an invalid
+            // "IN ()" clause below.
+            if (!segIds.Any())
+            {
+                return new { sections = new List<object>(), summary = new List<object>() };
+            }
+
+            string segIdsCsv = string.Join(",", segIds);
 
             var dbSections = _db.Query(@"
                 SELECT
-                    s.OBJ_PK           AS Id,
-                    s.OBJ_Key          AS SegId,
-                    s.OBJ_Size1        AS Size,
-                    s.OBJ_Material     AS Material,
-                    s.OBJ_Spare4       AS Status,
-                    s.OBJ_Spare5       AS Owner,
-                    si.INS_PK          AS InspectionId,
-                    si.INS_StartDate   AS InspectionDate,
+                    s.OBJ_PK AS Id,
+                    s.OBJ_Key AS SegId,
+                    s.OBJ_Size1 AS Size,
+                    s.OBJ_Material AS Material,
+                    s.OBJ_Spare4 AS Status,
+                    s.OBJ_Spare5 AS Owner,
+                    si.INS_PK AS InspectionId,
+                    si.INS_StartDate AS InspectionDate,
                     si.INS_InspectedLength AS InspectedLength
                 FROM SECTION s
-                LEFT JOIN SECINSP si ON s.OBJ_PK = si.INS_Section_FK
-            ").ToList();
-
-            var statsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
-            foreach (var st in _db.Query(@"
-                SELECT
-                    STA_Inspection_FK AS InspectionId,
-                    STA_HighestGrade  AS HighestGrade,
-                    STA_TotalScore    AS TotalScore,
-                    STA_PeakScore     AS PeakScore
-                FROM SECSTAT
-                WHERE STA_Type = 'STR'
-            ").ToList())
-            {
-                string key = Convert.ToString(st.InspectionId ?? "");
-                if (string.IsNullOrEmpty(key)) continue;
-                if (!statsLookup.ContainsKey(key)) statsLookup[key] = new List<dynamic>();
-                statsLookup[key].Add(st);
-            }
+                LEFT JOIN SECINSP si
+                    ON s.OBJ_PK = si.INS_Section_FK
+                WHERE s.OBJ_Key IN (SELECT value FROM STRING_SPLIT(@segIdsCsv, ','))
+                ", new { segIdsCsv }).ToList();
 
             var dbLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
             foreach (var r in dbSections)
@@ -89,14 +105,37 @@ namespace AssetManagement.Services
                 .Distinct()
                 .ToList();
 
+            string insIdsCsv = inspectionIds.Any() ? string.Join(",", inspectionIds) : null;
+
+            // Filtered to just the inspections in view — this used to scan
+            // the entire SECSTAT table on every single viewport load.
+            var statsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
+            if (insIdsCsv != null)
+            {
+                foreach (var st in _db.Query(@"
+                    SELECT
+                        STA_Inspection_FK AS InspectionId,
+                        STA_HighestGrade  AS HighestGrade,
+                        STA_TotalScore    AS TotalScore,
+                        STA_PeakScore     AS PeakScore
+                    FROM SECSTAT
+                    WHERE STA_Type = 'STR'
+                    AND STA_Inspection_FK IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
+                ", new { insIdsCsv }).ToList())
+                {
+                    string key = Convert.ToString(st.InspectionId ?? "");
+                    if (string.IsNullOrEmpty(key)) continue;
+                    if (!statsLookup.ContainsKey(key)) statsLookup[key] = new List<dynamic>();
+                    statsLookup[key].Add(st);
+                }
+            }
+
             var observationsLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
             var mediaLookup = new Dictionary<string, List<dynamic>>(StringComparer.OrdinalIgnoreCase);
 
             if (inspectionIds.Any())
             {
-                string insIdList = string.Join(",", inspectionIds.Select(id => $"'{id}'"));
-
-                var observations = _db.Query($@"
+                var observations = _db.Query(@"
                     SELECT
                         OBS_PK            AS ObsId,
                         OBS_Inspection_FK AS InspectionId,
@@ -105,8 +144,8 @@ namespace AssetManagement.Services
                         OBS_GradeS        AS Grade,
                         OBS_ScoreS        AS Score
                     FROM SECOBS
-                    WHERE OBS_Inspection_FK IN ({insIdList})
-                ").ToList();
+                    WHERE OBS_Inspection_FK IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
+                ", new { insIdsCsv }).ToList();
 
                 foreach (var o in observations)
                 {
@@ -124,16 +163,16 @@ namespace AssetManagement.Services
 
                 if (obsIds.Any())
                 {
-                    string obsIdList = string.Join(",", obsIds.Select(id => $"'{id}'"));
+                    string obsIdsCsv = string.Join(",", obsIds);
 
-                    foreach (var m in _db.Query($@"
+                    foreach (var m in _db.Query(@"
                         SELECT
                             OMM_Observation_FK AS ObsId,
                             OMM_FileName       AS FileName,
                             OMM_FileType       AS FileType
                         FROM SECOBSMM
-                        WHERE OMM_Observation_FK IN ({obsIdList})
-                    ").ToList())
+                        WHERE OMM_Observation_FK IN (SELECT value FROM STRING_SPLIT(@obsIdsCsv, ','))
+                    ", new { obsIdsCsv }).ToList())
                     {
                         string key = Convert.ToString(m.ObsId ?? "");
                         if (string.IsNullOrEmpty(key)) continue;
@@ -163,7 +202,7 @@ namespace AssetManagement.Services
                     DesDate = geo.DESDATE,
                     XCoord = geo.X,
                     YCoord = geo.Y,
-                    Expected = geo.Expected, 
+                    Expected = geo.Expected,
                     Age = geo.AGE,
                     ConditionR = geo.ConditionR,
                     RemainingUL = geo.RemainingUL,
@@ -269,6 +308,121 @@ namespace AssetManagement.Services
             }
 
             return new { sections, summary };
+        }
+
+        public IEnumerable<object> SearchPipes(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return Enumerable.Empty<object>();
+
+            string search = $"%{searchTerm.Trim()}%";
+
+            var results = _db.Query(@"
+                SELECT TOP (50)
+
+                    SEGID,
+                    RoadName,
+                    MATERIAL,
+                    X,
+                    Y,
+                    GEOMETRY_DATA.Reduce(0.00001).STAsText() AS GeometryWKT
+
+                FROM GEOJSON
+
+                WHERE
+                       SEGID LIKE @search
+                    OR RoadName LIKE @search
+                    OR MATERIAL LIKE @search
+
+                ORDER BY
+                    RoadName,
+                    SEGID
+            ", new { search });
+
+            return results.Select(r => new
+            {
+                Id = Convert.ToString(r.SEGID),
+                Name = Convert.ToString(r.SEGID),
+                RoadName = Convert.ToString(r.RoadName),
+                Material = Convert.ToString(r.MATERIAL),
+                X = r.X,
+                Y = r.Y,
+                Geometry = Convert.ToString(r.GeometryWKT)
+            });
+        }
+
+        public object? GetPipe(string segId)
+        {
+            if (string.IsNullOrWhiteSpace(segId))
+                return null;
+
+            var pipe = _db.Query(@"
+                SELECT TOP (1)
+
+                    SEGID,
+                    RoadName,
+                    MATERIAL,
+                    InspectedL AS InspectedLength,
+                    InspectedD AS InspectedDate,
+                    X,
+                    Y,
+                    DESDATE,
+                    STR_SCORE,
+                    STR_GRADE,
+                    SER_SCORE,
+                    SER_GRADE,
+                    Expected,
+                    AGE,
+                    ConditionR,
+                    RemainingUL,
+                    DisposalD,
+                    AdjustedBRE,
+                    Impairment,
+                    CurrentRV,
+                    DepreciatedRV,
+                    GEOMETRY_DATA.Reduce(0.00001).STAsText() AS GeometryWKT
+
+                FROM GEOJSON
+
+                WHERE SEGID = @segId
+            ", new { segId }).FirstOrDefault();
+
+            if (pipe == null)
+                return null;
+
+            return new
+            {
+                OBJ_PK = Convert.ToString(pipe.SEGID),
+                Geometry = Convert.ToString(pipe.GeometryWKT),
+                STR_SCORE = pipe.STR_SCORE,
+                STR_GRADE = pipe.STR_GRADE,
+                SER_SCORE = pipe.SER_SCORE,
+                SER_GRADE = pipe.SER_GRADE,
+                DesDate = pipe.DESDATE,
+                XCoord = pipe.X,
+                YCoord = pipe.Y,
+                Expected = pipe.Expected,
+                Age = pipe.AGE,
+                ConditionR = pipe.ConditionR,
+                RemainingUL = pipe.RemainingUL,
+                DisposalDate = pipe.DisposalD,
+                AdjustedBusinessRiskExpense = pipe.AdjustedBRE,
+                Impairment = pipe.Impairment,
+                CurrentReplacementValue = pipe.CurrentRV,
+                DepreciatedReplacementValue = pipe.DepreciatedRV,
+                Id = Convert.ToString(pipe.SEGID),
+                Name = Convert.ToString(pipe.SEGID),
+                Material = Convert.ToString(pipe.MATERIAL),
+                Address = Convert.ToString(pipe.RoadName),
+                LastInspection = pipe.InspectedDate,
+                InspectedLength = pipe.InspectedLength,
+
+                Inspected = pipe.InspectedDate != null
+                    ? "Inspected"
+                    : "Uninspected",
+
+                Condition = GetPipeCondition(pipe.STR_GRADE)
+            };
         }
 
         private string GetPipeCondition(object scoreObj)

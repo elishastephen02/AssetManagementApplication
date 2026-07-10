@@ -4,104 +4,102 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="page-header">
-    <h1>Dashboard</h1>
-</div>
-<div class="dashboard-container">
-    <div class="map-panel">
-        <div id="map"></div>
+<div class="page-wide">
+    <div class="page-header">
+        <h1>Dashboard</h1>
     </div>
-    <div class="side-panel">
-        <h2>Blocks</h2>
-        <div class="block-grid-wrapper">
-            <div class="asset-row">
-                <div class="summary-block">
-                    <span class="block-title">Pipes (m)</span>
-                    <span class="block-value">@Model.TotalPipes</span>
+    <div class="dashboard-container">
+        <div class="map-panel">
+            <div id="map"></div>
+        </div>
+        <div class="side-panel">
+            <h2>Blocks</h2>
+            <div class="block-grid-wrapper">
+                <div class="asset-row">
+                    <div class="summary-block">
+                        <span class="block-title">Pipes (m)</span>
+                        <span class="block-value">@Model.TotalLength m</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <div id="avgConditionGauge"></div>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">R @Model.TotalCRC.ToString("0.00")</span>
+                    </div>
                 </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">@Model.TotalCR.ToString("0.00")%</span>
+                <div class="asset-row inactive">
+                    <div class="summary-block">
+                        <span class="block-title">Manholes</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">--</span>
+                    </div>
                 </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">R @Model.TotalCRC.ToString("0.00")</span>
+                <div class="asset-row inactive">
+                    <div class="summary-block">
+                        <span class="block-title">Canals</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">--</span>
+                    </div>
+                </div>
+                <div class="asset-row inactive">
+                    <div class="summary-block">
+                        <span class="block-title">Culverts</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">--</span>
+                    </div>
+                </div>
+                <div class="asset-row inactive">
+                    <div class="summary-block">
+                        <span class="block-title">Outfall</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">--</span>
+                    </div>
+                </div>
+                <div class="asset-row inactive">
+                    <div class="summary-block">
+                        <span class="block-title">Pump stations</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Avg Condition Rating</span>
+                        <span class="block-value">--</span>
+                    </div>
+                    <div class="summary-block">
+                        <span class="block-title">Current Replacement Cost</span>
+                        <span class="block-value">--</span>
+                    </div>
                 </div>
             </div>
-            <div class="asset-row inactive">
-                <div class="summary-block">
-                    <span class="block-title">Manholes</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">--</span>
-                </div>
-            </div>
-            <div class="asset-row inactive">
-                <div class="summary-block">
-                    <span class="block-title">Canals</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">--</span>
-                </div>
-            </div>
-            <div class="asset-row inactive">
-                <div class="summary-block">
-                    <span class="block-title">Culverts</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">--</span>
-                </div>
-            </div>
-            <div class="asset-row inactive">
-                <div class="summary-block">
-                    <span class="block-title">Outfall</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">--</span>
-                </div>
-            </div>
-            <div class="asset-row inactive">
-                <div class="summary-block">
-                    <span class="block-title">Pump stations</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Avg Condition Rating</span>
-                    <span class="block-value">--</span>
-                </div>
-                <div class="summary-block">
-                    <span class="block-title">Current Replacement Cost</span>
-                    <span class="block-value">--</span>
-                </div>
-            </div>
-
-            <hr />
-            <h3>Map Blocks</h3>
-            <div id="blockList"></div>
         </div>
     </div>
 </div>
@@ -110,6 +108,17 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
+    .page-wide {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 0 20px;
+    box-sizing: border-box;
+    }
+
     .page-header {
     padding: 15px 20px;
     background: #ffffff;
@@ -127,15 +136,17 @@
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    width: 100%;
     }
 
     .map-panel {
     flex: 3;
+    min-width: 0;
     }
 
     #map {
     width: 100%;
-    height: 650px;
+    height: 550px;
     border-radius: 8px;
     border: 1px solid #ddd;
     }
@@ -145,8 +156,8 @@
     background: #f4f4f4;
     padding: 15px;
     border-radius: 8px;
-    height: 650px;
-    width: 800px;
+    height: 550px;
+    min-width: 420px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -304,6 +315,42 @@
     return "#F44336";
     }
 
+    // AVERAGE CONDITION RATING GAUGE
+    function renderAvgConditionGauge(condition) {
+    if (condition === undefined || condition === null || isNaN(condition)) condition = 0;
+    condition = Number(condition);
+    condition = Math.max(0, Math.min(100, condition));
+
+    const radius = 34;
+    const circumference = Math.PI * radius;
+    const progress = circumference * (condition / 100);
+    const offset = circumference - progress;
+
+    let color;
+    if (condition > 70)      color = "#4CAF50";
+    else if (condition > 50) color = "#FFC107";
+    else                     color = "#F44336";
+
+    const gaugeEl = document.getElementById("avgConditionGauge");
+    if (!gaugeEl) return;
+
+    gaugeEl.innerHTML = `
+    <svg width="90" height="55" viewBox="0 0 90 55">
+    <path d="M11 45 A34 34 0 0 1 79 45"
+    fill="none" stroke="#e5e7eb" stroke-width="7" stroke-linecap="round"/>
+    <path d="M11 45 A34 34 0 0 1 79 45"
+    fill="none" stroke="${color}" stroke-width="7" stroke-linecap="round"
+    stroke-dasharray="${circumference}" stroke-dashoffset="${offset}"/>
+    <text x="45" y="38" text-anchor="middle"
+    font-size="14" font-weight="700" fill="${color}">
+    ${condition.toFixed(1)}%
+    </text>
+    </svg>`;
+    }
+
+    // Render on load using the server-side average condition rating
+    renderAvgConditionGauge(@Model.TotalCR);
+
     fetch('/Dashboard/GetDashboardMap')
     .then(res => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -332,6 +379,9 @@
 
     layer.bindPopup(`<b>${name}</b><br>Avg Condition: ${condition.toFixed(1)}%`);
 
+    // Guard: only build sidebar list items if #blockList exists in the DOM
+    const blockListEl = document.getElementById("blockList");
+    if (blockListEl) {
     const div = document.createElement("div");
     div.className = "block-item";
     div.style.borderLeftColor = getColor(condition);
@@ -340,8 +390,8 @@
     map.fitBounds(layer.getBounds(), { padding: [20, 20] });
     layer.openPopup();
     };
-
-    document.getElementById("blockList").appendChild(div);
+    blockListEl.appendChild(div);
+    }
     }
     }).addTo(map);
 
