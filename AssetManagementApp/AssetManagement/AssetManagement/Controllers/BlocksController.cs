@@ -17,7 +17,7 @@ namespace AssetManagement.Controllers
         //    var path = Path.Combine(
         //        Directory.GetCurrentDirectory(),
         //        "Data",
-        //        "Westmead.geojson"
+        //        "Phase5&6.geojson"
         //    );
 
         //    _bService.ImportBlocksFromGeoJson(path);
