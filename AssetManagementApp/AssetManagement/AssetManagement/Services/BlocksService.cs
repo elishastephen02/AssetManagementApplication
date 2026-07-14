@@ -1,7 +1,9 @@
 ﻿using NetTopologySuite.Features;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace AssetManagement.Services
@@ -25,46 +27,96 @@ namespace AssetManagement.Services
             var featureCollection = reader.Read<FeatureCollection>(geoJson);
 
             int count = 0;
+            int errorCount = 0;
+            int featureIndex = 0;
 
             // 3. Loop features
             foreach (var feature in featureCollection)
             {
+                featureIndex++;
+
                 try
                 {
                     var geom = feature.Geometry;
-
-                    // Extract attributes safely
                     var attributes = feature.Attributes;
 
-                    string blockName =
-                        attributes.Exists("CatchNames")
-                        ? attributes["CatchNames"]?.ToString()
-                        : "Unknown";
+                    //Console.WriteLine($"[{featureIndex}] Attrs: {string.Join(", ", attributes.GetNames())}");
 
+                    // --- BlockName ---
+                    string blockName = "Unknown";
+                    if (attributes.Exists("BlockName"))
+                    {
+                        var rawName = attributes["BlockName"]?.ToString();
+                        if (!string.IsNullOrWhiteSpace(rawName))
+                        {
+                            blockName = rawName.Trim();
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[Feature {featureIndex}] BlockName attribute exists but is null/empty.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Feature {featureIndex}] BlockName attribute NOT FOUND. Available keys: {string.Join(", ", attributes.GetNames())}");
+                    }
+
+                    // --- MAJ_CAT (legitimately null for some features, e.g. Phase3/CBD blocks) ---
                     string majCat =
                         attributes.Exists("MAJ_CAT")
                         ? attributes["MAJ_CAT"]?.ToString()
                         : null;
 
-                    double shapeArea =
-                        attributes.Exists("Shape_STAr") &&
-                        double.TryParse(attributes["Shape_STAr"]?.ToString(), out double a)
-                        ? a
-                        : 0;
+                    double shapeArea = 0;
+                    if (attributes.Exists("Shape_Area"))
+                    {
+                        var rawArea = attributes["Shape_Area"];
+                        if (rawArea != null && double.TryParse(rawArea.ToString(), out double a))
+                        {
+                            shapeArea = a;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Feature {featureIndex}] '{blockName}': Shape_Area attribute not found.");
+                    }
 
-                    double shapeLength =
-                        attributes.Exists("Shape_STLe") &&
-                        double.TryParse(attributes["Shape_STLe"]?.ToString(), out double l)
-                        ? l
-                        : 0;
+                    double shapeLength = geom?.Length ?? 0;
 
                     // 4. Convert geometry to SQL Server format
                     var wkt = geom.AsText();
 
                     // 5. Insert into DB
                     string sql = @"
-                        INSERT INTO Blocks (BlockName, Geometry, MAJ_CAT, ShapeArea, ShapeLength)
-                        VALUES (@blockName, Geometry::STGeomFromText(@wkt, 4326), @majCat, @area, @length)";
+                    IF EXISTS (SELECT 1 FROM Blocks WHERE BlockName = @blockName)
+                    BEGIN
+                        UPDATE Blocks
+                        SET
+                            Geometry = Geometry::STGeomFromText(@wkt, 4326),
+                            MAJ_CAT = @majCat,
+                            ShapeArea = @area,
+                            ShapeLength = @length
+                        WHERE BlockName = @blockName;
+                    END
+                    ELSE
+                    BEGIN
+                        INSERT INTO Blocks
+                        (
+                            BlockName,
+                            Geometry,
+                            MAJ_CAT,
+                            ShapeArea,
+                            ShapeLength
+                        )
+                        VALUES
+                        (
+                            @blockName,
+                            Geometry::STGeomFromText(@wkt, 4326),
+                            @majCat,
+                            @area,
+                            @length
+                        );
+                    END";
 
                     _db.Execute(sql, new
                     {
@@ -77,13 +129,14 @@ namespace AssetManagement.Services
 
                     count++;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error importing feature: " + ex.Message);
+                    errorCount++;
+                    Console.WriteLine($"[Feature {featureIndex}] Error importing feature: {ex.Message}");
                 }
             }
 
-            Console.WriteLine($"Imported {count} blocks successfully.");
+            Console.WriteLine($"Imported {count} blocks successfully. {errorCount} feature(s) failed.");
         }
     }
 }

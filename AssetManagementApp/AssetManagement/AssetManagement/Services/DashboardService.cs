@@ -22,13 +22,13 @@ namespace AssetManagement.Services
                     agg.ConditionR,
                     b.Geometry.STAsText() AS GeomWkt
                 FROM Blocks b
-                JOIN (
+                LEFT JOIN (
                     SELECT 
-                        g.BlockName,
+                        LTRIM(RTRIM(g.BlockName)) AS BlockName,
                         AVG(TRY_CAST(g.ConditionR AS DECIMAL(10,2))) AS ConditionR
                     FROM GEOJSON g
-                    GROUP BY g.BlockName
-                ) agg ON agg.BlockName = b.BlockName
+                    GROUP BY LTRIM(RTRIM(g.BlockName))
+                ) agg ON UPPER(LTRIM(RTRIM(agg.BlockName))) = UPPER(LTRIM(RTRIM(b.BlockName)))
                 WHERE b.Geometry IS NOT NULL
             ";
 
@@ -37,9 +37,20 @@ namespace AssetManagement.Services
             var wktReader = new WKTReader(factory);
             var features = new List<object>();
 
+            int skippedGeom = 0;
+            int skippedError = 0;
+            int totalRows = 0;
+
             foreach (var row in rows)
             {
-                if (row.GeomWkt == null) continue;
+                totalRows++;
+
+                if (row.GeomWkt == null)
+                {
+                    Console.WriteLine($"Skipping {row.BlockName}: null geometry WKT");
+                    skippedGeom++;
+                    continue;
+                }
 
                 try
                 {
@@ -48,29 +59,40 @@ namespace AssetManagement.Services
                         wkt = wkt.Substring(wkt.IndexOf(';') + 1);
 
                     Geometry geom = wktReader.Read(wkt);
-                    double condition = row.ConditionR != null ? (double)row.ConditionR : 0;
+
+                    // ConditionR may legitimately be null now (LEFT JOIN, no matching data)
+                    double? condition = row.ConditionR != null ? (double?)(double)row.ConditionR : null;
 
                     var geometryJson = GeometryToGeoJsonObject(geom);
                     if (geometryJson == null)
                     {
                         Console.WriteLine($"Skipping {row.BlockName}: unsupported geometry type {geom.GeometryType}");
+                        skippedGeom++;
                         continue;
                     }
 
                     features.Add(new
                     {
                         type = "Feature",
-                        properties = new { blockName = (string)row.BlockName, condition },
+                        properties = new
+                        {
+                            blockName = (string)row.BlockName,
+                            condition = condition ?? 0,
+                            hasConditionData = condition.HasValue
+                        },
                         geometry = geometryJson
                     });
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error on {row.BlockName}: {ex.Message}");
+                    skippedError++;
                 }
             }
 
-            Console.WriteLine($"Returning {features.Count} features");
+            Console.WriteLine($"Query returned {totalRows} rows. Returning {features.Count} features. " +
+                               $"Skipped (geometry): {skippedGeom}. Skipped (error): {skippedError}.");
+
             return new { type = "FeatureCollection", features };
         }
 

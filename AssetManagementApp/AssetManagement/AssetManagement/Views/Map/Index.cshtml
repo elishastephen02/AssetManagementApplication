@@ -439,7 +439,7 @@
     <div class="infra-row">
         <div class="infra-panel infra-col search-panel">
             <h3 class="infra-title" style="text-align:center;">Search Pipes</h3>
-            <input type="text" id="searchBox" class="infra-input" placeholder="Search by pipe ID, name, material or road" />
+            <input type="text" id="searchBox" class="infra-input" placeholder="Search by pipe ID or road" />
             <button class="infra-btn" onclick="search()">Search</button>
             <div id="searchResults"></div>
         </div>
@@ -574,6 +574,12 @@
         maxBoundsViscosity: 1.0
     }).setView([-29.8587, 31.0218], 12);
 
+    // Shared canvas renderer — all pipes and manholes draw into ONE <canvas>
+    // element instead of one SVG <path>/<circle> per feature. This is the
+    // single biggest win for large datasets: DOM node count stays flat
+    // regardless of how many pipes/manholes are on screen.
+    var canvasRenderer = L.canvas({ padding: 0.5 });
+
     var streetLayer = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }
@@ -631,6 +637,8 @@
     let pipeColors  = {};
     let pipeObjects = [];
     let allSummary  = [];
+    let summaryById = new Map();  // O(1) lookups instead of allSummary.find()
+    let loadedPipeIds = new Set(); // tracks which pipe IDs are already drawn
 
     let mhObjects  = [];
     let mhSummary  = [];
@@ -665,7 +673,7 @@
 
     function addSinglePipeToMap(pipeData) {
         const id = pipeData.OBJ_PK || pipeData.Id;
-        if (pipeObjects.some(p => p.id === id)) return; // already drawn
+        if (loadedPipeIds.has(id)) return; // already drawn
 
         const geo = wktToGeoJSON(pipeData.Geometry);
         if (!geo) { console.warn("Search result has no usable geometry:", id); return; }
@@ -687,7 +695,10 @@
         }
         pipeColors[id] = color;
 
-        if (!allSummary.some(x => x.Id === id)) allSummary.push(pipeData);
+        if (!summaryById.has(id)) {
+            allSummary.push(pipeData);
+            summaryById.set(id, pipeData);
+        }
 
         const layer = L.geoJSON(geo, {
             style: {
@@ -697,7 +708,8 @@
                 dashArray: inspected ? "" : "6,4",
                 lineCap: 'round',
                 lineJoin: 'round',
-                className: 'pipe-line'
+                className: 'pipe-line',
+                renderer: canvasRenderer
             },
             onEachFeature: function (feature, fl) {
                 fl.bindTooltip(
@@ -713,6 +725,7 @@
 
         layer.addTo(pipeLayer);
         pipeObjects.push({ id, data: pipeData, section: pipeData, layer });
+        loadedPipeIds.add(id);
         updatePipeStats(allSummary);
     }
 
@@ -937,18 +950,26 @@
         const total = parseInt(contentLength, 10);
         let received = 0;
         const reader = res.body.getReader();
-        const chunks = [];
+        const decoder = new TextDecoder();
+        let text = "";
+        let lastUpdate = 0;
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            chunks.push(value);
+            text += decoder.decode(value, { stream: true });
             received += value.length;
             mapLoadHasRealProgress = true;
-            setLoadProgress((received / total) * 100);
+
+            // Throttle DOM writes — updating the progress bar on every
+            // packet forces needless style recalculation.
+            const now = Date.now();
+            if (now - lastUpdate > 80) {
+                setLoadProgress((received / total) * 100);
+                lastUpdate = now;
+            }
         }
 
-        const text = await new Blob(chunks).text();
         return JSON.parse(text);
     }
 
@@ -972,7 +993,7 @@
 
         // Fetch a bit more than what's on screen so small pans don't
         // immediately trigger another request.
-        const fetchBounds = viewBounds.pad(0.5);
+        const fetchBounds = viewBounds.pad(0.25);
         lastLoadedBounds = fetchBounds;
 
         const north = fetchBounds.getNorth();
@@ -988,6 +1009,7 @@
             .then(data => {
                 if (!data) { showMapLoadError(); return; }
                 allSummary = data.summary || [];
+                summaryById = new Map(allSummary.map(x => [x.Id, x]));
                 pipeColors = {};
 
                 // Map each pipe's numeric Condition Rating from the sections array
@@ -1045,13 +1067,14 @@
     // debounce is just a safety margin, not the primary throttle.
     map.on('moveend', () => {
         clearTimeout(viewportLoadTimer);
-        viewportLoadTimer = setTimeout(loadVisibleData, 250);
+        viewportLoadTimer = setTimeout(loadVisibleData, 120);
     });
 
     // DRAW PIPES
     function drawPipes(data, fitToData) {
         pipeLayer.clearLayers();
         pipeObjects = [];
+        loadedPipeIds = new Set();
 
         if (!data.sections || !data.sections.length) return;
 
@@ -1064,7 +1087,7 @@
             if (!geo) { console.warn("Invalid pipe geometry:", id, wkt); return; }
 
             let color       = pipeColors[id] || "#95a5a6";
-            let summaryItem = allSummary.find(x => x.Id === id);
+            let summaryItem = summaryById.get(id);
             let isInspected = hasInspectionData(summaryItem);
 
             let layer = L.geoJSON(geo, {
@@ -1075,7 +1098,8 @@
                     dashArray: isInspected ? "" : "6,4",
                     lineCap: 'round',
                     lineJoin: 'round',
-                    className: 'pipe-line'
+                    className: 'pipe-line',
+                    renderer: canvasRenderer
                 },
                 onEachFeature: function (feature, fl) {
                     fl.bindTooltip(
@@ -1091,6 +1115,7 @@
 
             layer.addTo(pipeLayer);
             pipeObjects.push({ id, data: summaryItem || s, section: s, layer });
+            loadedPipeIds.add(id);
         });
 
         drawManholesFromPipes(data.sections);
@@ -1098,13 +1123,11 @@
         // Only auto-fit on the very first load. On every later viewport
         // refresh, fitting to the (viewport-limited) data would fight the
         // user's own pan/zoom and could trigger another reload loop.
-        if (fitToData) {
-            setTimeout(() => {
-                if (pipeLayer.getLayers().length > 0) {
-                    let bounds = pipeLayer.getBounds();
-                    if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-                }
-            }, 200);
+        // getBounds() reads layer data, not rendered DOM, so no delay is
+        // needed before calling it.
+        if (fitToData && pipeLayer.getLayers().length > 0) {
+            let bounds = pipeLayer.getBounds();
+            if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         }
     }
 
@@ -1135,9 +1158,9 @@
             const upName   = s.UpstreamNode   || s.upstreamNode;
             const downName = s.DownstreamNode || s.downstreamNode;
 
-            // Find the pipe summary for this section — fixed scope
+            // Find the pipe summary for this section
             const pipeId      = s.OBJ_PK || s.obj_PK || s.obJ_PK;
-            const pipeSummary = allSummary.find(x => x.Id === pipeId);
+            const pipeSummary = summaryById.get(pipeId);
             const inspected   = (pipeSummary?.Inspected || "").toLowerCase() === "inspected";
             const address     = pipeSummary?.Address || "N/A";
             const condition   = pipeSummary?.Condition || "N/A";
@@ -1187,7 +1210,8 @@
                 radius:      3,
                 fillColor:   inspected ? '#1a56db' : '#95a5a6',
                 color:       inspected ? '#1a56db' : '#95a5a6',
-                interactive: true
+                interactive: true,
+                renderer:    canvasRenderer
             });
 
             marker.bindTooltip(tooltipHtml, { sticky: true, className: 'mh-tooltip' });
