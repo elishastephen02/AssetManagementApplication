@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|c:\\users\\elishastephen\\desktop\\assetmanagementapplication\\assetmanagementapp\\assetmanagement\\assetmanagement\\views\\map\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{138507A4-78BF-5D42-21A1-2C6E9FF8EB5C}|AssetManagement\\AssetManagement.csproj|solutionrelative:assetmanagement\\views\\map\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -24,6 +32,32 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "AssetManagement\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "AssetManagement\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAAGcBAAAAAAAAAAAcwIsBAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-14T13:31:54.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DashboardService.cs",
+              "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\DashboardService.cs",
+              "RelativeDocumentMoniker": "AssetManagement\\Services\\DashboardService.cs",
+              "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Services\\DashboardService.cs",
+              "RelativeToolTip": "AssetManagement\\Services\\DashboardService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T13:15:51.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Map\\Index.cshtml",
               "ToolTip": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Map\\Index.cshtml",
@@ -35,7 +69,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\elishastephen\\Desktop\\AssetManagementApplication\\AssetManagementApp\\AssetManagement\\AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
@@ -43,8 +77,7 @@
               "RelativeToolTip": "AssetManagement\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-07-13T12:12:51.378Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-07-13T12:12:51.378Z"
             }
           ]
         }

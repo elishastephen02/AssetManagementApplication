@@ -62,6 +62,7 @@ namespace AssetManagement.Services
 
                     // ConditionR may legitimately be null now (LEFT JOIN, no matching data)
                     double? condition = row.ConditionR != null ? (double?)(double)row.ConditionR : null;
+                    Console.WriteLine($"{row.BlockName} -> {condition}");
 
                     var geometryJson = GeometryToGeoJsonObject(geom);
                     if (geometryJson == null)
