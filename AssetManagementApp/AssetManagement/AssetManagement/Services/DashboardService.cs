@@ -17,60 +17,55 @@ namespace AssetManagement.Services
         public object GetDashboardGeoJson()
         {
             var sql = @"
-                SELECT 
+                SELECT
                     b.BlockName,
-                    agg.ConditionR,
-                    b.Geometry.STAsText() AS GeomWkt
+                    b.Geometry.STAsText() AS GeomWkt,
+                    a.ConditionR
                 FROM Blocks b
-                LEFT JOIN (
-                    SELECT 
-                        LTRIM(RTRIM(g.BlockName)) AS BlockName,
-                        AVG(TRY_CAST(g.ConditionR AS DECIMAL(10,2))) AS ConditionR
-                    FROM GEOJSON g
-                    GROUP BY LTRIM(RTRIM(g.BlockName))
-                ) agg ON UPPER(LTRIM(RTRIM(agg.BlockName))) = UPPER(LTRIM(RTRIM(b.BlockName)))
-                WHERE b.Geometry IS NOT NULL
+                LEFT JOIN
+                (
+                    SELECT
+                        BlockName,
+                        AVG(TRY_CAST(ConditionR AS DECIMAL(10,2))) AS ConditionR
+                    FROM GEOJSON
+                    WHERE ConditionR IS NOT NULL
+                    GROUP BY BlockName
+                ) a
+                    ON UPPER(TRIM(a.BlockName)) = UPPER(TRIM(b.BlockName))
+                    OR UPPER(TRIM(a.BlockName)) LIKE UPPER(TRIM(b.BlockName)) + ' %'
+                WHERE b.Geometry IS NOT NULL;
             ";
 
             var rows = _db.Query(sql);
-            var factory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
-            var wktReader = new WKTReader(factory);
-            var features = new List<object>();
 
-            int skippedGeom = 0;
-            int skippedError = 0;
-            int totalRows = 0;
+            var factory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+            var reader = new WKTReader(factory);
+
+            var features = new List<object>();
 
             foreach (var row in rows)
             {
-                totalRows++;
-
                 if (row.GeomWkt == null)
-                {
-                    Console.WriteLine($"Skipping {row.BlockName}: null geometry WKT");
-                    skippedGeom++;
                     continue;
-                }
 
                 try
                 {
                     string wkt = (string)row.GeomWkt;
+
                     if (wkt.StartsWith("SRID=", StringComparison.OrdinalIgnoreCase))
-                        wkt = wkt.Substring(wkt.IndexOf(';') + 1);
+                        wkt = wkt[(wkt.IndexOf(';') + 1)..];
 
-                    Geometry geom = wktReader.Read(wkt);
+                    var geometry = reader.Read(wkt);
 
-                    // ConditionR may legitimately be null now (LEFT JOIN, no matching data)
-                    double? condition = row.ConditionR != null ? (double?)(double)row.ConditionR : null;
-                    Console.WriteLine($"{row.BlockName} -> {condition}");
+                    var geoJson = GeometryToGeoJsonObject(geometry);
 
-                    var geometryJson = GeometryToGeoJsonObject(geom);
-                    if (geometryJson == null)
-                    {
-                        Console.WriteLine($"Skipping {row.BlockName}: unsupported geometry type {geom.GeometryType}");
-                        skippedGeom++;
+                    if (geoJson == null)
                         continue;
-                    }
+
+                    double? condition = null;
+
+                    if (row.ConditionR != null)
+                        condition = Convert.ToDouble(row.ConditionR);
 
                     features.Add(new
                     {
@@ -81,20 +76,20 @@ namespace AssetManagement.Services
                             condition = condition ?? 0,
                             hasConditionData = condition.HasValue
                         },
-                        geometry = geometryJson
+                        geometry = geoJson
                     });
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"Error on {row.BlockName}: {ex.Message}");
-                    skippedError++;
+                    // Ignore bad geometry and continue
                 }
             }
 
-            Console.WriteLine($"Query returned {totalRows} rows. Returning {features.Count} features. " +
-                               $"Skipped (geometry): {skippedGeom}. Skipped (error): {skippedError}.");
-
-            return new { type = "FeatureCollection", features };
+            return new
+            {
+                type = "FeatureCollection",
+                features
+            };
         }
 
         private static object? GeometryToGeoJsonObject(Geometry geom)

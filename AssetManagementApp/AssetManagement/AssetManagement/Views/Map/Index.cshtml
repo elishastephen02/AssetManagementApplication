@@ -569,10 +569,10 @@
     );
 
     var map = L.map('map', {
-        minZoom: 11, maxZoom: 18,
+        minZoom: 14, // was 11 — a citywide zoom shouldn't be reachable
         maxBounds: eThekwiniBounds,
         maxBoundsViscosity: 1.0
-    }).setView([-29.8587, 31.0218], 12);
+    }).setView([-29.8587, 31.0218], 15);
 
     // Shared canvas renderer — all pipes and manholes draw into ONE <canvas>
     // element instead of one SVG <path>/<circle> per feature. This is the
@@ -606,15 +606,19 @@
                     text-transform:uppercase;letter-spacing:0.04em;">Pipe Condition</div>
         <div class="legend-item">
             <div class="legend-line" style="background:#28a745;height:5px;"></div>
-            <span class="legend-label">Good</span>
+            <span class="legend-label">Good (75-100%)</span>
         </div>
         <div class="legend-item">
             <div class="legend-line" style="background:#ffc107;height:5px;"></div>
-            <span class="legend-label">Okay</span>
+            <span class="legend-label">Fair (60-75%)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-line" style="background:#fd7e14;height:5px;"></div>
+            <span class="legend-label">Poor (40-60%)</span>
         </div>
         <div class="legend-item">
             <div class="legend-line" style="background:#dc3545;height:5px;"></div>
-            <span class="legend-label">Bad</span>
+            <span class="legend-label">Bad (&lt;40%)</span>
         </div>
         <div class="legend-item">
             <div class="legend-line" style="background:#95a5a6;height:3px;border-top:2px dashed #95a5a6;background:none;"></div>
@@ -648,6 +652,15 @@
     // Layer visibility flags
     let pipesVisible    = true;
     let manholesVisible = false;
+
+    // CONDITION COLOR SCALE — single source of truth for rating -> color
+    // <40 red · 40-60 orange · 60-75 yellow · 75-100 green
+    function colorFromRating(rating) {
+        if (rating >= 75) return "#28a745"; // green  — good
+        if (rating >= 60) return "#ffc107"; // yellow — fair
+        if (rating >= 40) return "#fd7e14"; // orange — poor
+        return "#dc3545";                   // red    — bad
+    }
 
     //search
     let searchResults = [];
@@ -685,11 +698,13 @@
         if (!inspected) {
             color = "#95a5a6";
         } else if (!isNaN(rating)) {
-            color = rating > 70 ? "#28a745" : rating > 40 ? "#ffc107" : "#dc3545";
+            color = colorFromRating(rating);
         } else {
             const condition = (pipeData.Condition || "").toLowerCase().trim();
             color = condition === "good" ? "#28a745"
+                  : condition === "fair" ? "#ffc107"
                   : condition === "okay" ? "#ffc107"
+                  : condition === "poor" ? "#fd7e14"
                   : condition === "bad"  ? "#dc3545"
                   : "#1a56db";
         }
@@ -986,8 +1001,24 @@
         return !lastLoadedBounds.contains(viewBounds);
     }
 
+    function bboxAreaTooLarge(bounds) {
+        const latSpan = bounds.getNorth() - bounds.getSouth();
+        const lngSpan = bounds.getEast()  - bounds.getWest();
+        // tune this threshold to your data density
+        return (latSpan * lngSpan) > 0.02; // ~ a few km² at this latitude
+    }
+
+    let currentFetchController = null;
+
     function loadVisibleData() {
         const viewBounds = map.getBounds();
+
+        if (bboxAreaTooLarge(viewBounds)) {
+            clearInterval(mapLoadingTimer);
+            document.getElementById('mapLoadingOverlay').style.display = 'none';
+            showZoomInPrompt(); // simple banner: "Zoom in to load pipe data"
+            return;
+        }
 
         if (!isFirstLoad && !needsReload(viewBounds)) return;
 
@@ -1022,12 +1053,6 @@
                     }
                 });
 
-                function colorFromRating(rating) {
-                    if (rating > 70) return "#28a745"; // good
-                    if (rating > 40) return "#ffc107"; // okay
-                    return "#dc3545";                  // bad
-                }
-
                 allSummary.forEach(x => {
                     const inspected = hasInspectionData(x);
 
@@ -1043,7 +1068,9 @@
                     } else {
                         const condition = (x.Condition || "").toLowerCase().trim();
                         if      (condition === "good") pipeColors[x.Id] = "#28a745";
+                        else if (condition === "fair") pipeColors[x.Id] = "#ffc107";
                         else if (condition === "okay") pipeColors[x.Id] = "#ffc107";
+                        else if (condition === "poor") pipeColors[x.Id] = "#fd7e14";
                         else if (condition === "bad")  pipeColors[x.Id] = "#dc3545";
                         else                            pipeColors[x.Id] = "#1a56db"; // has inspection data but no rating yet
                     }
@@ -1055,6 +1082,18 @@
                 isFirstLoad = false;
             })
             .catch(err => {
+                console.error("Pipe data load failed:", err);
+                showMapLoadError();
+            });
+
+        if (currentFetchController) currentFetchController.abort();
+        currentFetchController = new AbortController();
+        const { signal } = currentFetchController;
+
+        fetch(url, { signal })
+            .then()
+            .catch(err => {
+                if (err.name === 'AbortError') return; // superseded by a newer pan
                 console.error("Pipe data load failed:", err);
                 showMapLoadError();
             });
@@ -1072,14 +1111,21 @@
 
     // DRAW PIPES
     function drawPipes(data, fitToData) {
-        pipeLayer.clearLayers();
-        pipeObjects = [];
-        loadedPipeIds = new Set();
-
+        if (isFirstLoad) {
+            pipeLayer.clearLayers();
+            pipeObjects = [];
+            loadedPipeIds = new Set();
+        }
         if (!data.sections || !data.sections.length) return;
 
+        const incomingIds = new Set();
+
         data.sections.forEach(s => {
-            let id  = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+            let id = s.OBJ_PK || s.obj_PK || s.obJ_PK;
+            if (!id) return;
+            incomingIds.add(id);
+            if (loadedPipeIds.has(id)) return; // already on the map, skip re-render
+
             let wkt = s.Geometry || s.GeometryWKT || s.geometryWKT;
             if (!id || !wkt) { console.warn("Skipping invalid pipe:", s); return; }
 
@@ -1116,6 +1162,14 @@
             layer.addTo(pipeLayer);
             pipeObjects.push({ id, data: summaryItem || s, section: s, layer });
             loadedPipeIds.add(id);
+        });
+
+        // prune pipes that scrolled out of the loaded area
+        pipeObjects = pipeObjects.filter(p => {
+            if (incomingIds.has(p.id)) return true;
+            pipeLayer.removeLayer(p.layer);
+            loadedPipeIds.delete(p.id);
+            return false;
         });
 
         drawManholesFromPipes(data.sections);
@@ -1370,11 +1424,11 @@
             ["X Coordinate", fmt(section?.XCoord)],
             ["Y Coordinate", fmt(section?.YCoord)],
 
-            ["Current Replacement Value",
-                fmt(section?.CurrentReplacementValue)],
+            ["Current Replacement Cost",
+                fmt(section?.CurrentReplacementCost)],
 
             ["Depreciated Replacement Value",
-                fmt(section?.DepreciatedReplacementValue)]
+                `R ${fmt(section?.DepreciatedReplacementValue)}`]
         ];
 
         let html = `
@@ -1618,9 +1672,10 @@
     // BOLD COLOR HELPER
     function boldColor(hex) {
         const map = {
-            "#28a745": "#1aff6b",
-            "#ffc107": "#ffdd00",
-            "#dc3545": "#ff1a2e",
+            "#28a745": "#1aff6b", // green  -> bright green
+            "#ffc107": "#ffdd00", // yellow -> bright yellow
+            "#fd7e14": "#ff9f43", // orange -> bright orange
+            "#dc3545": "#ff1a2e", // red    -> bright red
             "#1a56db": "#4d8bff",
             "#95a5a6": "#c8d6d7"
         };
@@ -1686,7 +1741,7 @@
             <div class="rh-cell"><span class="rh-label">Material</span><span class="rh-val">${fmt(item.Material)}</span></div>
             <div class="rh-cell"><span class="rh-label">Diameter</span><span class="rh-val">${item.PipeDiameter != null ? item.PipeDiameter + ' mm' : 'N/A'}</span></div>
             <div class="rh-cell"><span class="rh-label">Road / Address</span><span class="rh-val">${fmt(item.Address)}</span></div>
-            <div class="rh-cell"><span class="rh-label">Inspected Length</span><span class="rh-val">${fmt(item.InspectedLength)}</span></div>
+            <div class="rh-cell"><span class="rh-label">Inspected Length</span><span class="rh-val">${Number(item.InspectedLength || 0).toFixed(2)}</span></div>
             <div class="rh-cell"><span class="rh-label">Last Inspection</span><span class="rh-val">${fmtDate(item.LastInspection)}</span></div>
             <div class="rh-cell"><span class="rh-label">Status</span><span class="rh-val">${fmt(item.Inspected)}</span></div>
             <div class="rh-cell"><span class="rh-label">STR Grade</span><span class="rh-val" style="color:${gradeColor(section?.STR_GRADE)};">${fmt(section?.STR_GRADE)}</span></div>
@@ -1807,7 +1862,7 @@
                 ${geoScoreHtml}`;
             });
         } else {
-            inspectionsHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">No inspections recorded for this pipe.</p>`;
+            inspectionsHtml = `<p style="color:#999;font-size:13px;padding:12px 0;">No observations recorded for this pipe.</p>`;
         }
 
         accordion.innerHTML = headerHtml + `<div style="padding:12px 0;">${inspectionsHtml}</div>`;
@@ -2142,14 +2197,7 @@
         const progress = circumference * (condition / 100);
         const offset = circumference - progress;
 
-        let color;
-        if (condition > 70) {
-            color = "#28a745";
-        } else if (condition > 40) {
-            color = "#ffc107";
-        } else {
-            color = "#dc3545";
-        }
+        const color = colorFromRating(condition);
 
         document.getElementById("conditionGaugeContainer").innerHTML = `
             <div style="text-align:center;">

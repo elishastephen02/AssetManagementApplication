@@ -1,6 +1,7 @@
 ﻿using AssetManagement.Models;
 using AssetManagement.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace AssetManagement.Controllers
 {
@@ -25,7 +26,7 @@ namespace AssetManagement.Controllers
                     "SELECT AVG(CAST(ConditionR AS DECIMAL(10,2))) FROM GEOJSON"
                 ) ?? 0,
                 TotalCRC = _db.QuerySingle<decimal?>(
-                    @"SELECT AVG(TRY_CAST(REPLACE(REPLACE(REPLACE(CurrentRC, 'R', ''),',', ''),' ', '')AS DECIMAL(18,2))) FROM GEOJSON"
+                    @"SELECT SUM(TRY_CAST(REPLACE(REPLACE(REPLACE(CurrentRC, 'R', ''),',', ''),' ', '')AS DECIMAL(18,2))) FROM GEOJSON"
                 ) ?? 0
             };
 
@@ -35,7 +36,14 @@ namespace AssetManagement.Controllers
         [HttpGet]
         public IActionResult GetDashboardMap()
         {
+            var sw = Stopwatch.StartNew();
+
             var data = _dService.GetDashboardGeoJson();
+
+            sw.Stop();
+
+            Console.WriteLine($"Dashboard GeoJSON loaded in {sw.Elapsed.TotalSeconds:F2} seconds");
+
             return Json(data);
         }
     }

@@ -12,17 +12,17 @@ namespace AssetManagement.Controllers
             _bService = bService;
         }
 
-        public IActionResult Import()
-        {
-            var path = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "Data",
-                "Phase5&6.geojson"
-            );
+        //public IActionResult Import()
+        //{
+        //    var path = Path.Combine(
+        //        Directory.GetCurrentDirectory(),
+        //        "Data",
+        //        "combined_all.geojson"
+        //    );
 
-            _bService.ImportBlocksFromGeoJson(path);
+        //    _bService.ImportBlocksFromGeoJson(path);
 
-            return Content("Blocks imported successfully ✔");
-        }
+        //    return Content("Blocks imported successfully ✔");
+        //}
     }
 }

@@ -1,3 +1,104 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+<div id="googlemaps"></div>
+
+<script>
+
+    var position = [-29.858705, 31.024726];
+
+    function initialize() {
+    var currentTime = new Date().getHours();
+    if (0 <= currentTime && currentTime < 18){
+    var mapStyles = [
+    {"featureType": "administrative.land_parcel","elementType": "labels","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi","elementType": "labels.text","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi.business","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi.park","elementType": "labels.text","stylers": [{"visibility": "off"}]},
+    {"featureType": "road.local","elementType": "labels","stylers": [{"visibility": "off"}]}
+    ];
+
+    } else {
+    mapStyles = [
+    {"elementType": "geometry","stylers": [{"color": "#242f3e"}]},
+    {"elementType": "labels.text.fill","stylers": [{"color": "#746855"}]},
+    {"elementType": "labels.text.stroke","stylers": [{"color": "#242f3e"}]},
+    {"featureType": "administrative.land_parcel","elementType": "labels","stylers": [{"visibility": "off"}]},
+    {"featureType": "administrative.locality","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},
+    {"featureType": "poi","elementType": "labels.text","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},
+    {"featureType": "poi.business","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi.park","elementType": "geometry","stylers": [{"color": "#263c3f"}]},
+    {"featureType": "poi.park","elementType": "labels.text","stylers": [{"visibility": "off"}]},
+    {"featureType": "poi.park","elementType": "labels.text.fill","stylers": [{"color": "#6b9a76"}]},
+    {"featureType": "road","elementType": "geometry","stylers": [{"color": "#38414e"}]},
+    {"featureType": "road","elementType": "geometry.stroke","stylers": [{"color": "#212a37"}]},
+    {"featureType": "road","elementType": "labels.text.fill","stylers": [{"color": "#9ca5b3"}]},
+    {"featureType": "road.highway","elementType": "geometry","stylers": [{"color": "#746855"}]},
+    {"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#1f2835"}]},
+    {"featureType": "road.highway","elementType": "labels.text.fill","stylers": [{"color": "#f3d19c"}]},
+    {"featureType": "road.local","elementType": "labels","stylers": [{"visibility": "off"}]},
+    {"featureType": "transit","elementType": "geometry","stylers": [{"color": "#2f3948"}]},
+    {"featureType": "transit.station","elementType": "labels.text.fill","stylers": [{"color": "#d59563"}]},
+    {"featureType": "water","elementType": "geometry","stylers": [{"color": "#17263c"}]},
+    {"featureType": "water","elementType": "labels.text.fill","stylers": [{"color": "#515c6d"}]},
+    {"featureType": "water","elementType": "labels.text.stroke","stylers": [{"color": "#17263c"}]}
+    ];
+    }
+
+
+    var myOptions = {
+    zoom: 15,
+    scrollwheel: false,
+    navigationControl: false,
+    draggable: false,
+    streetViewControl: false,
+    scaleControl: false,
+    zoomControl: false,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    styles: mapStyles,
+
+    };
+
+    map = new google.maps.Map(document.getElementById('googlemaps'),
+    myOptions);
+
+
+    latLng = new google.maps.LatLng(position[0], position[1]);
+    map.setCenter(latLng);
+
+    };
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC688eU0nYXp4K6Qx_HV3dj4dLLaWJPBNM&callback=initialize">
+</script>
+
+<style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #googlemaps {
+            height: 100%;
+            width: 6000px;
+            position:absolute;
+            top: 0;
+            left: 0;
+            opacity: 1;
+            animation: mapSlide 750s infinite;
+            animation-timing-function: linear;
+        }
+</style>
