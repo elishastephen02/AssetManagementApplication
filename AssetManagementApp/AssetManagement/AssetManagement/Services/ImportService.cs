@@ -159,46 +159,46 @@ namespace AssetManagement.Services
             }
 
             // exists -> ignore, else insert all
-            if (exists > 0)
-            {
-                _logger.LogInformation($"SEGID {segId} already exists. Skipping.");
-                return;
-            }
-
-            // Existing record - update only missing data
             //if (exists > 0)
             //{
-            //    _db.Execute(@"
-            //    UPDATE GEOJSON
-            //    SET
-            //        X = CASE
-            //                WHEN X IS NULL OR LTRIM(RTRIM(X)) = ''
-            //                THEN @X
-            //                ELSE X
-            //            END,
-
-            //        Y = CASE
-            //                WHEN Y IS NULL OR LTRIM(RTRIM(Y)) = ''
-            //                THEN @Y
-            //                ELSE Y
-            //            END,
-
-            //        DESDATE = CASE
-            //                WHEN DESDATE IS NULL OR LTRIM(RTRIM(DESDATE)) = ''
-            //                THEN @DESDATE
-            //                ELSE DESDATE
-            //            END
-            //    WHERE SEGID = @SegId",
-            //    new
-            //    {
-            //        SegId = segId,
-            //        X = x,
-            //        Y = y,
-            //        DESDATE = desDate
-            //    });
-
+            //    _logger.LogInformation($"SEGID {segId} already exists. Skipping.");
             //    return;
             //}
+
+            //Existing record - update only missing data
+            if (exists > 0)
+            {
+                _db.Execute(@"
+                UPDATE GEOJSON
+                SET
+                    X = CASE
+                            WHEN X IS NULL OR LTRIM(RTRIM(X)) = ''
+                            THEN @X
+                            ELSE X
+                        END,
+
+                    Y = CASE
+                            WHEN Y IS NULL OR LTRIM(RTRIM(Y)) = ''
+                            THEN @Y
+                            ELSE Y
+                        END,
+
+                    DESDATE = CASE
+                            WHEN DESDATE IS NULL OR LTRIM(RTRIM(DESDATE)) = ''
+                            THEN @DESDATE
+                            ELSE DESDATE
+                        END
+                WHERE SEGID = @SegId",
+                new
+                {
+                    SegId = segId,
+                    X = x,
+                    Y = y,
+                    DESDATE = desDate
+                });
+
+                return;
+            }
 
             // block name change
             //if (exists > 0)

@@ -46,7 +46,6 @@ namespace AssetManagement.Services
                     ConditionR,
                     RemainingUL,
                     DisposalD,
-                    AdjustedBRE,
                     Impairment,
                     CurrentRC,
                     DepreciatedRV,
@@ -207,7 +206,6 @@ namespace AssetManagement.Services
                     ConditionR = geo.ConditionR,
                     RemainingUL = geo.RemainingUL,
                     DisposalDate = geo.DisposalD,
-                    AdjustedBusinessRiskExpense = geo.AdjustedBRE,
                     Impairment = geo.Impairment,
                     CurrentReplacementCost = geo.CurrentRC,
                     DepreciatedReplacementValue = geo.DepreciatedRV
@@ -377,35 +375,35 @@ namespace AssetManagement.Services
                 return null;
 
             var pipe = _db.Query(@"
-        SELECT TOP (1)
-            SEGID, RoadName, MATERIAL,
-            InspectedL AS InspectedLength, InspectedD AS InspectedDate,
-            X, Y, DESDATE, STR_SCORE, STR_GRADE, SER_SCORE, SER_GRADE,
-            Expected, AGE, ConditionR, RemainingUL, DisposalD, AdjustedBRE,
-            Impairment, CurrentRC, DepreciatedRV,
-            GEOMETRY_DATA.Reduce(0.00001).STAsText() AS GeometryWKT
-        FROM GEOJSON
-        WHERE SEGID = @segId
-    ", new { segId }).FirstOrDefault();
+                SELECT TOP (1)
+                    SEGID, RoadName, MATERIAL,
+                    InspectedL AS InspectedLength, InspectedD AS InspectedDate,
+                    X, Y, DESDATE, STR_SCORE, STR_GRADE, SER_SCORE, SER_GRADE,
+                    Expected, AGE, ConditionR, RemainingUL, DisposalD,
+                    Impairment, CurrentRC, DepreciatedRV,
+                    GEOMETRY_DATA.Reduce(0.00001).STAsText() AS GeometryWKT
+                FROM GEOJSON
+                WHERE SEGID = @segId
+            ", new { segId }).FirstOrDefault();
 
             if (pipe == null)
                 return null;
 
             // --- NEW: pull inspections/observations for this one pipe ---
             var dbRows = _db.Query(@"
-        SELECT
-            s.OBJ_PK AS Id,
-            s.OBJ_Key AS SegId,
-            s.OBJ_Size1 AS Size,
-            s.OBJ_Material AS Material,
-            si.INS_PK AS InspectionId,
-            si.INS_StartDate AS InspectionDate,
-            si.INS_InspectedLength AS InspectedLength
-        FROM SECTION s
-        LEFT JOIN SECINSP si
-            ON s.OBJ_PK_Key = si.INS_Section_FK_Key
-        WHERE s.OBJ_Key_Key = @segId
-    ", new { segId }).ToList();
+                SELECT
+                    s.OBJ_PK AS Id,
+                    s.OBJ_Key AS SegId,
+                    s.OBJ_Size1 AS Size,
+                    s.OBJ_Material AS Material,
+                    si.INS_PK AS InspectionId,
+                    si.INS_StartDate AS InspectionDate,
+                    si.INS_InspectedLength AS InspectedLength
+                FROM SECTION s
+                LEFT JOIN SECINSP si
+                    ON s.OBJ_PK_Key = si.INS_Section_FK_Key
+                WHERE s.OBJ_Key_Key = @segId
+            ", new { segId }).ToList();
 
             var distinctInspections = dbRows
                 .Where(r => r.InspectionId != null)
@@ -428,12 +426,12 @@ namespace AssetManagement.Services
                 string insIdsCsv = string.Join(",", inspectionIds);
 
                 foreach (var st in _db.Query(@"
-            SELECT STA_Inspection_FK AS InspectionId, STA_HighestGrade AS HighestGrade,
-                   STA_TotalScore AS TotalScore, STA_PeakScore AS PeakScore
-            FROM SECSTAT
-            WHERE STA_Type = 'STR'
-              AND STA_Inspection_FK_Key IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
-        ", new { insIdsCsv }).ToList())
+                    SELECT STA_Inspection_FK AS InspectionId, STA_HighestGrade AS HighestGrade,
+                           STA_TotalScore AS TotalScore, STA_PeakScore AS PeakScore
+                    FROM SECSTAT
+                    WHERE STA_Type = 'STR'
+                      AND STA_Inspection_FK_Key IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
+                ", new { insIdsCsv }).ToList())
                 {
                     string key = Convert.ToString(st.InspectionId ?? "");
                     if (string.IsNullOrEmpty(key)) continue;
@@ -442,12 +440,12 @@ namespace AssetManagement.Services
                 }
 
                 var observations = _db.Query(@"
-            SELECT OBS_PK AS ObsId, OBS_Inspection_FK AS InspectionId,
-                   OBS_Distance AS Distance, OBS_Observation AS Observation,
-                   OBS_GradeS AS Grade, OBS_ScoreS AS Score
-            FROM SECOBS
-            WHERE OBS_Inspection_FK_Key IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
-        ", new { insIdsCsv }).ToList();
+                    SELECT OBS_PK AS ObsId, OBS_Inspection_FK AS InspectionId,
+                           OBS_Distance AS Distance, OBS_Observation AS Observation,
+                           OBS_GradeS AS Grade, OBS_ScoreS AS Score
+                    FROM SECOBS
+                    WHERE OBS_Inspection_FK_Key IN (SELECT value FROM STRING_SPLIT(@insIdsCsv, ','))
+                ", new { insIdsCsv }).ToList();
 
                 foreach (var o in observations)
                 {
@@ -464,10 +462,10 @@ namespace AssetManagement.Services
                 {
                     string obsIdsCsv = string.Join(",", obsIds);
                     foreach (var m in _db.Query(@"
-                SELECT OMM_Observation_FK AS ObsId, OMM_FileName AS FileName, OMM_FileType AS FileType
-                FROM SECOBSMM
-                WHERE OMM_Observation_FK_Key IN (SELECT value FROM STRING_SPLIT(@obsIdsCsv, ','))
-            ", new { obsIdsCsv }).ToList())
+                        SELECT OMM_Observation_FK AS ObsId, OMM_FileName AS FileName, OMM_FileType AS FileType
+                        FROM SECOBSMM
+                        WHERE OMM_Observation_FK_Key IN (SELECT value FROM STRING_SPLIT(@obsIdsCsv, ','))
+                    ", new { obsIdsCsv }).ToList())
                     {
                         string key = Convert.ToString(m.ObsId ?? "");
                         if (string.IsNullOrEmpty(key)) continue;
@@ -534,7 +532,6 @@ namespace AssetManagement.Services
                 ConditionR = pipe.ConditionR,
                 RemainingUL = pipe.RemainingUL,
                 DisposalDate = pipe.DisposalD,
-                AdjustedBusinessRiskExpense = pipe.AdjustedBRE,
                 Impairment = pipe.Impairment,
                 CurrentReplacementCost = pipe.CurrentRC,
                 DepreciatedReplacementValue = pipe.DepreciatedRV,
@@ -547,7 +544,7 @@ namespace AssetManagement.Services
                 InspectedLength = lastInsp?.InspectedLength ?? pipe.InspectedLength,
                 Inspected = distinctInspections.Any() ? "Inspected" : "Uninspected",
                 Condition = GetPipeCondition(pipe.STR_GRADE),
-                Inspections = inspections   // <-- this was completely missing before
+                Inspections = inspections
             };
         }
 

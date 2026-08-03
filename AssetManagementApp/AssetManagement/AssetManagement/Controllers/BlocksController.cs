@@ -17,7 +17,7 @@ namespace AssetManagement.Controllers
         //    var path = Path.Combine(
         //        Directory.GetCurrentDirectory(),
         //        "Data",
-        //        "combined_all.geojson"
+        //        "Phase7_Kloof_Catchments.geojson"
         //    );
 
         //    _bService.ImportBlocksFromGeoJson(path);
