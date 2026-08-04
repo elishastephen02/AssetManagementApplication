@@ -13,4 +13,5 @@ obj/
 
 # User settings
 *.user
-*.suo
+*.suobin/ 
+obj/ 
