@@ -1,2 +1,16 @@
 AssetManagementApp/AssetManagement/AssetManagement/bin/ 
 AssetManagementApp/AssetManagement/AssetManagement/obj/ 
+
+# Build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# Rider
+.idea/
+
+# User settings
+*.user
+*.suo
