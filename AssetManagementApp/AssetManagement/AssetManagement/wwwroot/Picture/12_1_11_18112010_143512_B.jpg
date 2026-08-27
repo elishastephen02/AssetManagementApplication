@@ -1,0 +1,3412 @@
+ang in CCYY-CCYY format
+DecimalPrecision=0
+MaxLength=9
+
+[Field N_Zone]
+StateBits=5
+Header=Drainage area
+DecimalPrecision=0
+MaxLength=10
+
+[Field N_Rate]
+StateBits=68
+DecimalPrecision=2
+
+[Field N_CreationDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field N_ConeMaterial]
+StateBits=4
+Header=Cone Material
+DecimalPrecision=0
+
+[Field N_Spare1]
+StateBits=4101
+Header=Steps type
+DecimalPrecision=0
+MaxLength=1
+ListItem=S|single width - wide enough for one foot only
+ListItem=D|double width - wide enough for both feet
+ListItem=L|ladder
+ListItem=T|toe holes in benching or wall of chamber of shaft
+ListItem=N|no steps provided
+ListItem=Z|other
+
+[Field N_Grid]
+StateBits=13
+Header=Grid reference
+Tooltip=National grid reference
+DecimalPrecision=0
+MaxLength=6
+
+[Field N_Owner]
+StateBits=4101
+Header=Land ownership
+DecimalPrecision=0
+MaxLength=2
+ListItem=PU|Public
+ListItem=PR|Private
+ListItem=Z|Not known
+
+[Field N_Remark]
+StateBits=4
+Header=Remarks regarding the manhole
+DecimalPrecision=0
+
+[Field N_Spare3]
+StateBits=5
+Header=Location Plan Image
+Tooltip=Location Plan Image Filename
+DecimalPrecision=0
+MaxLength=30
+
+[Field N_Spare2]
+StateBits=4101
+Header=Steps material
+DecimalPrecision=0
+MaxLength=2
+ListItem=IR|iron/steel
+ListItem=GI|galvanised iron
+ListItem=SS|stainless steel
+ListItem=PM|metal encapsulated in plastics
+ListItem=PL|plastics
+ListItem=AL|aluminium
+ListItem=Z|other
+
+[Field N_ChamberLength]
+StateBits=133
+Header=Chamber unit length [mm]
+Tooltip=Entrer length of first ring encountered where these vary.
+DecimalPrecision=0
+
+[Field N_Division]
+StateBits=13
+Header=Division/District
+DecimalPrecision=0
+MaxLength=4
+
+[Field N_Spare4]
+StateBits=4101
+Header=Node Type
+DecimalPrecision=0
+MaxLength=2
+ListItem=MH|Manhole
+ListItem=IC|Inspection chamber
+ListItem=LH|Lamphole
+ListItem=OF|Outfall
+ListItem=BR|Major connection without manhole
+ListItem=GY|Gully
+ListItem=CP|Catchpit
+ListItem=SK|Soakaway
+ListItem=OS|Oil separator
+ListItem=OC|Other special chamber
+
+[Field N_Spare5]
+StateBits=5
+Header=Client Defined 3
+DecimalPrecision=0
+MaxLength=20
+
+[Field N_Access]
+StateBits=4
+DecimalPrecision=0
+
+[Field N_YearLayed]
+StateBits=260
+DecimalPrecision=0
+
+[Field SBU_Betreiber]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Baulos]
+DBTable=N_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Subventionen]
+DBTable=N_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_EKostenBrutto]
+DBTable=N_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_Zugaenglichkeit]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Grundwasserabstand]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field NC_Number]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field NC_CoverClass]
+StateBits=12
+Header=Class
+DecimalPrecision=0
+
+[Field NC_CoverDia]
+StateBits=133
+Header=Breadth [mm]
+DecimalPrecision=0
+
+[Field NC_CoverMaterial]
+StateBits=4101
+Header=Material
+DecimalPrecision=0
+MaxLength=3
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field NC_CoverSerialNo]
+StateBits=12
+Header=Serial no.
+DecimalPrecision=0
+
+[Field NC_CoverType]
+StateBits=12
+Header=Type
+DecimalPrecision=0
+
+[Field NC_AutoNumber]
+StateBits=132
+Header=ID
+DecimalPrecision=0
+
+[Field NC_CoverShape]
+StateBits=4101
+Header=Shape
+DecimalPrecision=0
+MaxLength=2
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field NC_CoverWidth]
+StateBits=133
+Header=Width [mm]
+DecimalPrecision=0
+
+[Field NC_CoverLength]
+StateBits=133
+DecimalPrecision=0
+
+[Field NC_CoverCondition]
+StateBits=4
+DecimalPrecision=0
+
+[Field NC_CoverCoord_X]
+StateBits=4
+Header=Coord X
+DecimalPrecision=0
+
+[Field NC_CoverCoord_Y]
+StateBits=4
+Header=Coord Y
+DecimalPrecision=0
+
+[Field NE_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field NE_ClockPosition1]
+StateBits=4101
+Header=o' clock
+DecimalPrecision=0
+ListItem=1
+ListItem=2
+ListItem=3
+ListItem=4
+ListItem=5
+ListItem=6
+ListItem=7
+ListItem=8
+ListItem=9
+ListItem=10
+ListItem=11
+ListItem=12
+
+[Field NE_Drop]
+StateBits=132
+Header=Depth to invert [in]
+DecimalPrecision=0
+
+[Field NE_FlowFrom]
+StateBits=5
+Header=From MH
+DecimalPrecision=0
+MaxLength=12
+
+[Field NE_FlowTo]
+StateBits=5
+Header=To MH
+DecimalPrecision=0
+MaxLength=12
+
+[Field NE_Material]
+StateBits=4101
+Header=Material
+DecimalPrecision=0
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field NE_PipeDia]
+StateBits=141
+Header=Breadth [in]
+DecimalPrecision=0
+
+[Field NE_Remark]
+StateBits=12
+Header=Remarks
+DecimalPrecision=0
+
+[Field NE_Type]
+StateBits=4101
+Header=Type
+DecimalPrecision=0
+ListItem=1|out
+ListItem=2|in
+
+[Field NE_Observation]
+StateBits=4
+Header=Condition
+DecimalPrecision=0
+
+[Field NE_AutoNumber]
+StateBits=132
+Header=ID
+DecimalPrecision=0
+
+[Field NE_SectionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field NE_PipeShape]
+StateBits=4101
+Header=Shape
+DecimalPrecision=0
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field NE_PipeWidth]
+StateBits=133
+Header=Width [in]
+DecimalPrecision=0
+
+[Field NE_SectionName]
+StateBits=4
+Header=Name / ID
+DecimalPrecision=0
+
+[Field NF_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field NF_EntryDate]
+StateBits=260
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=NF_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=NF_T
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=NI_T
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_AccessCondition]
+StateBits=12
+Header=Access Condition
+DecimalPrecision=0
+
+[Field NI_Car]
+StateBits=4
+Header=Vehicle
+DecimalPrecision=0
+
+[Field NI_ContractNumber]
+StateBits=5
+Header=Contractor's job reference
+Tooltip=to be provided by the contractor
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_InspectionMethod]
+StateBits=4101
+Header=Inspection method
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|direct inspection (man-entry)
+ListItem=B|CCTV
+ListItem=C|from manhole or inspection chamber only
+
+[Field NI_JobNumber]
+StateBits=5
+Header=Client's job reference
+Tooltip=to be provided by the client
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_Operator]
+StateBits=13
+Header=Operator
+Tooltip=name of person responsible for completing the survey
+DecimalPrecision=0
+MaxLength=12
+
+[Field NI_RapportNumber]
+StateBits=12
+Header=Rapport Number
+DecimalPrecision=0
+
+[Field NI_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field NI_VCRNumber]
+StateBits=4
+Header=VCR Nr.
+DecimalPrecision=0
+
+[Field NI_MediaNumber]
+StateBits=5
+Header=Video volume
+Tooltip=reference number of the volume, film, tape, CD or DVD
+DecimalPrecision=0
+MaxLength=30
+
+[Field NI_Memo]
+StateBits=5
+Header=Remarks regarding the inspection
+DecimalPrecision=0
+MaxLength=50
+
+[Field NI_Present]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Completed]
+StateBits=132
+DecimalPrecision=0
+
+[Field NI_Condition]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field NI_CoverCondition]
+StateBits=4
+Header=Cover Condition
+DecimalPrecision=0
+
+[Field NI_EquipmentType]
+StateBits=4
+Header=Equipment Type
+DecimalPrecision=0
+
+[Field NI_InspectionDate]
+StateBits=261
+Header=Date
+Tooltip=Date of survey
+DecimalPrecision=0
+
+[Field NI_InspName]
+StateBits=4
+Header=Inspection Name
+DecimalPrecision=0
+
+[Field NI_LastModifiedDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field NI_Norm]
+StateBits=13
+Header=Standard
+DecimalPrecision=0
+MaxLength=18
+
+[Field NI_InspectionStartTime]
+StateBits=517
+Header=Time
+Tooltip=Time when survey started
+DecimalPrecision=0
+
+[Field NI_VerticalRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Misc_1]
+StateBits=4109
+Header=Photographic storage
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|still photographs
+ListItem=B|still images held on computer
+ListItem=X|other (state in remarks)
+
+[Field NI_Misc_2]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_AxialRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Remark]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Cleaned]
+StateBits=4101
+Header=Pre-cleaning
+Tooltip=Whether cleaning was carried out prior survey
+DecimalPrecision=0
+ListItem=Y|Yes
+ListItem=N|No
+ListItem=Z|Not known
+
+[Field NI_Misc_3]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_ReasonOfInspection]
+StateBits=4101
+Header=Purpose of inspection
+DecimalPrecision=0
+ListItem=A|Investigation of known defects
+ListItem=B|Investigation of infiltration problems
+ListItem=C|Post completion inspection or repairs or renovations
+ListItem=D|Pre-adoption survey prior to vesting as public sewer
+ListItem=E|Post completion inspection of new sewers
+ListItem=F|Sample survey to determin asset condition
+ListItem=G|Routine inspection of condition
+ListItem=H|Investigation of suspected operational problem
+ListItem=I|Investment planning
+ListItem=J|End of warranty period
+ListItem=X|Other (state in remarks)
+
+[Field NI_WaterDrainage]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Misc_4]
+StateBits=5
+DecimalPrecision=0
+
+[Field NI_Weather]
+StateBits=4109
+Header=Weather
+DecimalPrecision=0
+MaxLength=1
+ListItem=D|no rain or snow
+ListItem=R|rain
+ListItem=S|melting snow or ice
+
+[Field NI_Temperature]
+StateBits=4109
+Header=Temperature
+DecimalPrecision=0
+ListItem=A|above freezing
+ListItem=B|below freezing
+
+[Field NI_Misc_5]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Spare1]
+StateBits=4109
+Header=Vertical reference point
+DecimalPrecision=0
+MaxLength=2
+ListItem=I|invert lowest outgoing pipe in the manhole/inspection chamber
+ListItem=C|cover (highest corner of frame or highest point on a circular frame)
+ListItem=OD|national datum
+ListItem=LC|local datum
+ListItem=Z|other
+
+[Field NI_Spare2]
+StateBits=13
+Header=Circumferential reference point
+DecimalPrecision=0
+MaxLength=2
+
+[Field NI_Spare3]
+StateBits=5
+DecimalPrecision=0
+
+[Field NI_Spare4]
+StateBits=4101
+Header=Flow control
+Tooltip=measures taken to deal with flow during inspection
+DecimalPrecision=0
+MaxLength=2
+ListItem=N|no flow control
+ListItem=BL|flows blocked upstream
+ListItem=PB|flows partially blocked upstream
+ListItem=X|other (state in comments)
+
+[Field NI_Spare5]
+StateBits=4109
+Header=Video image storage
+DecimalPrecision=0
+MaxLength=3
+ListItem=VHS|VHS video cassette tape
+ListItem=CD|video CD
+ListItem=DVD|video DVD
+ListItem=X|other (state in remarks)
+
+[Field NI_Spare6]
+StateBits=4109
+Header=Video location system
+Tooltip=Method of recording position on type, CD or DVD
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|recording time in h, min and sec sience start of tape
+ListItem=B|machine dependant numeric counter
+ListItem=X|other (state in remarks)
+
+[Field NI_MediaNumber2]
+StateBits=5
+Header=Photo volume
+Tooltip=Reference number of the film or CD/DVD
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_Spare7]
+StateBits=5
+Header=Client def 1
+DecimalPrecision=0
+MaxLength=20
+
+[Field NI_Spare8]
+StateBits=5
+Header=Client def 2
+DecimalPrecision=0
+MaxLength=20
+
+[Field NI_Spare9]
+StateBits=5
+Header=Client def 3
+DecimalPrecision=0
+MaxLength=20
+
+[Field SBU_Auswerteperson]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Auswertedatum]
+DBTable=NI_T
+StateBits=20
+DecimalPrecision=0
+
+[Field SBU_Oke]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_KlassifiziertAm]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field NO_Counter]
+StateBits=141
+Header=No.
+DecimalPrecision=0
+
+[Field NO_OpCode]
+StateBits=13
+Header=OP
+DecimalPrecision=0
+MaxLength=3
+
+[Field NO_RehabFlag]
+StateBits=134
+DecimalPrecision=0
+
+[Field NO_ClockPosition1]
+StateBits=12
+Header=from
+DecimalPrecision=0
+
+[Field NO_ClockPosition2]
+StateBits=12
+Header=to
+DecimalPrecision=0
+
+[Field NO_Code]
+Header=Code
+DecimalPrecision=0
+
+[Field NO_Observation]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field NO_Rate]
+StateBits=64
+Header=Rate
+DecimalPrecision=2
+
+[Field NO_RateText]
+Header=Rate Text
+DecimalPrecision=0
+
+[Field NO_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field NO_Unit1]
+StateBits=12
+Header=Unit
+DecimalPrecision=0
+
+[Field NO_Value1]
+StateBits=76
+Header=Value
+DecimalPrecision=2
+
+[Field NO_Class1]
+StateBits=4
+Header=C1
+DecimalPrecision=0
+
+[Field NO_Class2]
+StateBits=4
+Header=C2
+DecimalPrecision=0
+
+[Field NO_Quant1]
+StateBits=4
+Header=Q1
+DecimalPrecision=0
+
+[Field NO_Quant2]
+StateBits=4
+Header=Q2
+DecimalPrecision=0
+
+[Field NO_Text]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field NO_FotoFlag1]
+StateBits=37
+Header=Foto
+DecimalPrecision=0
+
+[Field NO_ClipFlag1]
+StateBits=37
+Header=Clip
+DecimalPrecision=0
+
+[Field NO_VideoCounter]
+StateBits=5
+Header=VCR
+DecimalPrecision=0
+MaxLength=8
+
+[Field NO_MPEGPosition]
+StateBits=5
+Header=MPEG
+DecimalPrecision=0
+
+[Field NO_VerticalPos]
+StateBits=68
+DecimalPrecision=2
+
+[Field NO_Position]
+StateBits=69
+Header=Pos
+DecimalPrecision=2
+
+[Field SBU_MaxSKe]
+DBTable=NO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_MaxSZe]
+DBTable=NO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field P_Name]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_Number]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_InCharge]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field R_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field R_RehaName]
+StateBits=4
+Header=Name
+DecimalPrecision=0
+
+[Field R_EntryDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field R_RehaMethod]
+StateBits=4
+Header=Method
+DecimalPrecision=0
+ListItem=Section-Relining
+ListItem=Segment-Relining
+ListItem=Connection properly closing
+ListItem=Manually repaired
+ListItem=Manhole invert: VA-Halbschale eingesetzt
+ListItem=Manhole invert: verfugt
+ListItem=Steps inserted
+ListItem=Section-Relining
+ListItem=Crack injection
+ListItem=Injection in connection
+ListItem=Boden/Hohlrauminjektion
+ListItem=Manhole invert: Berme erneuert
+ListItem=Rohrrueckverformung
+ListItem=Anschleuderverfahren
+ListItem=Auspreßverfahren
+ListItem=Aufspritzverfahren (trocken)
+ListItem=Injektion von Anschlüssen (Packer)
+ListItem=Injektion von Anschlüssen (Schalungsmanschette)
+ListItem=Wickelrohr-Relining
+ListItem=Schlauch-Relining
+ListItem=Aufspritzverfahren (na?
+ListItem=Verdrängungsverfahren
+ListItem=Stutzen fachgerecht herstellen
+ListItem=Kanalende abgemauert
+ListItem=Ersetzen einzelner Rohre
+ListItem=Einsetzen eines Paßstückes mit Manschetten
+ListItem=Ersetzen einzelner Rohre
+ListItem=Schachtwandung: verfugt+Klinker eingesetzt
+ListItem=Schachtabdeckung ersetzen
+ListItem=Schachabdeckung einfassen
+ListItem=Schachtrahmen instandsetzen
+ListItem=Abdichtung einer Rohrverbindung
+ListItem=Beseitigung von Abflußhindernissen
+ListItem=gelenkiger Anschlu?an Schacht hergestellt
+ListItem=Einsetzen eines Paßstückes mit Manschetten
+ListItem=gelenkiger Anschlu?an Schacht hergestellt
+ListItem=Schachtsohle: verfugt+plattiert
+ListItem=Abdichtung durch Floating-Verfahren
+ListItem=Schachtsohle: STZ-Halbschale eingesetzt
+ListItem=Schmutzfaenger ersetzen/einbauen
+ListItem=Rohranschlu?im Schacht  erneuern (ausbessern)
+ListItem=Schachtwandung: verfugt
+ListItem=Schachtsohle: teilweise verfugt
+ListItem=Schachtwandung: teilweise verfugt
+ListItem=Partielles Kurzrohr-Relining
+ListItem=Spannringe
+ListItem=Schachtsohle erneuert (komplett)
+ListItem=Neubau der gesamten Haltung
+ListItem=Schachtwandung: verputzt
+ListItem=Schachtkonus ersetzen
+ListItem=Schachtwandung: teilweise verputzt
+ListItem=Leitung verdämmert und abgemauert
+ListItem=Entfernung der Haltung
+ListItem=Schacht verfüllt
+ListItem=Haltung abgemauert
+ListItem=Schachtabdeckung ausrichten, neu setzen
+ListItem=Hutprofil für Zuläufe
+ListItem=Schachtauskleidung in Edelstahl
+ListItem=Steigeisen entfernen
+ListItem=Schacht entfernt
+ListItem=Schachtsohle: Inliner-Auskleidung
+ListItem=Schachtsohle: PE-Platten-Auskleidung
+ListItem=Schachtsohle: PE-Platten verschweißt
+ListItem=Schachtwandung: Hochdruckreinigung
+ListItem=Schmutzfänger entfernen
+
+[Field R_RehaMatGroup]
+StateBits=4
+Header=Material group
+DecimalPrecision=0
+ListItem=1|Silikatbasis
+ListItem=2|Wasserglasbasis
+ListItem=3|Polyurethanharzbasis
+ListItem=4|Acrylatbasis
+ListItem=5|Epoxidharzbasis
+ListItem=6|Methacrylatbasis
+ListItem=7|Polyethylen
+ListItem=8|Polyurethan
+ListItem=9|Zementbasis
+ListItem=29|Steigeisen
+ListItem=49|Steinzeug
+ListItem=69|PVC - Polyvvenylchlorid
+ListItem=109|Schachtabdeckung
+ListItem=129|Polypropylen
+ListItem=149|Hindernisbeseitigung
+ListItem=150|Edelstahl
+ListItem=151|Kanalobjekt entfernt
+ListItem=152|Schmutzfänger
+
+[Field R_RehaMaterial]
+StateBits=4
+Header=Material
+DecimalPrecision=0
+
+[Field R_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field R_Status]
+StateBits=4
+Header=Status
+DecimalPrecision=0
+
+[Field R_StatusDate]
+StateBits=260
+Header=Status date
+DecimalPrecision=0
+
+[Field R_WarrantyPeriod]
+StateBits=132
+Header=Guarantee
+DecimalPrecision=0
+
+[Field S_Counter]
+StateBits=1
+Header=No.
+DecimalPrecision=0
+
+[Field S_Status1]
+StateBits=134
+DecimalPrecision=0
+
+[Field S_Status2]
+StateBits=134
+DecimalPrecision=0
+
+[Field S_Sectionlength]
+StateBits=68
+Header=Total length [m]
+DecimalPrecision=2
+
+[Field SBU_Betreiber]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Baulos]
+DBTable=S_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Subventionen]
+DBTable=S_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_EKostenBrutto]
+DBTable=S_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_Zugaenglichkeit]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Grundwasserabstand]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field S_SectionlengthFeet]
+StateBits=68
+Header=FT
+DecimalPrecision=2
+
+[Field S_SectionFlow]
+StateBits=133
+Header=Flow
+DecimalPrecision=0
+
+[Field S_AutoNumber]
+StateBits=132
+Header=Nr.
+DecimalPrecision=0
+
+[Field S_Catchment]
+StateBits=13
+Header=Catchment
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_City]
+StateBits=13
+Header=Place
+DecimalPrecision=0
+MaxLength=20
+
+[Field S_Division]
+StateBits=13
+Header=Division
+DecimalPrecision=0
+MaxLength=1
+
+[Field S_EndArea]
+StateBits=4
+Header=Area
+DecimalPrecision=0
+
+[Field S_EndBlock]
+StateBits=12
+Header=Block
+DecimalPrecision=0
+
+[Field S_EndMap]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_EndNode]
+StateBits=5
+Header=Downstream MH
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_EndStreet]
+StateBits=5
+Header=Road 2
+DecimalPrecision=0
+
+[Field S_InclinationClass]
+StateBits=12
+Header=Inclination profile
+DecimalPrecision=0
+
+[Field S_LastModifiedDate]
+StateBits=261
+Header=Date
+DecimalPrecision=0
+
+[Field S_Lining]
+StateBits=4101
+Header=Lining
+DecimalPrecision=0
+MaxLength=3
+ListItem=AK|Alkathene
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement
+ListItem=SI|Spun (grey) iron
+ListItem=CO|Concrete
+ListItem=CSB|Concrete segments (bolted)
+ListItem=CSU|Concrete segments (unbolted)
+ListItem=CC|Concrete box culvert
+ListItem=DI|Ductil iron
+ListItem=GRC|Glass reinforced cement
+ListItem=GRP|Glass reinforced plastic
+ListItem=PL|Plastic
+ListItem=PSC|Plastic/steel composite
+ListItem=PVC|Polyvinyl chloride (PVC)
+ListItem=PE|Polyethylene (PE)
+ListItem=RPM|Reinforced plastic matrix
+ListItem=RL|Resin
+ListItem=IS|Soft inversion type liner
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PP|Polypropylene (PP)
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=XXX|Other (state in comments)
+ListItem=ZZZ|Not known
+
+[Field S_LiningMethod]
+StateBits=4
+Header=Lining Type
+DecimalPrecision=0
+
+[Field S_Location]
+StateBits=4109
+Header=Location code
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Main road - urban
+ListItem=B|Main road - suburban/rural
+ListItem=C|Light road
+ListItem=D|Footpath or verge
+ListItem=E|Fields
+ListItem=F|Gardens
+ListItem=G|Woodland
+ListItem=X|Difficult access
+
+[Field S_Owner]
+StateBits=4
+Header=Owner
+DecimalPrecision=0
+
+[Field S_PipeDia]
+StateBits=4237
+Header=Dia/height
+DecimalPrecision=0
+ListItem=80
+ListItem=100
+ListItem=150
+ListItem=200
+ListItem=225
+ListItem=250
+ListItem=300
+ListItem=350
+ListItem=400
+ListItem=450
+ListItem=500
+ListItem=600
+ListItem=700
+ListItem=800
+ListItem=900
+ListItem=1000
+ListItem=1100
+ListItem=1200
+ListItem=1250
+ListItem=1300
+
+[Field S_Pipelength]
+StateBits=4173
+Header=Pipe length [m]
+DecimalPrecision=2
+ListItem=1
+ListItem=1.5
+ListItem=1.8
+ListItem=2
+ListItem=2.5
+ListItem=3
+ListItem=3.5
+ListItem=4
+ListItem=4.5
+ListItem=5
+ListItem=6
+ListItem=7
+ListItem=10
+ListItem=14
+
+[Field S_PipeMaterial]
+StateBits=4109
+Header=Material
+DecimalPrecision=0
+MaxLength=3
+ListItem=AK|Alkathene
+ListItem=AC|Asbestos cement
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=SI|Spun (grey) iron
+ListItem=CO|Concrete
+ListItem=CSB|Concrete segments (bolted)
+ListItem=CSU|Concrete segments (unbolted)
+ListItem=CC|Concrete box culvert
+ListItem=DI|Ductil iron
+ListItem=GRC|Glass reinforced cement
+ListItem=GRP|Glass reinforced plastic
+ListItem=PSC|Plastic/steel composite
+ListItem=PVC|Polyvinyl chloride (PVC)
+ListItem=PE|Polyethylene (PE)
+ListItem=RPM|Reinforced plastic matrix
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PP|Polypropylene (PP)
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=XXX|Other (state in Comments)
+ListItem=ZZZ|Not known
+
+[Field S_PipeShape]
+StateBits=4109
+Header=Pipe shape
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Arched (with flat bottom)
+ListItem=B|Barrel
+ListItem=C|Circular
+ListItem=E|Egg shaped
+ListItem=H|Horseshoe
+ListItem=O|Oval
+ListItem=R|Rectangular
+ListItem=S|Square
+ListItem=T|Trapeziodal
+ListItem=U|U-shaped with flat top
+ListItem=X|Other (state in Comments)
+
+[Field S_PipeWidth]
+StateBits=4237
+Header=Width [mm]
+DecimalPrecision=0
+ListItem=80
+ListItem=100
+ListItem=125
+ListItem=150
+ListItem=225
+ListItem=300
+
+[Field S_PLR]
+StateBits=5
+Header=PLR suffix
+DefaultValue=X
+DecimalPrecision=0
+MaxLength=1
+ListItem=X
+ListItem=Y
+ListItem=Z
+
+[Field S_SectionDef]
+StateBits=134
+Header=Category
+DecimalPrecision=0
+
+[Field S_Sectionname]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_SectionUse]
+StateBits=4109
+Header=Use
+DecimalPrecision=0
+MaxLength=1
+ListItem=C|Combined
+ListItem=F|Foul
+ListItem=S|Surface water
+ListItem=T|Trade effluent
+ListItem=W|WaterCourse (culverted)
+ListItem=X|Other (state in comments)
+ListItem=Z|Not know
+
+[Field S_ServiceGrade]
+StateBits=4
+Header=Service Grade
+DecimalPrecision=0
+
+[Field S_Situation]
+StateBits=13
+Header=Location
+DecimalPrecision=0
+ListItem=A|Main road - urban
+ListItem=B|Main road - suburban/rural
+ListItem=C|Light road
+ListItem=D|Footpath or verge
+ListItem=E|Fields
+ListItem=F|Gardens
+ListItem=G|Woodland
+ListItem=X|Difficult access
+
+[Field S_StartArea]
+StateBits=1
+Header=District
+DecimalPrecision=0
+
+[Field S_StartBlock]
+StateBits=12
+Header=Block
+DecimalPrecision=0
+
+[Field S_StartMap]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_StartNode]
+StateBits=5
+Header=Upstream MH
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_StartStreet]
+StateBits=13
+Header=Road
+DecimalPrecision=0
+MaxLength=30
+
+[Field S_StructGrade]
+StateBits=4
+Header=Struct. Grade
+DecimalPrecision=0
+
+[Field S_Type]
+StateBits=12
+Header=Street 1
+DecimalPrecision=0
+ListItem=waste
+ListItem=combined wastewater
+ListItem=storm water
+ListItem=industrial waste water
+ListItem=stormwater overflow
+
+[Field S_WaterUse]
+StateBits=4
+Header=Use
+DecimalPrecision=0
+
+[Field S_YearLayed]
+StateBits=133
+Header=Year laid
+DecimalPrecision=0
+
+[Field S_Zone]
+StateBits=5
+Header=District
+DecimalPrecision=0
+
+[Field S_State]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Page]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Ground]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_CreationDate]
+StateBits=260
+Header=DATE
+DecimalPrecision=0
+
+[Field S_HNDBLK]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_INSP]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Memo]
+StateBits=4
+Header=Comments regarding the section
+DecimalPrecision=0
+
+[Field S_PLAT]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LocationDetails]
+StateBits=8205
+Header=Location details
+DecimalPrecision=0
+MaxLength=48
+
+[Field S_PipeEnd_Y]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_PipeHeight]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_PipeUnit]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_InspectedLength]
+StateBits=132
+Header=Inspected Lenght
+DecimalPrecision=0
+
+[Field S_PipeStart_Y]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_Rate]
+StateBits=133
+DecimalPrecision=0
+
+[Field S_SectionType]
+StateBits=4109
+Header=Sewer category
+DecimalPrecision=0
+MaxLength=1
+ListItem=A
+ListItem=B
+ListItem=C
+ListItem=Z
+
+[Field S_Sectionnumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DIST]
+StateBits=4
+Header=District
+DecimalPrecision=0
+
+[Field S_SectionInUse]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Spare1]
+StateBits=13
+Header=District
+DecimalPrecision=0
+MaxLength=3
+
+[Field S_YearLayedText]
+StateBits=13
+Header=Year laid
+DecimalPrecision=0
+MaxLength=4
+
+[Field S_Spare3]
+StateBits=69
+Header=Upstream cover [m]
+DecimalPrecision=2
+MaxLength=6
+
+[Field S_Spare2]
+StateBits=5
+Header=Upstream depth [m]
+DecimalPrecision=0
+MaxLength=5
+
+[Field S_StartInvertAlt]
+StateBits=69
+Header=Upstream invert [m]
+DecimalPrecision=2
+
+[Field S_Spare4]
+StateBits=69
+Header=Downstream depth [m]
+DecimalPrecision=2
+MaxLength=5
+
+[Field S_Spare5]
+StateBits=69
+Header=Downstream cover [m]
+DecimalPrecision=2
+
+[Field S_EndInvertAlt]
+StateBits=69
+Header=Downstream invert [m]
+DecimalPrecision=2
+
+[Field S_EndGrid]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SpecOrder]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_LastModifiedTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field S_Units]
+StateBits=132
+DecimalPrecision=0
+
+[Field S_DamageClass]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_PipeSegmentLength]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_NumSockets]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_MandatoryFieldsValidated]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_StartNodeCoord_X]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartNodeCoord_Y]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartNodeCoord_Z]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_X]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_Y]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_Z]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartDepthToInvert]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndDepthToInvert]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StrangNumber]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_WallThickness]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_Age]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StartNodeType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_EndNodeType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Suburb]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StartGrid]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Reference]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_AssetNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LineNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionPurpose]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_System]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SystemCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionStatus]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeClass]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Profile]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Depth]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LocationCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_OwnerReference]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_ProjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow4]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow5]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow6]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow7]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Population]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_AverageFlow]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SurfaceWater]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatObject]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatObjectNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatLateralName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatStartPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Documentation]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Medianumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TAP]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TAPUSE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SYSTEMTYPE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SYSTEMUSE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Internals]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_InvertInternals]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeInternalProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeFlowLevelProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DrainSystem]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TreatmentPlant]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PumpingStation]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterProtectionZone]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_FloodingArea]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DocumentName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PollutionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo4]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo5]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo6]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo7]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo8]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_FromManholeInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_ToManholeInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeExternalProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatClockPosition]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatConnectionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangStartNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangEndNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DigiKanSectionName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DigiKanSectionId]
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_FunktionHierarchisch]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Lagebestimmung]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Wandrauhigkeit]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field S_LastModifiedDateTime]
+StateBits=20
+DecimalPrecision=0
+
+[Field SF_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field SF_EntryDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=SF_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=SF_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SF_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field SF_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=SI_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Auswerteperson]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Auswertedatum]
+DBTable=SI_T
+StateBits=20
+DecimalPrecision=0
+
+[Field SBU_Oke]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_KlassifiziertAm]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InspName]
+StateBits=5
+Header=Inspection name
+DecimalPrecision=0
+
+[Field SI_Camera]
+StateBits=8205
+Header=Camera
+DecimalPrecision=0
+ListItem=camera 1
+ListItem=camera 2
+
+[Field SI_CameraPreset]
+StateBits=69
+Header=Preset
+DecimalPrecision=2
+
+[Field SI_Cleaned]
+StateBits=4101
+Header=Pre-cleaned
+DecimalPrecision=0
+MaxLength=1
+ListItem=Y|yes
+ListItem=N|no
+ListItem=Z|unknown
+
+[Field SI_Counter]
+StateBits=140
+DecimalPrecision=0
+
+[Field SI_InspectedLength]
+StateBits=68
+Header=Inspected length [m]
+DecimalPrecision=2
+
+[Field SI_InspMethod]
+StateBits=5
+DecimalPrecision=0
+
+[Field SI_JobNumber]
+StateBits=13
+Header=Job no.
+DecimalPrecision=0
+MaxLength=10
+
+[Field SI_Level]
+StateBits=5
+Header=Grade
+DecimalPrecision=0
+
+[Field SI_MediaLocation]
+StateBits=5
+Header=Media location
+DecimalPrecision=0
+
+[Field SI_MediaNumber1]
+StateBits=13
+Header=Tape no.
+DecimalPrecision=0
+
+[Field SI_MediaNumber2]
+StateBits=5
+Header=Media No.2
+DecimalPrecision=0
+
+[Field SI_Memo]
+StateBits=8196
+Header=Comments regarding the inspection
+DecimalPrecision=0
+MaxLength=50
+ListItem=No Defects Detected
+
+[Field SI_Operator]
+StateBits=8205
+Header=Operator
+DecimalPrecision=0
+MaxLength=12
+ListItem=PAUL
+
+[Field SI_Present]
+StateBits=5
+Header=Present
+DecimalPrecision=0
+
+[Field SI_ReasonOfInspection]
+StateBits=4108
+Header=Purpose
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Specific problems on sewer related to structural or service condition defects
+ListItem=B|Specific problems on sewer system related to infiltration
+ListItem=C|Assessment of complete remedial or renovation works
+ListItem=D|Pre-adoption - normally new sewers for adoption (SfA)
+ListItem=E|Pre-acceptance - new sewer (direct contract) constructed by sewerage undertakers)
+ListItem=F|Sample survey to determin asset condition
+ListItem=G|Assoziated with future capital scheme including Drainage Area Planning
+ListItem=H|Resurvey for any reason
+ListItem=X|Other (state in comments)
+ListItem=Z|Not known
+
+[Field SI_Spare1]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare2]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare3]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare4]
+StateBits=12
+Header=RESERVE
+DecimalPrecision=0
+
+[Field SI_Status]
+StateBits=132
+Header=Status
+DecimalPrecision=0
+
+[Field SI_VCRNumber1]
+StateBits=13
+Header=Tape number
+DecimalPrecision=0
+MaxLength=5
+
+[Field SI_VCRNumber2]
+StateBits=5
+Header=Tape nr. 2
+DecimalPrecision=0
+
+[Field SI_Vehicle]
+StateBits=8205
+Header=Vehicle
+DecimalPrecision=0
+
+[Field SI_Weather]
+StateBits=4101
+Header=Weather
+DecimalPrecision=0
+MaxLength=1
+ListItem=1|Dry
+ListItem=2|Heavy rain
+ListItem=3|Light rain
+ListItem=4|Showers
+ListItem=5|Snow
+
+[Field SI_WorkNumber]
+StateBits=1
+DecimalPrecision=0
+
+[Field SI_Time]
+StateBits=516
+DecimalPrecision=0
+
+[Field SI_TemperatureFlag]
+StateBits=38
+DecimalPrecision=0
+
+[Field SI_Verified]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_ServiceRate]
+StateBits=68
+DecimalPrecision=2
+
+[Field SI_Date]
+StateBits=261
+Header=Date
+DecimalPrecision=0
+
+[Field SI_InspectionStartTime]
+StateBits=517
+Header=Start time
+DefaultValue=#SYS_TIMEONLY#
+DecimalPrecision=0
+
+[Field SI_Preset]
+StateBits=69
+Header=Preset
+DecimalPrecision=2
+
+[Field SI_Spare0]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspDate]
+StateBits=261
+Header=Date
+DefaultValue=#SYS_DATEONLY#
+DecimalPrecision=0
+
+[Field SI_InspectionEndTime]
+StateBits=517
+Header=End Time
+DecimalPrecision=0
+
+[Field SI_Save1]
+StateBits=5
+DecimalPrecision=0
+
+[Field SI_ContractNumber]
+StateBits=13
+Header=Contract no.
+DecimalPrecision=0
+MaxLength=8
+
+[Field SI_QMR]
+StateBits=133
+Header=QMR
+DecimalPrecision=0
+
+[Field SI_QSR]
+StateBits=133
+Header=QSR
+DecimalPrecision=0
+
+[Field SI_SPR]
+StateBits=133
+Header=SPR
+DecimalPrecision=0
+
+[Field SI_MPR]
+StateBits=133
+Header=MPR
+DecimalPrecision=0
+
+[Field SI_MPRI]
+StateBits=133
+Header=MPRI
+DecimalPrecision=0
+
+[Field SI_OPR]
+StateBits=133
+Header=OPR
+DecimalPrecision=0
+
+[Field SI_OPRI]
+StateBits=133
+Header=OPRI
+DecimalPrecision=0
+
+[Field SI_InspectedLengthFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SI_OrderYear]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_OrderType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspectionDir]
+StateBits=4101
+Header=Inspection dir.
+DecimalPrecision=0
+ListItem=U|{S_EndNode} (U/S) {S_StartNode}
+ListItem=D|{S_StartNode} (D/S) {S_EndNode}
+
+[Field SI_STRTOTAL]
+StateBits=68
+Header=STR total
+DecimalPrecision=2
+
+[Field SI_STR_NO_DEF]
+StateBits=68
+Header=STR no def
+DecimalPrecision=2
+
+[Field SI_STRPEAK]
+StateBits=68
+Header=STR peak
+DecimalPrecision=2
+
+[Field SI_STRMEAN]
+StateBits=68
+Header=STR mean
+DecimalPrecision=2
+
+[Field SI_STRGRADE]
+StateBits=4
+Header=STR grade
+DecimalPrecision=0
+
+[Field SI_SERTOTAL]
+StateBits=68
+Header=SER total
+DecimalPrecision=2
+
+[Field SI_SER_NO_DEF]
+StateBits=68
+Header=SER no def
+DecimalPrecision=2
+
+[Field SI_SERPEAK]
+StateBits=68
+Header=SER peak
+DecimalPrecision=2
+
+[Field SI_SERMEAN]
+StateBits=68
+Header=SER mean
+DecimalPrecision=2
+
+[Field SI_SERGRADE]
+StateBits=4
+Header=SER grade
+DecimalPrecision=0
+
+[Field SI_Mandantor_ID]
+DecimalPrecision=0
+
+[Field SI_Client_ID]
+DecimalPrecision=0
+
+[Field SI_Manager_ID]
+DecimalPrecision=0
+
+[Field SI_Contractor_ID]
+DecimalPrecision=0
+
+[Field SI_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LastModifiedDate]
+StateBits=256
+DecimalPrecision=0
+
+[Field SI_LastModifiedTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field SI_Completed]
+StateBits=128
+DecimalPrecision=0
+
+[Field SI_Exported]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_fromManholeProtocol]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_toManholeProtocol]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InclinationFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_InclinationFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_PressureTestFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_PressureTestFile]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_ProfileFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_ProfileFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_ScanExFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_ScanExFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_TemperatureFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_RadioActivityFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_RadioActivityFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature1Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature1FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature2Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature2FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature3Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature3FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_GroutTotalUsed]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_GroutTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field SI_GroutMaxTestPSI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_GroutGPMUsed]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_InclScale_Y]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InclScale_X]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_DateClean]
+StateBits=256
+DecimalPrecision=0
+
+[Field SI_StructRate]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_MaterialChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_ProfileChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LiningChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_DimChecked]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_MatChecked]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_IsFlushed]
+StateBits=128
+DecimalPrecision=0
+
+[Field SI_OrigInspectedLength]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_PRI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Grade1]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Grade2]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_SPRI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_STRAVERAGE]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_SERAVERAGE]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_II]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Material]
+DecimalPrecision=0
+MaxLength=2
+
+[Field SI_TotalStructGrade]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalMaintGrade]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalRate]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalLevel]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Temperature]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Norm]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare6]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_CatName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspTemplate]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Visa]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Customer]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DrawingNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_GroutType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_GroutMixture]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InclComment]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ProjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DebrisPreClean]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DebrisAtInsp]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AddInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Consider]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AddInfo2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Documentation]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_TapeLocation]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DASID]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatObjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatLateralName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatStartPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatEndPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatClockPosition]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrderName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ConstructionNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RegionNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Suburb]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_EquipmentType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ImportFile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigSectionName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigStartNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigEndNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ProtocolFile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspState]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspComplete]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AxialRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_WaterDrainage]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare7]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare8]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare9]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare10]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare11]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare12]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RapportNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RapportType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Age]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InUse]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Dimension]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DistributionMedia]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OriginalCodingSystem]
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Startbauwerk]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LastModifiedDateTime]
+StateBits=20
+DecimalPrecision=0
+
+[Field SO_Counter]
+StateBits=1
+Header=No.
+DecimalPrecision=0
+
+[Field SO_Position]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PhotoFlag1]
+StateBits=37
+Header=Photo 1
+DecimalPrecision=0
+
+[Field SO_ClipFlag1]
+StateBits=37
+Header=Clip
+DecimalPrecision=0
+
+[Field SO_RehabFlag]
+StateBits=2
+Header=Rehab
+DecimalPrecision=0
+
+[Field SBU_MaxSKe]
+DBTable=SO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_MaxSZe]
+DBTable=SO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_PositionFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Code]
+StateBits=5
+Header=Cont. defect
+DecimalPrecision=0
+
+[Field SO_ContinousDefect]
+StateBits=5
+Header=CD
+DecimalPrecision=0
+
+[Field SO_Level]
+StateBits=12
+Header=Grade
+DecimalPrecision=0
+
+[Field SO_MaterialNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_MPEGPosition]
+StateBits=13
+Header=MPEG
+DecimalPrecision=0
+
+[Field SO_OpCode]
+StateBits=5
+Header=OC
+DecimalPrecision=0
+
+[Field SO_Passed]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_PhotoFlag2]
+StateBits=38
+Header=Photo 2
+DecimalPrecision=0
+
+[Field SO_Photonumber1]
+StateBits=5
+Header=Photo No. 1
+DecimalPrecision=0
+
+[Field SO_Photonumber2]
+StateBits=5
+Header=Photo No. 2
+DecimalPrecision=0
+
+[Field SO_PipeDiaNew]
+StateBits=68
+Header=ddddd
+DecimalPrecision=2
+
+[Field SO_Rate]
+StateBits=133
+Header=Grade
+DecimalPrecision=0
+ListItem=1
+ListItem=2
+ListItem=3
+ListItem=4
+ListItem=5
+
+[Field SO_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field SO_SatFlag]
+StateBits=133
+Header=Sat
+DecimalPrecision=0
+
+[Field SO_StructGrade]
+StateBits=68
+Header=Grade
+DecimalPrecision=2
+
+[Field SO_Text]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field SO_VCRPosition]
+StateBits=5
+Header=VCR
+DecimalPrecision=0
+
+[Field SO_Value1]
+StateBits=133
+Header=Value
+DecimalPrecision=0
+
+[Field SO_PhotoFilename1]
+StateBits=32
+Header=Photo # 1
+DecimalPrecision=0
+
+[Field SO_PhotoFilename2]
+StateBits=32
+Header=Photo # 2
+DecimalPrecision=0
+
+[Field SO_ToGoMeter]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_SBLObject]
+StateBits=5
+Header=DS
+DecimalPrecision=0
+
+[Field SO_MaintGrade]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_DTYPE]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_ClockPosition1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClockPosition2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Unit1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Value2]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Unit2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Width_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Dim1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Dim2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Material_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Lining_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Joint]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Char1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Char2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_OpenContDef]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_LiningMaterialNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_USER]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ToGoFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_ObservAddOn1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field SO_Symbol]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_SBLControlText]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_SBLProfile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_SBLCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClipNumber1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ExportCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ExportCode2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Value3]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Unit3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ReverseInspectionFlag]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_CodeDef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_TypeDef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_PipeShapeNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_PipelengthNew]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PipeWidthNew]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_LiningMethodNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_WaterLevel]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_BSTCode]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_GroutPSI]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PressTestValue]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_GroutValue]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Diameter]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Material]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant1Unit]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant2Unit]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Client1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Client2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Other1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Other2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_X]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_Y]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_Z]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_X]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_Y]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_Z]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_LocalCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Precipitation_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Shape_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Height_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_DamageClass]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_ObservCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ObservAddOn2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Rehab_Method]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ScanExGraphicId]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_ScanExFlag1]
+StateBits=37
+Header=Scan
+DecimalPrecision=0
+
+[Field SO_PanoramoFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_MaalBSTKode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_KomponentKode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_RppFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_DeforFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_JointFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_OpCode_ISY]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_OpCode_EN]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Text_ISY]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Text_EN]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Level_ISY]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Level_EN]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_DamageCounter]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_Char3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare6]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare7]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare8]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare9]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare10]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClipFileName1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_ScanExFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_PanoramoFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_RppFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_DeforFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_JointFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Grid grid_o]
+Field=SO_Counter;2
+Field=SO_Position;2
+Field=SO_ContinousDefect;2
+Field=SO_OpCode;2
+Field=SO_Text;2
+Field=SO_Rate;3
+Field=SO_Remark;3
+Field=SO_PhotoFlag1;2
+Field=SO_ClipFlag1;2
+Field=SO_SatFlag;2
+Field=SO_VCRPosition;3
+Field=SO_MPEGPosition;2
+
+[Grid grid_s]
+Field=S_Counter;2
+Field=S_Status1;2
+Field=S_Status2;2
+Field=S_Sectionlength;2
+Field=S_StartStreet;2
+Field=S_StartNode;2
+Field=S_SectionFlow;2
+Field=S_EndNode;2
+Field=S_PipeDia;2
+
+[Grid grid_s_detail(0)]
+Field=S_Counter;2
+Field=S_City;3
+Field=S_StartStreet;3
+Field=S_Catchment;3
+Field=S_Division;3
+Field=S_Spare1;3
+Field=S_SectionUse;3
+Field=S_PipeDia;3
+Field=S_PipeWidth;3
+Field=S_PipeShape;3
+
+[Grid grid_s_detail(1)]
+Field=S_StartNode;3
+Field=S_Spare2;3
+Field=S_Spare3;3
+Field=S_StartInvertAlt;3
+Field=S_EndNode;3
+Field=S_Spare4;3
+Field=S_Spare5;3
+Field=S_EndInvertAlt;3
+Field=S_PLR;3
+
+[Grid grid_s_detail(2)]
+Field=S_PipeMaterial;3
+Field=S_Lining;3
+Field=S_Pipelength;3
+Field=S_Sectionlength;2
+Field=S_YearLayedText;3
+Field=S_SectionType;3
+Field=S_Location;3
+Field=S_LocationDetails;3
+
+[Grid grid_s_detail(3)]
+
+[Grid grid_s_detail(4)]
+Field=SI_InspName;2
+Field=SI_InspectionDir;3
+Field=SI_Operator;3
+Field=SI_ContractNumber;3
+Field=SI_JobNumber;3
+Field=SI_InspDate;3
+Field=SI_InspectionStartTime;3
+Field=SI_VCRNumber1;3
+Field=SI_Present;3
+
+[Grid grid_s_detail(5)]
+Field=SI_ReasonOfInspection;3
+Field=SI_Cleaned;3
+Field=SI_Weather;3
+Field=SI_Vehicle;3
+Field=SI_Camera;3
+Field=SI_Preset;3
+
+[Grid grid_s_detail(6)]
+Field=SI_InspectedLength;3
+Field=SI_Memo;3
+
+[Grid grid_s_detail(7)]
+Field=SI_STRTOTAL;2
+Field=SI_STR_NO_DEF;2
+Field=SI_STRPEAK;2
+Field=SI_STRMEAN;2
+Field=SI_STRGRADE;2
+Field=SI_SERTOTAL;2
+Field=SI_SER_NO_DEF;2
+Field=SI_SERPEAK;2
+Field=SI_SERMEAN;2
+Field=SI_SERGRADE;2
+
+[Grid grid_nls]
+Field=N_AutoNumber;2
+Field=N_NodeName;2
+
+[Grid grid_n_cover]
+Field=NC_Number;2
+Field=NC_CoverShape;3
+Field=NC_CoverMaterial;3
+Field=NC_CoverWidth;3
+Field=NC_CoverDia;3
+Field=NC_CoverCoord_X;3
+Field=NC_CoverCoord_Y;3
+Field=NC_CoverType;3
+Field=NC_CoverClass;3
+
+[Grid grid_nl]
+Field=NE_Counter;2
+Field=NE_Type;3
+Field=NE_PipeShape;3
+Field=NE_PipeDia;3
+Field=NE_PipeWidth;3
+Field=NE_Drop;3
+Field=NE_Material;3
+Field=NE_FlowFrom;3
+Field=NE_FlowTo;3
+Field=NE_Observation;3
+Field=NE_ClockPosition1;3
+Field=NE_SectionName;3
+
+[Grid grid_no]
+Field=NO_Counter;2
+Field=NO_Position;3
+Field=NO_OpCode;2
+Field=NO_Text;3
+Field=NO_FotoFlag1;3
+Field=NO_ClipFlag1;3
+Field=NO_MPEGPosition;3
+Field=NO_VideoCounter;3
+Field=NO_Class1;3
+Field=NO_Class2;3
+Field=NO_Quant1;3
+Field=NO_Quant2;3
+Field=NO_Remark;3
+
+[Grid grid_n_detail(0)]
+Field=N_Counter;2
+Field=N_Zone;3
+Field=N_Division;3
+Field=N_NodeName;3
+Field=N_Grid;3
+Field=N_Streetname;3
+Field=N_City;3
+
+[Grid grid_n_detail(1)]
+Field=N_Spare4;3
+Field=N_Location;3
+Fiel

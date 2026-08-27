@@ -1,0 +1,9193 @@
+[Common]
+Unit=0
+
+[Field C_Name]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Street]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Location]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Phone]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Fax]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Email]
+StateBits=4
+DecimalPrecision=0
+
+[Field N_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field N_NodeName]
+StateBits=5
+Header=Manhole reference
+DecimalPrecision=0
+MaxLength=12
+
+[Field N_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field N_Area]
+StateBits=12
+Header=Area
+DecimalPrecision=0
+
+[Field N_AverageFlow]
+StateBits=64
+Header=Average Flow
+DecimalPrecision=2
+
+[Field N_Benching]
+StateBits=12
+Header=Benching
+DecimalPrecision=0
+
+[Field N_BusinessWaterFlow]
+StateBits=64
+Header=Business Water Flow
+DecimalPrecision=2
+
+[Field N_Chamber]
+Header=Chamber
+DecimalPrecision=0
+
+[Field N_ChamberDia]
+StateBits=132
+Header=Chamber Dia.
+DecimalPrecision=0
+
+[Field N_ChamberHeigth]
+StateBits=64
+Header=Chamber Heigth
+DecimalPrecision=2
+
+[Field N_ChamberMaterial]
+StateBits=4
+Header=Chamber Material
+DecimalPrecision=0
+
+[Field N_ChamberUnit]
+StateBits=12
+Header=Chamber Unit
+DecimalPrecision=0
+
+[Field N_ChamberWidth]
+StateBits=64
+Header=Chamber Width
+DecimalPrecision=2
+
+[Field N_City]
+StateBits=13
+Header=Town or village
+DecimalPrecision=0
+MaxLength=15
+
+[Field N_Coveraltitude]
+StateBits=12
+Header=Cover Altitude
+DecimalPrecision=0
+
+[Field N_CoverDia]
+StateBits=132
+Header=Cover Dia
+DecimalPrecision=0
+
+[Field N_CoverMaterial]
+StateBits=4
+Header=Cover Material
+DecimalPrecision=0
+
+[Field N_CoverPlate]
+StateBits=12
+Header=Cover Plate
+DecimalPrecision=0
+
+[Field N_CoverShape]
+StateBits=4
+Header=Cover Shape
+DecimalPrecision=0
+
+[Field N_CoverType]
+StateBits=12
+Header=Cover Type
+DecimalPrecision=0
+
+[Field N_CoverUnit]
+StateBits=12
+Header=Cover Unit
+DecimalPrecision=0
+
+[Field N_CoverWidth]
+StateBits=132
+Header=Cover Width
+DecimalPrecision=0
+
+[Field N_DepthRef]
+StateBits=12
+Header=Depth Reference
+DecimalPrecision=0
+
+[Field N_DepthToInvert]
+StateBits=68
+Header=Depth to Invert
+DecimalPrecision=2
+
+[Field N_DepthToInvertUnit]
+Header=Depth to Invert Unit
+DecimalPrecision=0
+
+[Field N_DryWeatherWaterFlow]
+StateBits=64
+Header=Dry Weather Water Flow
+DecimalPrecision=2
+
+[Field N_Floor]
+StateBits=12
+Header=Floor
+DecimalPrecision=0
+
+[Field N_ForeignWaterFlow]
+StateBits=64
+Header=Foreign Water Flow
+DecimalPrecision=2
+
+[Field N_GroundType]
+StateBits=4
+Header=Ground Type
+DecimalPrecision=0
+
+[Field N_GroundWaterDistance]
+StateBits=64
+Header=Groundwater Distance
+DecimalPrecision=2
+
+[Field N_IndustrialWaterFlow]
+StateBits=64
+Header=Industrial Water Flow
+DecimalPrecision=2
+
+[Field N_Invertaltitude]
+StateBits=4
+Header=Invert Altitude
+DecimalPrecision=0
+
+[Field N_InvertDia]
+StateBits=68
+Header=Invert Dia.
+DecimalPrecision=2
+
+[Field N_InvertRL]
+StateBits=4
+Header=Invert RL
+DecimalPrecision=0
+
+[Field N_InvertShape]
+StateBits=4
+Header=Invert Shape
+DecimalPrecision=0
+
+[Field N_InvertType]
+StateBits=4
+Header=Invert Type
+DecimalPrecision=0
+
+[Field N_InvertUnit]
+Header=Invert Unit
+DecimalPrecision=0
+
+[Field N_InvertWidth]
+StateBits=64
+Header=Invert Width
+DecimalPrecision=2
+
+[Field N_Location]
+StateBits=4101
+Header=Location type
+DecimalPrecision=0
+MaxLength=3
+ListItem=RD|Road
+ListItem=FWY|A footway beside a road
+ListItem=VG|Verge
+ListItem=PD|Other pedestrian area
+ListItem=FLD|Fields (farmland and other open space)
+ListItem=PR|Property with buildings
+ListItem=GDN|Gardens (with private property)
+ListItem=BLG|Under a permanent building
+ListItem=WLD|Woodland
+ListItem=DIF|Difficult access (motorway, railway, watercourse, inside building,...)
+ListItem=WWY|Under a waterway
+ListItem=Z|Other (state in remarks)
+
+[Field N_LocationDetails]
+StateBits=12
+Header=Location details
+DecimalPrecision=0
+
+[Field N_MapNumber]
+StateBits=4
+Header=Map Number
+DecimalPrecision=0
+
+[Field N_NodeCoord_X]
+StateBits=132
+Header=Coord. X
+DecimalPrecision=0
+
+[Field N_NodeCoord_XZ_Ref]
+StateBits=12
+Header=XZ Ref.
+DecimalPrecision=0
+
+[Field N_NodeCoord_Y]
+StateBits=132
+Header=Coord. Y
+DecimalPrecision=0
+
+[Field N_NodeCoord_Y_Ref]
+StateBits=12
+Header=Y Ref.
+DecimalPrecision=0
+
+[Field N_NodeCoord_Z]
+StateBits=132
+Header=Coord. Z
+DecimalPrecision=0
+
+[Field N_NodeInfo]
+StateBits=12
+Header=Info
+DecimalPrecision=0
+
+[Field N_NodeNumber]
+StateBits=140
+Header=MH Number
+DecimalPrecision=0
+
+[Field N_NodeRemarks]
+Header=Remarks
+DecimalPrecision=0
+
+[Field N_NodeStandard]
+StateBits=12
+Header=Standard
+DecimalPrecision=0
+
+[Field N_NodeStatus]
+StateBits=134
+Header=Status
+DecimalPrecision=0
+
+[Field N_NodeType]
+StateBits=4101
+Header=Critical
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Category A
+ListItem=B|Category B
+ListItem=C|Category C
+ListItem=Z|Unknow
+
+[Field N_Population]
+StateBits=76
+Header=Population
+DecimalPrecision=2
+
+[Field N_PrivateWaterFlow]
+StateBits=64
+Header=Private Water Flow
+DecimalPrecision=2
+
+[Field N_Protection]
+StateBits=12
+Header=Protection
+DecimalPrecision=0
+
+[Field N_RainWaterFlow]
+StateBits=64
+Header=Rain Water Flow
+DecimalPrecision=2
+
+[Field N_Reference]
+StateBits=12
+Header=Reference
+DecimalPrecision=0
+
+[Field N_Riser]
+StateBits=12
+Header=Riser
+DecimalPrecision=0
+
+[Field N_Roof]
+StateBits=12
+Header=Roof
+DecimalPrecision=0
+
+[Field N_SealingMaterial]
+StateBits=12
+Header=Sealing Material
+DecimalPrecision=0
+
+[Field N_ShaftDia]
+StateBits=133
+Header=Access breadth [mm]
+DecimalPrecision=0
+
+[Field N_ShaftHeigth]
+StateBits=76
+Header=Shaft Height
+DecimalPrecision=2
+
+[Field N_ShaftMaterial]
+StateBits=4101
+Header=Material
+Tooltip=Enter first material (in survey sequence) where mixture of material is used. Enter Z if unknown.
+DecimalPrecision=0
+MaxLength=3
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field N_ShaftShape]
+StateBits=4101
+Header=Access shape
+DecimalPrecision=0
+MaxLength=2
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field N_ShaftUnit]
+Header=Shaft Unit
+DecimalPrecision=0
+
+[Field N_ShaftWidth]
+StateBits=133
+Header=Access width [mm]
+DecimalPrecision=0
+
+[Field N_Situation]
+StateBits=4
+Header=Situation
+DecimalPrecision=0
+
+[Field N_Streetname]
+StateBits=5
+Header=Street name
+DecimalPrecision=0
+MaxLength=15
+
+[Field N_SurfaceWater]
+StateBits=64
+Header=Surface Water
+DecimalPrecision=2
+
+[Field N_Taper]
+Header=Taper
+DecimalPrecision=0
+
+[Field N_TaperMaterial]
+Header=Taper Material
+DecimalPrecision=0
+
+[Field N_Use]
+StateBits=4101
+Header=Use of manhole/inspection chamber
+DecimalPrecision=0
+MaxLength=1
+ListItem=C|combined
+ListItem=F|foul
+ListItem=S|surface water
+ListItem=T|trade effluent
+ListItem=W|watercourse (culverted)
+ListItem=Z|other (state in remarks)
+
+[Field N_Walls]
+StateBits=12
+Header=Walls
+DecimalPrecision=0
+
+[Field N_WasteWaterFlow]
+StateBits=64
+Header=Waste Water Flow
+DecimalPrecision=2
+
+[Field N_WaterUse]
+StateBits=64
+Header=Water Use
+DecimalPrecision=2
+
+[Field N_Year]
+StateBits=5
+Header=Year constructed
+Tooltip=Either as a single year in CCYY format or as a rang in CCYY-CCYY format
+DecimalPrecision=0
+MaxLength=9
+
+[Field N_Zone]
+StateBits=5
+Header=Drainage area
+DecimalPrecision=0
+MaxLength=10
+
+[Field N_Rate]
+StateBits=68
+DecimalPrecision=2
+
+[Field N_CreationDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field N_ConeMaterial]
+StateBits=4
+Header=Cone Material
+DecimalPrecision=0
+
+[Field N_Spare1]
+StateBits=4101
+Header=Steps type
+DecimalPrecision=0
+MaxLength=1
+ListItem=S|single width - wide enough for one foot only
+ListItem=D|double width - wide enough for both feet
+ListItem=L|ladder
+ListItem=T|toe holes in benching or wall of chamber of shaft
+ListItem=N|no steps provided
+ListItem=Z|other
+
+[Field N_Grid]
+StateBits=13
+Header=Grid reference
+Tooltip=National grid reference
+DecimalPrecision=0
+MaxLength=6
+
+[Field N_Owner]
+StateBits=4101
+Header=Land ownership
+DecimalPrecision=0
+MaxLength=2
+ListItem=PU|Public
+ListItem=PR|Private
+ListItem=Z|Not known
+
+[Field N_Remark]
+StateBits=4
+Header=Remarks regarding the manhole
+DecimalPrecision=0
+
+[Field N_Spare3]
+StateBits=5
+Header=Location Plan Image
+Tooltip=Location Plan Image Filename
+DecimalPrecision=0
+MaxLength=30
+
+[Field N_Spare2]
+StateBits=4101
+Header=Steps material
+DecimalPrecision=0
+MaxLength=2
+ListItem=IR|iron/steel
+ListItem=GI|galvanised iron
+ListItem=SS|stainless steel
+ListItem=PM|metal encapsulated in plastics
+ListItem=PL|plastics
+ListItem=AL|aluminium
+ListItem=Z|other
+
+[Field N_ChamberLength]
+StateBits=133
+Header=Chamber unit length [mm]
+Tooltip=Entrer length of first ring encountered where these vary.
+DecimalPrecision=0
+
+[Field N_Division]
+StateBits=13
+Header=Division/District
+DecimalPrecision=0
+MaxLength=4
+
+[Field N_Spare4]
+StateBits=4101
+Header=Node Type
+DecimalPrecision=0
+MaxLength=2
+ListItem=MH|Manhole
+ListItem=IC|Inspection chamber
+ListItem=LH|Lamphole
+ListItem=OF|Outfall
+ListItem=BR|Major connection without manhole
+ListItem=GY|Gully
+ListItem=CP|Catchpit
+ListItem=SK|Soakaway
+ListItem=OS|Oil separator
+ListItem=OC|Other special chamber
+
+[Field N_Spare5]
+StateBits=5
+Header=Client Defined 3
+DecimalPrecision=0
+MaxLength=20
+
+[Field N_Access]
+StateBits=4
+DecimalPrecision=0
+
+[Field N_YearLayed]
+StateBits=260
+DecimalPrecision=0
+
+[Field SBU_Betreiber]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Baulos]
+DBTable=N_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Subventionen]
+DBTable=N_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_EKostenBrutto]
+DBTable=N_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_Zugaenglichkeit]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Grundwasserabstand]
+DBTable=N_T
+StateBits=132
+DecimalPrecision=0
+
+[Field NC_Number]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field NC_CoverClass]
+StateBits=12
+Header=Class
+DecimalPrecision=0
+
+[Field NC_CoverDia]
+StateBits=133
+Header=Breadth [mm]
+DecimalPrecision=0
+
+[Field NC_CoverMaterial]
+StateBits=4101
+Header=Material
+DecimalPrecision=0
+MaxLength=3
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field NC_CoverSerialNo]
+StateBits=12
+Header=Serial no.
+DecimalPrecision=0
+
+[Field NC_CoverType]
+StateBits=12
+Header=Type
+DecimalPrecision=0
+
+[Field NC_AutoNumber]
+StateBits=132
+Header=ID
+DecimalPrecision=0
+
+[Field NC_CoverShape]
+StateBits=4101
+Header=Shape
+DecimalPrecision=0
+MaxLength=2
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field NC_CoverWidth]
+StateBits=133
+Header=Width [mm]
+DecimalPrecision=0
+
+[Field NC_CoverLength]
+StateBits=133
+DecimalPrecision=0
+
+[Field NC_CoverCondition]
+StateBits=4
+DecimalPrecision=0
+
+[Field NC_CoverCoord_X]
+StateBits=4
+Header=Coord X
+DecimalPrecision=0
+
+[Field NC_CoverCoord_Y]
+StateBits=4
+Header=Coord Y
+DecimalPrecision=0
+
+[Field NE_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field NE_ClockPosition1]
+StateBits=4101
+Header=o' clock
+DecimalPrecision=0
+ListItem=1
+ListItem=2
+ListItem=3
+ListItem=4
+ListItem=5
+ListItem=6
+ListItem=7
+ListItem=8
+ListItem=9
+ListItem=10
+ListItem=11
+ListItem=12
+
+[Field NE_Drop]
+StateBits=132
+Header=Depth to invert [in]
+DecimalPrecision=0
+
+[Field NE_FlowFrom]
+StateBits=5
+Header=From MH
+DecimalPrecision=0
+MaxLength=12
+
+[Field NE_FlowTo]
+StateBits=5
+Header=To MH
+DecimalPrecision=0
+MaxLength=12
+
+[Field NE_Material]
+StateBits=4101
+Header=Material
+DecimalPrecision=0
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field NE_PipeDia]
+StateBits=141
+Header=Breadth [in]
+DecimalPrecision=0
+
+[Field NE_Remark]
+StateBits=12
+Header=Remarks
+DecimalPrecision=0
+
+[Field NE_Type]
+StateBits=4101
+Header=Type
+DecimalPrecision=0
+ListItem=1|out
+ListItem=2|in
+
+[Field NE_Observation]
+StateBits=4
+Header=Condition
+DecimalPrecision=0
+
+[Field NE_AutoNumber]
+StateBits=132
+Header=ID
+DecimalPrecision=0
+
+[Field NE_SectionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field NE_PipeShape]
+StateBits=4101
+Header=Shape
+DecimalPrecision=0
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field NE_PipeWidth]
+StateBits=133
+Header=Width [in]
+DecimalPrecision=0
+
+[Field NE_SectionName]
+StateBits=4
+Header=Name / ID
+DecimalPrecision=0
+
+[Field NF_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field NF_EntryDate]
+StateBits=260
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=NF_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=NF_T
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=NI_T
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_AccessCondition]
+StateBits=12
+Header=Access Condition
+DecimalPrecision=0
+
+[Field NI_Car]
+StateBits=4
+Header=Vehicle
+DecimalPrecision=0
+
+[Field NI_ContractNumber]
+StateBits=5
+Header=Contractor's job reference
+Tooltip=to be provided by the contractor
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_InspectionMethod]
+StateBits=4101
+Header=Inspection method
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|direct inspection (man-entry)
+ListItem=B|CCTV
+ListItem=C|from manhole or inspection chamber only
+
+[Field NI_JobNumber]
+StateBits=5
+Header=Client's job reference
+Tooltip=to be provided by the client
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_Operator]
+StateBits=13
+Header=Operator
+Tooltip=name of person responsible for completing the survey
+DecimalPrecision=0
+MaxLength=12
+
+[Field NI_RapportNumber]
+StateBits=12
+Header=Rapport Number
+DecimalPrecision=0
+
+[Field NI_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field NI_VCRNumber]
+StateBits=4
+Header=VCR Nr.
+DecimalPrecision=0
+
+[Field NI_MediaNumber]
+StateBits=5
+Header=Video volume
+Tooltip=reference number of the volume, film, tape, CD or DVD
+DecimalPrecision=0
+MaxLength=30
+
+[Field NI_Memo]
+StateBits=5
+Header=Remarks regarding the inspection
+DecimalPrecision=0
+MaxLength=50
+
+[Field NI_Present]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Completed]
+StateBits=132
+DecimalPrecision=0
+
+[Field NI_Condition]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field NI_CoverCondition]
+StateBits=4
+Header=Cover Condition
+DecimalPrecision=0
+
+[Field NI_EquipmentType]
+StateBits=4
+Header=Equipment Type
+DecimalPrecision=0
+
+[Field NI_InspectionDate]
+StateBits=261
+Header=Date
+Tooltip=Date of survey
+DecimalPrecision=0
+
+[Field NI_InspName]
+StateBits=4
+Header=Inspection Name
+DecimalPrecision=0
+
+[Field NI_LastModifiedDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field NI_Norm]
+StateBits=13
+Header=Standard
+DecimalPrecision=0
+MaxLength=18
+
+[Field NI_InspectionStartTime]
+StateBits=517
+Header=Time
+Tooltip=Time when survey started
+DecimalPrecision=0
+
+[Field NI_VerticalRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Misc_1]
+StateBits=4109
+Header=Photographic storage
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|still photographs
+ListItem=B|still images held on computer
+ListItem=X|other (state in remarks)
+
+[Field NI_Misc_2]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_AxialRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Remark]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Cleaned]
+StateBits=4101
+Header=Pre-cleaning
+Tooltip=Whether cleaning was carried out prior survey
+DecimalPrecision=0
+ListItem=Y|Yes
+ListItem=N|No
+ListItem=Z|Not known
+
+[Field NI_Misc_3]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_ReasonOfInspection]
+StateBits=4101
+Header=Purpose of inspection
+DecimalPrecision=0
+ListItem=A|Investigation of known defects
+ListItem=B|Investigation of infiltration problems
+ListItem=C|Post completion inspection or repairs or renovations
+ListItem=D|Pre-adoption survey prior to vesting as public sewer
+ListItem=E|Post completion inspection of new sewers
+ListItem=F|Sample survey to determin asset condition
+ListItem=G|Routine inspection of condition
+ListItem=H|Investigation of suspected operational problem
+ListItem=I|Investment planning
+ListItem=J|End of warranty period
+ListItem=X|Other (state in remarks)
+
+[Field NI_WaterDrainage]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Misc_4]
+StateBits=5
+DecimalPrecision=0
+
+[Field NI_Weather]
+StateBits=4109
+Header=Weather
+DecimalPrecision=0
+MaxLength=1
+ListItem=D|no rain or snow
+ListItem=R|rain
+ListItem=S|melting snow or ice
+
+[Field NI_Temperature]
+StateBits=4109
+Header=Temperature
+DecimalPrecision=0
+ListItem=A|above freezing
+ListItem=B|below freezing
+
+[Field NI_Misc_5]
+StateBits=4
+DecimalPrecision=0
+
+[Field NI_Spare1]
+StateBits=4109
+Header=Vertical reference point
+DecimalPrecision=0
+MaxLength=2
+ListItem=I|invert lowest outgoing pipe in the manhole/inspection chamber
+ListItem=C|cover (highest corner of frame or highest point on a circular frame)
+ListItem=OD|national datum
+ListItem=LC|local datum
+ListItem=Z|other
+
+[Field NI_Spare2]
+StateBits=13
+Header=Circumferential reference point
+DecimalPrecision=0
+MaxLength=2
+
+[Field NI_Spare3]
+StateBits=5
+DecimalPrecision=0
+
+[Field NI_Spare4]
+StateBits=4101
+Header=Flow control
+Tooltip=measures taken to deal with flow during inspection
+DecimalPrecision=0
+MaxLength=2
+ListItem=N|no flow control
+ListItem=BL|flows blocked upstream
+ListItem=PB|flows partially blocked upstream
+ListItem=X|other (state in comments)
+
+[Field NI_Spare5]
+StateBits=4109
+Header=Video image storage
+DecimalPrecision=0
+MaxLength=3
+ListItem=VHS|VHS video cassette tape
+ListItem=CD|video CD
+ListItem=DVD|video DVD
+ListItem=X|other (state in remarks)
+
+[Field NI_Spare6]
+StateBits=4109
+Header=Video location system
+Tooltip=Method of recording position on type, CD or DVD
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|recording time in h, min and sec sience start of tape
+ListItem=B|machine dependant numeric counter
+ListItem=X|other (state in remarks)
+
+[Field NI_MediaNumber2]
+StateBits=5
+Header=Photo volume
+Tooltip=Reference number of the film or CD/DVD
+DecimalPrecision=0
+MaxLength=10
+
+[Field NI_Spare7]
+StateBits=5
+Header=Client def 1
+DecimalPrecision=0
+MaxLength=20
+
+[Field NI_Spare8]
+StateBits=5
+Header=Client def 2
+DecimalPrecision=0
+MaxLength=20
+
+[Field NI_Spare9]
+StateBits=5
+Header=Client def 3
+DecimalPrecision=0
+MaxLength=20
+
+[Field SBU_Auswerteperson]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Auswertedatum]
+DBTable=NI_T
+StateBits=20
+DecimalPrecision=0
+
+[Field SBU_Oke]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_KlassifiziertAm]
+DBTable=NI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field NO_Counter]
+StateBits=141
+Header=No.
+DecimalPrecision=0
+
+[Field NO_OpCode]
+StateBits=13
+Header=OP
+DecimalPrecision=0
+MaxLength=3
+
+[Field NO_RehabFlag]
+StateBits=134
+DecimalPrecision=0
+
+[Field NO_ClockPosition1]
+StateBits=12
+Header=from
+DecimalPrecision=0
+
+[Field NO_ClockPosition2]
+StateBits=12
+Header=to
+DecimalPrecision=0
+
+[Field NO_Code]
+Header=Code
+DecimalPrecision=0
+
+[Field NO_Observation]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field NO_Rate]
+StateBits=64
+Header=Rate
+DecimalPrecision=2
+
+[Field NO_RateText]
+Header=Rate Text
+DecimalPrecision=0
+
+[Field NO_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field NO_Unit1]
+StateBits=12
+Header=Unit
+DecimalPrecision=0
+
+[Field NO_Value1]
+StateBits=76
+Header=Value
+DecimalPrecision=2
+
+[Field NO_Class1]
+StateBits=4
+Header=C1
+DecimalPrecision=0
+
+[Field NO_Class2]
+StateBits=4
+Header=C2
+DecimalPrecision=0
+
+[Field NO_Quant1]
+StateBits=4
+Header=Q1
+DecimalPrecision=0
+
+[Field NO_Quant2]
+StateBits=4
+Header=Q2
+DecimalPrecision=0
+
+[Field NO_Text]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field NO_FotoFlag1]
+StateBits=37
+Header=Foto
+DecimalPrecision=0
+
+[Field NO_ClipFlag1]
+StateBits=37
+Header=Clip
+DecimalPrecision=0
+
+[Field NO_VideoCounter]
+StateBits=5
+Header=VCR
+DecimalPrecision=0
+MaxLength=8
+
+[Field NO_MPEGPosition]
+StateBits=5
+Header=MPEG
+DecimalPrecision=0
+
+[Field NO_VerticalPos]
+StateBits=68
+DecimalPrecision=2
+
+[Field NO_Position]
+StateBits=69
+Header=Pos
+DecimalPrecision=2
+
+[Field SBU_MaxSKe]
+DBTable=NO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_MaxSZe]
+DBTable=NO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field P_Name]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_Number]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_InCharge]
+StateBits=4
+DecimalPrecision=0
+
+[Field P_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field R_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field R_RehaName]
+StateBits=4
+Header=Name
+DecimalPrecision=0
+
+[Field R_EntryDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field R_RehaMethod]
+StateBits=4
+Header=Method
+DecimalPrecision=0
+ListItem=Section-Relining
+ListItem=Segment-Relining
+ListItem=Connection properly closing
+ListItem=Manually repaired
+ListItem=Manhole invert: VA-Halbschale eingesetzt
+ListItem=Manhole invert: verfugt
+ListItem=Steps inserted
+ListItem=Section-Relining
+ListItem=Crack injection
+ListItem=Injection in connection
+ListItem=Boden/Hohlrauminjektion
+ListItem=Manhole invert: Berme erneuert
+ListItem=Rohrrueckverformung
+ListItem=Anschleuderverfahren
+ListItem=Auspreﬂverfahren
+ListItem=Aufspritzverfahren (trocken)
+ListItem=Injektion von Anschl¸ssen (Packer)
+ListItem=Injektion von Anschl¸ssen (Schalungsmanschette)
+ListItem=Wickelrohr-Relining
+ListItem=Schlauch-Relining
+ListItem=Aufspritzverfahren (na?
+ListItem=Verdr‰ngungsverfahren
+ListItem=Stutzen fachgerecht herstellen
+ListItem=Kanalende abgemauert
+ListItem=Ersetzen einzelner Rohre
+ListItem=Einsetzen eines Paﬂst¸ckes mit Manschetten
+ListItem=Ersetzen einzelner Rohre
+ListItem=Schachtwandung: verfugt+Klinker eingesetzt
+ListItem=Schachtabdeckung ersetzen
+ListItem=Schachabdeckung einfassen
+ListItem=Schachtrahmen instandsetzen
+ListItem=Abdichtung einer Rohrverbindung
+ListItem=Beseitigung von Abfluﬂhindernissen
+ListItem=gelenkiger Anschlu?an Schacht hergestellt
+ListItem=Einsetzen eines Paﬂst¸ckes mit Manschetten
+ListItem=gelenkiger Anschlu?an Schacht hergestellt
+ListItem=Schachtsohle: verfugt+plattiert
+ListItem=Abdichtung durch Floating-Verfahren
+ListItem=Schachtsohle: STZ-Halbschale eingesetzt
+ListItem=Schmutzfaenger ersetzen/einbauen
+ListItem=Rohranschlu?im Schacht  erneuern (ausbessern)
+ListItem=Schachtwandung: verfugt
+ListItem=Schachtsohle: teilweise verfugt
+ListItem=Schachtwandung: teilweise verfugt
+ListItem=Partielles Kurzrohr-Relining
+ListItem=Spannringe
+ListItem=Schachtsohle erneuert (komplett)
+ListItem=Neubau der gesamten Haltung
+ListItem=Schachtwandung: verputzt
+ListItem=Schachtkonus ersetzen
+ListItem=Schachtwandung: teilweise verputzt
+ListItem=Leitung verd‰mmert und abgemauert
+ListItem=Entfernung der Haltung
+ListItem=Schacht verf¸llt
+ListItem=Haltung abgemauert
+ListItem=Schachtabdeckung ausrichten, neu setzen
+ListItem=Hutprofil f¸r Zul‰ufe
+ListItem=Schachtauskleidung in Edelstahl
+ListItem=Steigeisen entfernen
+ListItem=Schacht entfernt
+ListItem=Schachtsohle: Inliner-Auskleidung
+ListItem=Schachtsohle: PE-Platten-Auskleidung
+ListItem=Schachtsohle: PE-Platten verschweiﬂt
+ListItem=Schachtwandung: Hochdruckreinigung
+ListItem=Schmutzf‰nger entfernen
+
+[Field R_RehaMatGroup]
+StateBits=4
+Header=Material group
+DecimalPrecision=0
+ListItem=1|Silikatbasis
+ListItem=2|Wasserglasbasis
+ListItem=3|Polyurethanharzbasis
+ListItem=4|Acrylatbasis
+ListItem=5|Epoxidharzbasis
+ListItem=6|Methacrylatbasis
+ListItem=7|Polyethylen
+ListItem=8|Polyurethan
+ListItem=9|Zementbasis
+ListItem=29|Steigeisen
+ListItem=49|Steinzeug
+ListItem=69|PVC - Polyvvenylchlorid
+ListItem=109|Schachtabdeckung
+ListItem=129|Polypropylen
+ListItem=149|Hindernisbeseitigung
+ListItem=150|Edelstahl
+ListItem=151|Kanalobjekt entfernt
+ListItem=152|Schmutzf‰nger
+
+[Field R_RehaMaterial]
+StateBits=4
+Header=Material
+DecimalPrecision=0
+
+[Field R_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field R_Status]
+StateBits=4
+Header=Status
+DecimalPrecision=0
+
+[Field R_StatusDate]
+StateBits=260
+Header=Status date
+DecimalPrecision=0
+
+[Field R_WarrantyPeriod]
+StateBits=132
+Header=Guarantee
+DecimalPrecision=0
+
+[Field S_Counter]
+StateBits=1
+Header=No.
+DecimalPrecision=0
+
+[Field S_Status1]
+StateBits=134
+DecimalPrecision=0
+
+[Field S_Status2]
+StateBits=134
+DecimalPrecision=0
+
+[Field S_Sectionlength]
+StateBits=68
+Header=Total length [m]
+DecimalPrecision=2
+
+[Field S_SectionlengthFeet]
+StateBits=68
+Header=FT
+DecimalPrecision=2
+
+[Field SBU_Betreiber]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Baulos]
+DBTable=S_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Subventionen]
+DBTable=S_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_EKostenBrutto]
+DBTable=S_T
+StateBits=68
+DecimalPrecision=2
+
+[Field SBU_Zugaenglichkeit]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Grundwasserabstand]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field S_SectionFlow]
+StateBits=133
+Header=Flow
+DecimalPrecision=0
+
+[Field S_AutoNumber]
+StateBits=132
+Header=Nr.
+DecimalPrecision=0
+
+[Field S_Catchment]
+StateBits=13
+Header=Catchment
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_City]
+StateBits=13
+Header=Place
+DecimalPrecision=0
+MaxLength=20
+
+[Field S_Division]
+StateBits=13
+Header=Division
+DecimalPrecision=0
+MaxLength=1
+
+[Field S_EndArea]
+StateBits=4
+Header=Area
+DecimalPrecision=0
+
+[Field S_EndBlock]
+StateBits=12
+Header=Block
+DecimalPrecision=0
+
+[Field S_EndMap]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_EndNode]
+StateBits=5
+Header=Downstream MH
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_EndStreet]
+StateBits=5
+Header=Road 2
+DecimalPrecision=0
+
+[Field S_InclinationClass]
+StateBits=12
+Header=Inclination profile
+DecimalPrecision=0
+
+[Field S_LastModifiedDate]
+StateBits=261
+Header=Date
+DecimalPrecision=0
+
+[Field S_Lining]
+StateBits=4101
+Header=Lining
+DecimalPrecision=0
+MaxLength=3
+ListItem=AK|Alkathene
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement
+ListItem=SI|Spun (grey) iron
+ListItem=CO|Concrete
+ListItem=CSB|Concrete segments (bolted)
+ListItem=CSU|Concrete segments (unbolted)
+ListItem=CC|Concrete box culvert
+ListItem=DI|Ductil iron
+ListItem=GRC|Glass reinforced cement
+ListItem=GRP|Glass reinforced plastic
+ListItem=PL|Plastic
+ListItem=PSC|Plastic/steel composite
+ListItem=PVC|Polyvinyl chloride (PVC)
+ListItem=PE|Polyethylene (PE)
+ListItem=RPM|Reinforced plastic matrix
+ListItem=RL|Resin
+ListItem=IS|Soft inversion type liner
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PP|Polypropylene (PP)
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=XXX|Other (state in comments)
+ListItem=ZZZ|Not known
+
+[Field S_LiningMethod]
+StateBits=4
+Header=Lining Type
+DecimalPrecision=0
+
+[Field S_Location]
+StateBits=4109
+Header=Location code
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Main road - urban
+ListItem=B|Main road - suburban/rural
+ListItem=C|Light road
+ListItem=D|Footpath or verge
+ListItem=E|Fields
+ListItem=F|Gardens
+ListItem=G|Woodland
+ListItem=X|Difficult access
+
+[Field S_Owner]
+StateBits=4
+Header=Owner
+DecimalPrecision=0
+
+[Field S_PipeDia]
+StateBits=4237
+Header=Dia/height
+DecimalPrecision=0
+ListItem=80
+ListItem=100
+ListItem=150
+ListItem=200
+ListItem=225
+ListItem=250
+ListItem=300
+ListItem=350
+ListItem=400
+ListItem=450
+ListItem=500
+ListItem=600
+ListItem=700
+ListItem=800
+ListItem=900
+ListItem=1000
+ListItem=1100
+ListItem=1200
+ListItem=1250
+ListItem=1300
+
+[Field S_Pipelength]
+StateBits=4173
+Header=Pipe length [m]
+DecimalPrecision=2
+ListItem=1
+ListItem=1.5
+ListItem=1.8
+ListItem=2
+ListItem=2.5
+ListItem=3
+ListItem=3.5
+ListItem=4
+ListItem=4.5
+ListItem=5
+ListItem=6
+ListItem=7
+ListItem=10
+ListItem=14
+
+[Field S_PipeMaterial]
+StateBits=4109
+Header=Material
+DecimalPrecision=0
+MaxLength=3
+ListItem=AK|Alkathene
+ListItem=AC|Asbestos cement
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=SI|Spun (grey) iron
+ListItem=CO|Concrete
+ListItem=CSB|Concrete segments (bolted)
+ListItem=CSU|Concrete segments (unbolted)
+ListItem=CC|Concrete box culvert
+ListItem=DI|Ductil iron
+ListItem=GRC|Glass reinforced cement
+ListItem=GRP|Glass reinforced plastic
+ListItem=PSC|Plastic/steel composite
+ListItem=PVC|Polyvinyl chloride (PVC)
+ListItem=PE|Polyethylene (PE)
+ListItem=RPM|Reinforced plastic matrix
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PP|Polypropylene (PP)
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=XXX|Other (state in Comments)
+ListItem=ZZZ|Not known
+
+[Field S_PipeShape]
+StateBits=4109
+Header=Pipe shape
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Arched (with flat bottom)
+ListItem=B|Barrel
+ListItem=C|Circular
+ListItem=E|Egg shaped
+ListItem=H|Horseshoe
+ListItem=O|Oval
+ListItem=R|Rectangular
+ListItem=S|Square
+ListItem=T|Trapeziodal
+ListItem=U|U-shaped with flat top
+ListItem=X|Other (state in Comments)
+
+[Field S_PipeWidth]
+StateBits=4237
+Header=Width [mm]
+DecimalPrecision=0
+ListItem=80
+ListItem=100
+ListItem=125
+ListItem=150
+ListItem=225
+ListItem=300
+
+[Field S_PLR]
+StateBits=5
+Header=PLR suffix
+DefaultValue=X
+DecimalPrecision=0
+MaxLength=1
+ListItem=X
+ListItem=Y
+ListItem=Z
+
+[Field S_SectionDef]
+StateBits=134
+Header=Category
+DecimalPrecision=0
+
+[Field S_Sectionname]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_SectionUse]
+StateBits=4109
+Header=Use
+DecimalPrecision=0
+MaxLength=1
+ListItem=C|Combined
+ListItem=F|Foul
+ListItem=S|Surface water
+ListItem=T|Trade effluent
+ListItem=W|WaterCourse (culverted)
+ListItem=X|Other (state in comments)
+ListItem=Z|Not know
+
+[Field S_ServiceGrade]
+StateBits=4
+Header=Service Grade
+DecimalPrecision=0
+
+[Field S_Situation]
+StateBits=13
+Header=Location
+DecimalPrecision=0
+ListItem=A|Main road - urban
+ListItem=B|Main road - suburban/rural
+ListItem=C|Light road
+ListItem=D|Footpath or verge
+ListItem=E|Fields
+ListItem=F|Gardens
+ListItem=G|Woodland
+ListItem=X|Difficult access
+
+[Field S_StartArea]
+StateBits=1
+Header=District
+DecimalPrecision=0
+
+[Field S_StartBlock]
+StateBits=12
+Header=Block
+DecimalPrecision=0
+
+[Field S_StartMap]
+StateBits=5
+DecimalPrecision=0
+
+[Field S_StartNode]
+StateBits=5
+Header=Upstream MH
+DecimalPrecision=0
+MaxLength=10
+
+[Field S_StartStreet]
+StateBits=13
+Header=Road
+DecimalPrecision=0
+MaxLength=30
+
+[Field S_StructGrade]
+StateBits=4
+Header=Struct. Grade
+DecimalPrecision=0
+
+[Field S_Type]
+StateBits=12
+Header=Street 1
+DecimalPrecision=0
+ListItem=waste
+ListItem=combined wastewater
+ListItem=storm water
+ListItem=industrial waste water
+ListItem=stormwater overflow
+
+[Field S_WaterUse]
+StateBits=4
+Header=Use
+DecimalPrecision=0
+
+[Field S_YearLayed]
+StateBits=133
+Header=Year laid
+DecimalPrecision=0
+
+[Field S_Zone]
+StateBits=5
+Header=District
+DecimalPrecision=0
+
+[Field S_State]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Page]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Ground]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_CreationDate]
+StateBits=260
+Header=DATE
+DecimalPrecision=0
+
+[Field S_HNDBLK]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_INSP]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Memo]
+StateBits=4
+Header=Comments regarding the section
+DecimalPrecision=0
+
+[Field S_PLAT]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LocationDetails]
+StateBits=8205
+Header=Location details
+DecimalPrecision=0
+MaxLength=48
+
+[Field S_PipeEnd_Y]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_PipeHeight]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_PipeUnit]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_InspectedLength]
+StateBits=132
+Header=Inspected Lenght
+DecimalPrecision=0
+
+[Field S_PipeStart_Y]
+StateBits=68
+DecimalPrecision=2
+
+[Field S_Rate]
+StateBits=133
+DecimalPrecision=0
+
+[Field S_SectionType]
+StateBits=4109
+Header=Sewer category
+DecimalPrecision=0
+MaxLength=1
+ListItem=A
+ListItem=B
+ListItem=C
+ListItem=Z
+
+[Field S_Sectionnumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DIST]
+StateBits=4
+Header=District
+DecimalPrecision=0
+
+[Field S_SectionInUse]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Spare1]
+StateBits=13
+Header=District
+DecimalPrecision=0
+MaxLength=3
+
+[Field S_YearLayedText]
+StateBits=13
+Header=Year laid
+DecimalPrecision=0
+MaxLength=4
+
+[Field S_Spare3]
+StateBits=69
+Header=Upstream cover [m]
+DecimalPrecision=2
+MaxLength=6
+
+[Field S_Spare2]
+StateBits=5
+Header=Upstream depth [m]
+DecimalPrecision=0
+MaxLength=5
+
+[Field S_StartInvertAlt]
+StateBits=69
+Header=Upstream invert [m]
+DecimalPrecision=2
+
+[Field S_Spare4]
+StateBits=69
+Header=Downstream depth [m]
+DecimalPrecision=2
+MaxLength=5
+
+[Field S_Spare5]
+StateBits=69
+Header=Downstream cover [m]
+DecimalPrecision=2
+
+[Field S_EndInvertAlt]
+StateBits=69
+Header=Downstream invert [m]
+DecimalPrecision=2
+
+[Field S_EndGrid]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SpecOrder]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_LastModifiedTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field S_Units]
+StateBits=132
+DecimalPrecision=0
+
+[Field S_DamageClass]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_PipeSegmentLength]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_NumSockets]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_MandatoryFieldsValidated]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_StartNodeCoord_X]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartNodeCoord_Y]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartNodeCoord_Z]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_X]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_Y]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndNodeCoord_Z]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StartDepthToInvert]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_EndDepthToInvert]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_StrangNumber]
+StateBits=128
+DecimalPrecision=0
+
+[Field S_WallThickness]
+StateBits=64
+DecimalPrecision=2
+
+[Field S_Age]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StartNodeType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_EndNodeType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Suburb]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StartGrid]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Reference]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_AssetNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LineNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionPurpose]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_System]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SystemCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionStatus]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeClass]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Profile]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Depth]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_LocationCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_OwnerReference]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_ProjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SectionSurface3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow4]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow5]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow6]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterFlow7]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Population]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_AverageFlow]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SurfaceWater]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatObject]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatObjectNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatLateralName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatStartPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Documentation]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Medianumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TAP]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TAPUSE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SYSTEMTYPE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SYSTEMUSE]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_Internals]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_InvertInternals]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeInternalProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeFlowLevelProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DrainSystem]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_TreatmentPlant]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PumpingStation]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_WaterProtectionZone]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_FloodingArea]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DocumentName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PollutionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo1]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo2]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo3]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo4]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo5]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo6]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo7]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_MHInfo8]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_FromManholeInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_ToManholeInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_PipeExternalProt]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatClockPosition]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_SatConnectionType]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangStartNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_StrangEndNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DigiKanSectionName]
+StateBits=4
+DecimalPrecision=0
+
+[Field S_DigiKanSectionId]
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_FunktionHierarchisch]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Lagebestimmung]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Wandrauhigkeit]
+DBTable=S_T
+StateBits=132
+DecimalPrecision=0
+
+[Field S_LastModifiedDateTime]
+StateBits=20
+DecimalPrecision=0
+
+[Field SF_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field SF_EntryDate]
+StateBits=260
+Header=Date
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=SF_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=SF_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SF_Contractor_ID]
+Header=Contractor
+DecimalPrecision=0
+
+[Field SF_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field SBU_Status]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Datengrundlage]
+DBTable=SI_T
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Auswerteperson]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_Auswertedatum]
+DBTable=SI_T
+StateBits=20
+DecimalPrecision=0
+
+[Field SBU_Oke]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_KlassifiziertAm]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InspName]
+StateBits=5
+Header=Inspection name
+DecimalPrecision=0
+
+[Field SI_Camera]
+StateBits=8205
+Header=Camera
+DecimalPrecision=0
+ListItem=camera 1
+ListItem=camera 2
+
+[Field SI_CameraPreset]
+StateBits=69
+Header=Preset
+DecimalPrecision=2
+
+[Field SI_Cleaned]
+StateBits=4101
+Header=Pre-cleaned
+DecimalPrecision=0
+MaxLength=1
+ListItem=Y|yes
+ListItem=N|no
+ListItem=Z|unknown
+
+[Field SI_Counter]
+StateBits=140
+DecimalPrecision=0
+
+[Field SI_InspectedLength]
+StateBits=68
+Header=Inspected length [m]
+DecimalPrecision=2
+
+[Field SI_InspMethod]
+StateBits=5
+DecimalPrecision=0
+
+[Field SI_JobNumber]
+StateBits=13
+Header=Job no.
+DecimalPrecision=0
+MaxLength=10
+
+[Field SI_Level]
+StateBits=5
+Header=Grade
+DecimalPrecision=0
+
+[Field SI_MediaLocation]
+StateBits=5
+Header=Media location
+DecimalPrecision=0
+
+[Field SI_MediaNumber1]
+StateBits=13
+Header=Tape no.
+DecimalPrecision=0
+
+[Field SI_MediaNumber2]
+StateBits=5
+Header=Media No.2
+DecimalPrecision=0
+
+[Field SI_Memo]
+StateBits=8196
+Header=Comments regarding the inspection
+DecimalPrecision=0
+MaxLength=50
+ListItem=No Defects Detected
+
+[Field SI_Operator]
+StateBits=8205
+Header=Operator
+DecimalPrecision=0
+MaxLength=12
+ListItem=PAUL
+
+[Field SI_Present]
+StateBits=5
+Header=Present
+DecimalPrecision=0
+
+[Field SI_ReasonOfInspection]
+StateBits=4108
+Header=Purpose
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Specific problems on sewer related to structural or service condition defects
+ListItem=B|Specific problems on sewer system related to infiltration
+ListItem=C|Assessment of complete remedial or renovation works
+ListItem=D|Pre-adoption - normally new sewers for adoption (SfA)
+ListItem=E|Pre-acceptance - new sewer (direct contract) constructed by sewerage undertakers)
+ListItem=F|Sample survey to determin asset condition
+ListItem=G|Assoziated with future capital scheme including Drainage Area Planning
+ListItem=H|Resurvey for any reason
+ListItem=X|Other (state in comments)
+ListItem=Z|Not known
+
+[Field SI_Spare1]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare2]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare3]
+StateBits=12
+Header=Spare
+DecimalPrecision=0
+
+[Field SI_Spare4]
+StateBits=12
+Header=RESERVE
+DecimalPrecision=0
+
+[Field SI_Status]
+StateBits=132
+Header=Status
+DecimalPrecision=0
+
+[Field SI_VCRNumber1]
+StateBits=13
+Header=Tape number
+DecimalPrecision=0
+MaxLength=5
+
+[Field SI_VCRNumber2]
+StateBits=5
+Header=Tape nr. 2
+DecimalPrecision=0
+
+[Field SI_Vehicle]
+StateBits=8205
+Header=Vehicle
+DecimalPrecision=0
+
+[Field SI_Weather]
+StateBits=4101
+Header=Weather
+DecimalPrecision=0
+MaxLength=1
+ListItem=1|Dry
+ListItem=2|Heavy rain
+ListItem=3|Light rain
+ListItem=4|Showers
+ListItem=5|Snow
+
+[Field SI_WorkNumber]
+StateBits=1
+DecimalPrecision=0
+
+[Field SI_Time]
+StateBits=516
+DecimalPrecision=0
+
+[Field SI_TemperatureFlag]
+StateBits=38
+DecimalPrecision=0
+
+[Field SI_Verified]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_ServiceRate]
+StateBits=68
+DecimalPrecision=2
+
+[Field SI_Date]
+StateBits=261
+Header=Date
+DecimalPrecision=0
+
+[Field SI_InspectionStartTime]
+StateBits=517
+Header=Start time
+DefaultValue=#SYS_TIMEONLY#
+DecimalPrecision=0
+
+[Field SI_Preset]
+StateBits=69
+Header=Preset
+DecimalPrecision=2
+
+[Field SI_Spare0]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspDate]
+StateBits=261
+Header=Date
+DefaultValue=#SYS_DATEONLY#
+DecimalPrecision=0
+
+[Field SI_InspectionEndTime]
+StateBits=517
+Header=End Time
+DecimalPrecision=0
+
+[Field SI_Save1]
+StateBits=5
+DecimalPrecision=0
+
+[Field SI_ContractNumber]
+StateBits=13
+Header=Contract no.
+DecimalPrecision=0
+MaxLength=8
+
+[Field SI_QMR]
+StateBits=133
+Header=QMR
+DecimalPrecision=0
+
+[Field SI_QSR]
+StateBits=133
+Header=QSR
+DecimalPrecision=0
+
+[Field SI_SPR]
+StateBits=133
+Header=SPR
+DecimalPrecision=0
+
+[Field SI_MPR]
+StateBits=133
+Header=MPR
+DecimalPrecision=0
+
+[Field SI_MPRI]
+StateBits=133
+Header=MPRI
+DecimalPrecision=0
+
+[Field SI_OPR]
+StateBits=133
+Header=OPR
+DecimalPrecision=0
+
+[Field SI_OPRI]
+StateBits=133
+Header=OPRI
+DecimalPrecision=0
+
+[Field SI_InspectedLengthFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SI_OrderYear]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_OrderType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspectionDir]
+StateBits=4101
+Header=Inspection dir.
+DecimalPrecision=0
+ListItem=U|{S_EndNode} (U/S) {S_StartNode}
+ListItem=D|{S_StartNode} (D/S) {S_EndNode}
+
+[Field SI_STRTOTAL]
+StateBits=68
+Header=STR total
+DecimalPrecision=2
+
+[Field SI_STR_NO_DEF]
+StateBits=68
+Header=STR no def
+DecimalPrecision=2
+
+[Field SI_STRPEAK]
+StateBits=68
+Header=STR peak
+DecimalPrecision=2
+
+[Field SI_STRMEAN]
+StateBits=68
+Header=STR mean
+DecimalPrecision=2
+
+[Field SI_STRGRADE]
+StateBits=4
+Header=STR grade
+DecimalPrecision=0
+
+[Field SI_SERTOTAL]
+StateBits=68
+Header=SER total
+DecimalPrecision=2
+
+[Field SI_SER_NO_DEF]
+StateBits=68
+Header=SER no def
+DecimalPrecision=2
+
+[Field SI_SERPEAK]
+StateBits=68
+Header=SER peak
+DecimalPrecision=2
+
+[Field SI_SERMEAN]
+StateBits=68
+Header=SER mean
+DecimalPrecision=2
+
+[Field SI_SERGRADE]
+StateBits=4
+Header=SER grade
+DecimalPrecision=0
+
+[Field SI_Mandantor_ID]
+DecimalPrecision=0
+
+[Field SI_Client_ID]
+DecimalPrecision=0
+
+[Field SI_Manager_ID]
+DecimalPrecision=0
+
+[Field SI_Contractor_ID]
+DecimalPrecision=0
+
+[Field SI_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LastModifiedDate]
+StateBits=256
+DecimalPrecision=0
+
+[Field SI_LastModifiedTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field SI_Completed]
+StateBits=128
+DecimalPrecision=0
+
+[Field SI_Exported]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_fromManholeProtocol]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_toManholeProtocol]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InclinationFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_InclinationFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_PressureTestFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_PressureTestFile]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_ProfileFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_ProfileFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_ScanExFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_ScanExFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_TemperatureFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_RadioActivityFlag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_RadioActivityFileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature1Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature1FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature2Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature2FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_Feature3Flag]
+StateBits=36
+DecimalPrecision=0
+
+[Field SI_Feature3FileName]
+StateBits=32
+DecimalPrecision=0
+
+[Field SI_GroutTotalUsed]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_GroutTime]
+StateBits=512
+DecimalPrecision=0
+
+[Field SI_GroutMaxTestPSI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_GroutGPMUsed]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_InclScale_Y]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_InclScale_X]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_DateClean]
+StateBits=256
+DecimalPrecision=0
+
+[Field SI_StructRate]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_MaterialChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_ProfileChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LiningChange]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_DimChecked]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_MatChecked]
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_IsFlushed]
+StateBits=128
+DecimalPrecision=0
+
+[Field SI_OrigInspectedLength]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_PRI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Grade1]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Grade2]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_SPRI]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_STRAVERAGE]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_SERAVERAGE]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_II]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Material]
+DecimalPrecision=0
+MaxLength=2
+
+[Field SI_TotalStructGrade]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalMaintGrade]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalRate]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_TotalLevel]
+StateBits=64
+DecimalPrecision=2
+
+[Field SI_Temperature]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Norm]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare6]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_CatName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspTemplate]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Visa]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Save4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Customer]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DrawingNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_GroutType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_GroutMixture]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InclComment]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ProjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DebrisPreClean]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DebrisAtInsp]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AddInfo]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Consider]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AddInfo2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Documentation]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_TapeLocation]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DASID]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ScanExParam5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatObjectName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatLateralName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatStartPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatEndPoint]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_SatClockPosition]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrderName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ConstructionNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RegionNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Suburb]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_EquipmentType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ImportFile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigSectionName]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigStartNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OrigEndNode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_ProtocolFile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspState]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InspComplete]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_AxialRef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_WaterDrainage]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare7]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare8]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare9]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare10]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare11]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Spare12]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RapportNumber]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_RapportType]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Age]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_InUse]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_Dimension]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_DistributionMedia]
+StateBits=4
+DecimalPrecision=0
+
+[Field SI_OriginalCodingSystem]
+StateBits=4
+DecimalPrecision=0
+
+[Field SBU_Startbauwerk]
+DBTable=SI_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SI_LastModifiedDateTime]
+StateBits=20
+DecimalPrecision=0
+
+[Field SO_Counter]
+StateBits=1
+Header=No.
+DecimalPrecision=0
+
+[Field SO_Position]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PositionFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PhotoFlag1]
+StateBits=37
+Header=Photo 1
+DecimalPrecision=0
+
+[Field SO_ClipFlag1]
+StateBits=37
+Header=Clip
+DecimalPrecision=0
+
+[Field SO_RehabFlag]
+StateBits=2
+Header=Rehab
+DecimalPrecision=0
+
+[Field SBU_MaxSKe]
+DBTable=SO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SBU_MaxSZe]
+DBTable=SO_T
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_Code]
+StateBits=5
+Header=Cont. defect
+DecimalPrecision=0
+
+[Field SO_ContinousDefect]
+StateBits=5
+Header=CD
+DecimalPrecision=0
+
+[Field SO_Level]
+StateBits=12
+Header=Grade
+DecimalPrecision=0
+
+[Field SO_MaterialNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_MPEGPosition]
+StateBits=13
+Header=MPEG
+DecimalPrecision=0
+
+[Field SO_OpCode]
+StateBits=5
+Header=OC
+DecimalPrecision=0
+
+[Field SO_Passed]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_PhotoFlag2]
+StateBits=38
+Header=Photo 2
+DecimalPrecision=0
+
+[Field SO_Photonumber1]
+StateBits=5
+Header=Photo No. 1
+DecimalPrecision=0
+
+[Field SO_Photonumber2]
+StateBits=5
+Header=Photo No. 2
+DecimalPrecision=0
+
+[Field SO_PipeDiaNew]
+StateBits=68
+Header=ddddd
+DecimalPrecision=2
+
+[Field SO_Rate]
+StateBits=133
+Header=Grade
+DecimalPrecision=0
+ListItem=1
+ListItem=2
+ListItem=3
+ListItem=4
+ListItem=5
+
+[Field SO_Remark]
+StateBits=4
+Header=Remark
+DecimalPrecision=0
+
+[Field SO_SatFlag]
+StateBits=133
+Header=Sat
+DecimalPrecision=0
+
+[Field SO_StructGrade]
+StateBits=68
+Header=Grade
+DecimalPrecision=2
+
+[Field SO_Text]
+StateBits=4
+Header=Observation
+DecimalPrecision=0
+
+[Field SO_VCRPosition]
+StateBits=5
+Header=VCR
+DecimalPrecision=0
+
+[Field SO_Value1]
+StateBits=133
+Header=Value
+DecimalPrecision=0
+
+[Field SO_PhotoFilename1]
+StateBits=32
+Header=Photo # 1
+DecimalPrecision=0
+
+[Field SO_PhotoFilename2]
+StateBits=32
+Header=Photo # 2
+DecimalPrecision=0
+
+[Field SO_ToGoMeter]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_SBLObject]
+StateBits=5
+Header=DS
+DecimalPrecision=0
+
+[Field SO_MaintGrade]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_DTYPE]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_ClockPosition1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClockPosition2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Unit1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Value2]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Unit2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Width_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Dim1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Dim2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Material_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Lining_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Joint]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Char1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Char2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_OpenContDef]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_LiningMaterialNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_USER]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ToGoFeet]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_ObservAddOn1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_AutoNumber]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_Date]
+StateBits=260
+DecimalPrecision=0
+
+[Field SO_Symbol]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_SBLControlText]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_SBLProfile]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_SBLCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClipNumber1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ExportCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ExportCode2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Value3]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Unit3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ReverseInspectionFlag]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_CodeDef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_TypeDef]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_PipeShapeNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_PipelengthNew]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PipeWidthNew]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_LiningMethodNew]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_WaterLevel]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_BSTCode]
+StateBits=134
+DecimalPrecision=0
+
+[Field SO_GroutPSI]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_PressTestValue]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_GroutValue]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Diameter]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Material]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant1Unit]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Quant2Unit]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Client1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Client2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Other1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Other2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_X]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_Y]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Start_Z]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_X]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_Y]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_End_Z]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_LocalCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Precipitation_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Shape_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Height_Change]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_DamageClass]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_ObservCode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ObservAddOn2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Rehab_Method]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ScanExGraphicId]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_ScanExFlag1]
+StateBits=37
+Header=Scan
+DecimalPrecision=0
+
+[Field SO_PanoramoFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_MaalBSTKode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_KomponentKode]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_RppFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_DeforFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_JointFlag1]
+StateBits=38
+DecimalPrecision=0
+
+[Field SO_OpCode_ISY]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_OpCode_EN]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Text_ISY]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Text_EN]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Level_ISY]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_Level_EN]
+StateBits=68
+DecimalPrecision=2
+
+[Field SO_DamageCounter]
+StateBits=132
+DecimalPrecision=0
+
+[Field SO_Char3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare1]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare2]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare3]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare4]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare5]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare6]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare7]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare8]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare9]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_Spare10]
+StateBits=4
+DecimalPrecision=0
+
+[Field SO_ClipFileName1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_ScanExFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_PanoramoFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_RppFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_DeforFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Field SO_JointFilename1]
+StateBits=36
+DecimalPrecision=0
+
+[Grid grid_o]
+Field=SO_Counter;2
+Field=SO_Position;2
+Field=SO_ContinousDefect;2
+Field=SO_OpCode;2
+Field=SO_Text;2
+Field=SO_Rate;3
+Field=SO_Remark;3
+Field=SO_PhotoFlag1;2
+Field=SO_ClipFlag1;2
+Field=SO_SatFlag;2
+Field=SO_VCRPosition;3
+Field=SO_MPEGPosition;2
+
+[Grid grid_s]
+Field=S_Counter;2
+Field=S_Status1;2
+Field=S_Status2;2
+Field=S_Sectionlength;2
+Field=S_StartStreet;2
+Field=S_StartNode;2
+Field=S_SectionFlow;2
+Field=S_EndNode;2
+Field=S_PipeDia;2
+
+[Grid grid_s_detail(0)]
+Field=S_Counter;2
+Field=S_City;3
+Field=S_StartStreet;3
+Field=S_Catchment;3
+Field=S_Division;3
+Field=S_Spare1;3
+Field=S_SectionUse;3
+Field=S_PipeDia;3
+Field=S_PipeWidth;3
+Field=S_PipeShape;3
+
+[Grid grid_s_detail(1)]
+Field=S_StartNode;3
+Field=S_Spare2;3
+Field=S_Spare3;3
+Field=S_StartInvertAlt;3
+Field=S_EndNode;3
+Field=S_Spare4;3
+Field=S_Spare5;3
+Field=S_EndInvertAlt;3
+Field=S_PLR;3
+
+[Grid grid_s_detail(2)]
+Field=S_PipeMaterial;3
+Field=S_Lining;3
+Field=S_Pipelength;3
+Field=S_Sectionlength;2
+Field=S_YearLayedText;3
+Field=S_SectionType;3
+Field=S_Location;3
+Field=S_LocationDetails;3
+
+[Grid grid_s_detail(3)]
+
+[Grid grid_s_detail(4)]
+Field=SI_InspName;2
+Field=SI_InspectionDir;3
+Field=SI_Operator;3
+Field=SI_ContractNumber;3
+Field=SI_JobNumber;3
+Field=SI_InspDate;3
+Field=SI_InspectionStartTime;3
+Field=SI_VCRNumber1;3
+Field=SI_Present;3
+
+[Grid grid_s_detail(5)]
+Field=SI_ReasonOfInspection;3
+Field=SI_Cleaned;3
+Field=SI_Weather;3
+Field=SI_Vehicle;3
+Field=SI_Camera;3
+Field=SI_Preset;3
+
+[Grid grid_s_detail(6)]
+Field=SI_InspectedLength;3
+Field=SI_Memo;3
+
+[Grid grid_s_detail(7)]
+Field=SI_STRTOTAL;2
+Field=SI_STR_NO_DEF;2
+Field=SI_STRPEAK;2
+Field=SI_STRMEAN;2
+Field=SI_STRGRADE;2
+Field=SI_SERTOTAL;2
+Field=SI_SER_NO_DEF;2
+Field=SI_SERPEAK;2
+Field=SI_SERMEAN;2
+Field=SI_SERGRADE;2
+
+[Grid grid_nls]
+Field=N_AutoNumber;2
+Field=N_NodeName;2
+
+[Grid grid_n_cover]
+Field=NC_Number;2
+Field=NC_CoverShape;3
+Field=NC_CoverMaterial;3
+Field=NC_CoverWidth;3
+Field=NC_CoverDia;3
+Field=NC_CoverCoord_X;3
+Field=NC_CoverCoord_Y;3
+Field=NC_CoverType;3
+Field=NC_CoverClass;3
+
+[Grid grid_nl]
+Field=NE_Counter;2
+Field=NE_Type;3
+Field=NE_PipeShape;3
+Field=NE_PipeDia;3
+Field=NE_PipeWidth;3
+Field=NE_Drop;3
+Field=NE_Material;3
+Field=NE_FlowFrom;3
+Field=NE_FlowTo;3
+Field=NE_Observation;3
+Field=NE_ClockPosition1;3
+Field=NE_SectionName;3
+
+[Grid grid_no]
+Field=NO_Counter;2
+Field=NO_Position;3
+Field=NO_OpCode;2
+Field=NO_Text;3
+Field=NO_FotoFlag1;3
+Field=NO_ClipFlag1;3
+Field=NO_MPEGPosition;3
+Field=NO_VideoCounter;3
+Field=NO_Class1;3
+Field=NO_Class2;3
+Field=NO_Quant1;3
+Field=NO_Quant2;3
+Field=NO_Remark;3
+
+[Grid grid_n_detail(0)]
+Field=N_Counter;2
+Field=N_Zone;3
+Field=N_Division;3
+Field=N_NodeName;3
+Field=N_Grid;3
+Field=N_Streetname;3
+Field=N_City;3
+
+[Grid grid_n_detail(1)]
+Field=N_Spare4;3
+Field=N_Location;3
+Field=N_Owner;3
+Field=N_Use;3
+
+[Grid grid_n_detail(2)]
+Field=N_ShaftShape;3
+Field=N_ShaftWidth;3
+Field=N_ShaftDia;3
+Field=N_ShaftMaterial;3
+Field=N_Spare1;3
+
+[Grid grid_n_detail(3)]
+Field=N_Spare2;3
+Field=N_NodeType;3
+Field=N_ChamberLength;3
+Field=N_Year;3
+Field=N_Spare3;3
+
+[Grid grid_n_detail(4)]
+
+[Grid grid_n_detail(5)]
+Field=NI_Counter;2
+Field=NI_Operator;3
+Field=NI_JobNumber;3
+Field=NI_ContractNumber;3
+Field=NI_InspectionDate;3
+Field=NI_InspectionStartTime;3
+Field=NI_Spare1;3
+Field=NI_Spare2;3
+
+[Grid grid_n_detail(6)]
+Field=NI_Cleaned;3
+Field=NI_ReasonOfInspection;3
+Field=NI_Spare4;3
+Field=NI_Weather;3
+Field=NI_Temperature;3
+Field=NI_InspectionMethod;3
+Field=NI_Norm;3
+
+[Grid grid_n_detail(7)]
+Field=NI_Spare5;3
+Field=NI_Spare6;3
+Field=NI_MediaNumber;3
+Field=NI_Misc_1;3
+Field=NI_MediaNumber2;3
+Field=NI_Memo;3
+Field=NI_Spare7;3
+Field=NI_Spare8;3
+Field=NI_Spare9;3
+
+[Grid grid_f_node]
+Field=NF_AutoNumber;2
+Field=NF_EntryDate;2
+
+[Grid grid_f_section]
+Field=SF_AutoNumber;2
+Field=SF_EntryDate;3
+Field=SF_Contractor_ID;3
+Field=SF_Remark;3
+
+[Grid grid_reha]
+Field=R_AutoNumber;2
+Field=R_EntryDate;3
+Field=R_RehaMethod;3
+Field=R_RehaMatGroup;3
+Field=R_RehaMaterial;3
+Field=R_RehaName;2
+Field=R_Status;3
+Field=R_StatusDate;3
+Field=R_WarrantyPeriod;3
+Field=R_Contractor_ID;3
+
+[Grid grid_reha_n]
+Field=NO_Counter;2
+Field=NO_RehabFlag;2
+Field=NO_ClockPosition1;2
+Field=NO_OpCode;3
+Field=NO_Text;3
+Field=NO_Value1;3
+Field=NO_Rate;3
+
+[Grid grid_reha_s]
+Field=SO_Counter;2
+Field=SO_RehabFlag;2
+Field=SO_Position;2
+Field=SO_OpCode;3
+Field=SO_Text;3
+Field=SO_Value1;3
+Field=SO_Rate;3
+
+[QueryBuilder section]
+Field=S_Counter;1
+Field=S_Sectionname;100
+Field=S_Situation;100
+Field=S_StartStreet;100
+Field=S_EndStreet;100
+Field=S_StartNode;20
+Field=S_SectionFlow;20
+Field=S_EndNode;20
+Field=S_Sectionlength;100
+Field=S_YearLayed;100
+Field=S_PipeShape;50
+Field=S_PipeMaterial;50
+Field=S_Lining;100
+Field=S_Pipelength;100
+Field=S_SectionType;100
+Field=S_PipeDia;50
+Field=S_Location;100
+
+[QueryBuilder inspection]
+Field=SI_Operator;100
+Field=SI_Present;100
+Field=SI_InspectedLength;100
+Field=SI_ReasonOfInspection;100
+Field=SI_VCRNumber1;100
+Field=SI_VCRNumber2;100
+Field=SI_MediaNumber1;100
+Field=SI_Cleaned;100
+Field=SI_Vehicle;100
+Field=SI_Weather;100
+Field=SI_Date;100
+Field=SI_WorkNumber;100
+
+[QueryBuilder observation]
+Field=SO_Counter;20
+Field=SO_Position;20
+Field=SO_Text;100
+Field=SO_OpCode;20
+Field=SO_Rate;20
+Field=SO_VCRPosition;20
+Field=SO_MPEGPosition;20
+Field=SO_Photonumber1;20
+Field=SO_Photonumber2;20
+Field=SO_Remark;100
+Field=SO_SBLObject;100
+Field=SO_PipeDiaNew;1
+
+[QueryBuilder node]
+Field=N_NodeName;1
+Field=N_NodeCoord_X;1
+Field=N_NodeCoord_Y;1
+Field=N_NodeCoord_Z;1
+Field=N_NodeType;1
+Field=N_City;1
+Field=N_Location;1
+Field=N_Streetname;1
+Field=N_Zone;1
+Field=N_Area;1
+Field=N_Situation;1
+Field=N_MapNumber;1
+Field=N_Year;1
+Field=N_NodeStatus;1
+Field=N_NodeRemarks;1
+Field=N_CoverType;1
+Field=N_CoverPlate;1
+Field=N_CoverShape;1
+Field=N_CoverDia;1
+Field=N_CoverWidth;1
+Field=N_CoverMaterial;1
+Field=N_CoverUnit;1
+Field=N_ShaftShape;1
+Field=N_ShaftDia;1
+Field=N_ShaftWidth;1
+Field=N_ShaftMaterial;1
+Field=N_ShaftUnit;1
+Field=N_Taper;1
+Field=N_TaperMaterial;1
+Field=N_Chamber;1
+Field=N_ChamberDia;1
+Field=N_ChamberWidth;1
+Field=N_ChamberHeigth;1
+Field=N_ChamberMaterial;1
+Field=N_ChamberUnit;1
+Field=N_SealingMaterial;1
+Field=N_InvertShape;1
+Field=N_InvertDia;1
+Field=N_InvertWidth;1
+Field=N_InvertUnit;1
+Field=N_InvertType;1
+Field=N_DepthToInvert;1
+Field=N_DepthToInvertUnit;1
+Field=N_GroundType;1
+Field=N_GroundWaterDistance;1
+Field=N_WasteWaterFlow;1
+Field=N_ForeignWaterFlow;1
+Field=N_RainWaterFlow;1
+Field=N_BusinessWaterFlow;1
+Field=N_PrivateWaterFlow;1
+Field=N_IndustrialWaterFlow;1
+Field=N_DryWeatherWaterFlow;1
+Field=N_Population;1
+Field=N_WaterUse;1
+Field=N_AverageFlow;1
+Field=N_SurfaceWater;1
+Field=N_Coveraltitude;1
+Field=N_Invertaltitude;1
+Field=N_Protection;1
+Field=NI_InspectionMethod;1
+Field=NI_Operator;1
+Field=NI_Car;1
+Field=NI_JobNumber;1
+Field=NI_RapportNumber;1
+Field=NI_ContractNumber;1
+Field=SI_Counter;1
+Field=NO_Code;1
+Field=NO_OpCode;1
+Field=NO_Observation;1
+Field=NO_ClockPosition1;1
+Field=NO_Rate;1
+Field=NO_RateText;1
+
+[QueryBuilder nodeinspection]
+
+[QueryBuilder nodeobservation]
+
+[QueryBuilder secquery]
+Field=S_Counter;1
+Field=S_PipeMaterial;1
+Field=S_Lining;1
+Field=S_EndStreet;1
+Field=S_PipeDia;1
+Field=S_StartStreet;1
+Field=S_Situation;1
+Field=S_Sectionname;100
+Field=S_SectionType;100
+
+[QueryBuilder inspquery]
+Field=SI_Operator;1
+Field=SI_Vehicle;1
+Field=SI_VCRNumber1;1
+Field=SI_ReasonOfInspection;1
+Field=SI_WorkNumber;100
+Field=SI_Date;100
+Field=SI_VCRNumber2;500
+
+[QueryBuilder obsquery]
+Field=SO_Position;1
+Field=SO_Text;1
+Field=SO_OpCode;1
+Field=SO_VCRPosition;1
+Field=SO_Remark;1
+Field=SO_Rate;1
+Field=SO_PhotoFilename1;1
+Field=SO_PhotoFilename2;1
+Field=SO_RehabFlag;100
+Field=SO_SBLObject;500
+
+[QueryBuilder nodequery]
+Field=N_NodeName;1
+Field=N_NodeStatus;1
+Field=N_NodeType;1
+Field=N_City;1
+Field=N_Location;1
+Field=N_Streetname;1
+Field=N_Zone;1
+Field=N_Area;1
+Field=N_Situation;1
+Field=N_MapNumber;1
+
+[QueryBuilder nodeinspquery]
+
+[QueryBuilder nodeobsquery]
+
+[RptItem P1_T0_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F0]
+Caption=Client :
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F3]
+Caption=Project-information
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F4]
+Caption=Project name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F5]
+Caption=Contract Number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C5]
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F3]
+Caption=Defect Grade Description
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F4]
+Caption=Project Name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F5]
+Caption=Contact Number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F3]
+Caption=Inspection report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F4]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F7]
+Caption=Sewer category:
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F16]
+Caption=Place :
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F17]
+Caption=Road :
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F18]
+Caption=Location
+DataField=S_Location
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F19]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F20]
+Caption=Location details:
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F21]
+Caption=Catchment:
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F22]
+Caption=Tape number :
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F23]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F24]
+Caption=Upstream MH :
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F25]
+Caption=Downstream MH :
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F26]
+Caption=Total length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F27]
+Caption=Pipe length :
+DataField=S_Pipelength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F28]
+Caption=Catchment:
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F29]
+Caption=Year laid :
+DataField=S_YearLayedText
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F30]
+Caption=Purpose :
+DataField=SI_ReasonOfInspection
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F32]
+Caption=Pipe shape :
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F33]
+Caption=Pipe size :
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F34]
+Caption=Pipe material :
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F36]
+Caption=Comment :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L3]
+Caption=VCR
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L4]
+Caption=MPEG
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L5]
+Caption=Photo
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L6]
+Caption=Grade
+DataField=SO_Rate
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F3]
+Caption=Inspection pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F4]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F5]
+Caption=Road :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F6]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F7]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F8]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C3]
+Caption= Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C4]
+Caption= Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F0]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F3]
+Caption=Manhole Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F4]
+Caption=Date :
+DataField=NI_LastModifiedDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F5]
+Caption=Manhole name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F7]
+Caption=Street :
+DataField=N_Streetname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F8]
+Caption=Map #. :
+DataField=N_MapNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F9]
+Caption=VCR # :
+DataField=NI_VCRNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F10]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F12]
+Caption=X Coordinate :
+DataField=N_NodeCoord_X
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F13]
+Caption=Y Coordinate :
+DataField=N_NodeCoord_Y
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F14]
+Caption=Z Coordinate :
+DataField=N_NodeCoord_Z
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F15]
+Caption=Depth:
+DataField=N_DepthToInvert
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F16]
+Caption=Street :
+DataField=N_Streetname
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F17]
+Caption=City :
+DataField=N_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F18]
+Caption=Situation :
+DataField=N_Situation
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F19]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F20]
+Caption=Chamber Diameter:
+DataField=N_ChamberDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F21]
+Caption=Chamber Material:
+DataField=N_ChamberMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F22]
+Caption=Cover Diameter:
+DataField=N_CoverDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F23]
+Caption=Cover Material:
+DataField=N_CoverMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F24]
+Caption=Invert Shape :
+DataField=N_InvertShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F25]
+Caption=Invert Diameter :
+DataField=N_InvertDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F26]
+Caption=Invert RL :
+DataField=N_InvertRL
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F27]
+Caption=Invert Type :
+DataField=N_InvertType
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F36]
+Caption=Remarks :
+DataField=NI_Memo
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F0]
+Caption=City :
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F3]
+Caption=Manhole Pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F4]
+Caption=Date :
+DataField=NI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F5]
+Caption=Node name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F7]
+Caption=Street :
+DataField=N_Streetname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F8]
+Caption=Map No.  :
+DataField=N_MapNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F9]
+Caption=VCR No. :
+DataField=NI_VCRNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F10]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F12]
+Caption=X Coordinate :
+DataField=N_NodeCoord_X
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F13]
+Caption=Y Coordinate :
+DataField=N_NodeCoord_Y
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F14]
+Caption=Z Coordinate :
+DataField=N_NodeCoord_Z
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F15]
+Caption=Level :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C2]
+Caption=Street :
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F3]
+Caption=Inspection Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F4]
+Caption=Date:
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F7]
+Caption=Sewer category :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F16]
+Caption=Place:
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F17]
+Caption=U/S MH:
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F18]
+Caption=Pipe shape:
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F19]
+Caption=Road:
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F20]
+Caption=D/S MH:
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F21]
+Caption=Pipe size:
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F22]
+Caption=Loc. details: :
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F23]
+Caption=Tape no.
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F24]
+Caption=Material:
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F25]
+Caption=Catchment
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F26]
+Caption=Section length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F27]
+Caption=Lining:
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F28]
+Caption=Remark :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C2]
+Caption=Street :
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F0]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F3]
+Caption=Inspection Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F4]
+Caption=Date:
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F7]
+Caption=Sewer category :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F16]
+Caption=Place :
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F17]
+Caption=U/S MH :
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F18]
+Caption=Pipe shape :
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F19]
+Caption=Road :
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F20]
+Caption=D/S MH :
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F21]
+Caption=Pipe size :
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F22]
+Caption=Loc. details :
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F23]
+Caption=Tape no. :
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F24]
+Caption=Material :
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F25]
+Caption=Catchment :
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F26]
+Caption=Section length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F27]
+Caption=Lining :
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F28]
+Caption=Remarks :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C3]
+Caption= Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F3]
+Caption=Â∆
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F4]
+Caption=Project name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F5]
+Caption=Contract number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L0]
+Caption=No.
+DataField=S_Counter
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L1]
+Caption=U/S MH
+DataField=S_StartNode
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L2]
+Caption=D/S MH
+DataField=S_EndNode
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L3]
+Caption=Date
+DataField=SI_InspDate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L4]
+Caption=Road
+DataField=S_StartStreet
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L5]
+Caption=Tape No.
+DataField=SI_MediaNumber1
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L6]
+Caption=Material
+DataField=S_PipeMaterial
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L7]
+Caption=m
+DataField=S_Sectionlength
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L8]
+Caption=(m)
+DataField=SI_InspectedLength
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F0]
+Caption=Place:
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F1]
+Caption= Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F2]
+Caption=Company Info
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F3]
+Caption=Satellite Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F4]
+Caption=Section # :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F5]
+Caption=Section name :
+DataField=S_Sectionname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F6]
+Caption=Section length :
+DataField=S_Sectionlength
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F7]
+Caption=Start MH :
+DataField=S_StartNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F8]
+Caption=End MH
+DataField=S_EndNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F9]
+Caption=Material :
+DataField=S_PipeMaterial
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F10]
+Caption=Shape :
+DataField=S_PipeShape
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F11]
+Caption=Lining :
+DataField=S_Lining
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F12]
+Caption=Section Type :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F13]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F14]
+Caption=Street :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F15]
+Caption=Situation :
+DataField=S_Situation
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F16]
+Caption=VCR # :
+DataField=SI_VCRNumber1
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F17]
+Caption=Date :
+DataField=SI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F18]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F19]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F20]
+Caption=Rate :
+DataField=S_Rate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F21]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F22]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F23]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F24]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F25]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F26]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F27]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F28]
+Caption=Preset :
+DataField=SI_CameraPreset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F29]
+Caption=Remarks :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L6]
+Caption=Rate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C2]
+Caption=City:
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F1]
+Caption=Logo :
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F2]
+Caption=Company Info
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F3]
+Caption=Satellite Inspection Picture
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F4]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F5]
+Caption=Road :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F6]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F7]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F8]
+Caption=PLR suffix
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F31]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F35]
+Caption=Lining :
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F3]
+Caption=Inspection summary
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F5]
+Caption=Project Number :
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C5]
+Caption=Email
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L1]
+Caption=Total Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L2]
+Caption=Inspected Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L3]
+Caption=Not inspected Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L4]
+Caption=Total Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L5]
+Caption=Inspected Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L6]
+Caption=Not inspected Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L7]
+Caption=Number of Sections
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L8]
+Caption=Number of house connections
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L9]
+Caption=Number of Photos
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L10]
+Caption=Total Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L11]
+Caption=Inspected Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L12]
+Caption=Not inspected Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L13]
+Caption=Number of Sections (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F8]
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F6]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F7]
+Caption=Contact:
+DataField=P_InCharge
+Font0=1;8;0
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F3]
+Caption=Table of contents
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F5]
+Caption=Project Number:
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T6_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T10_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T11_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T12_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T15_F0]
+Caption=wincanlogo.jpg
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T15_F1]
+Caption=wincanlogo.jpg
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F0]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F2]
+Caption=Location
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F3]
+Caption=Format
+CType=0
+FreeText=MSCC WRC 3
+Width=0
+Visible=0
+
+[RptItem P1_T19_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F4]
+Caption=Operator
+DataField=SI_Operator
+CType=0
+FreeText=BS EN 13508-2:2003
+Width=0
+Visible=0
+
+[RptItem P1_T19_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F5]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F6]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F7]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F8]
+Caption=Contractor
+DataField=C_Name
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F9]
+Caption=Site
+DataField=C_Name
+CType=2
+Width=0
+Visible=0
+
+[RptItem P1_T19_F10]
+Caption=Client
+DataField=C_Name
+CType=1
+Width=0
+Visible=0
+
+[RptItem P1_T19_F11]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F12]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F13]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F14]
+Caption=Project
+DataField=P_Name
+Font0=4;8;0
+Font1=4;8;0
+CType=1
+Width=0
+Visible=0
+
+[RptItem P1_T19_F15]
+Caption=Date
+DataField=P_Date
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L7]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F6]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F7]
+Caption=Contact:
+DataField=P_InCharge
+Font0=1;8;0
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F1]
+LogoFile=wincanlogo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F3]
+Caption=Table of contents
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F5]
+Caption=Project number:
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F1]
+Caption=Logo :
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F3]
+Caption=Inspection report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F4]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F7]
+Caption=Sewer category:
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F9]
+Caption=PLR suffix:
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F15]
+Caption=Operator:
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L6]
+Caption=Grade
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C1]
+Caption=Street:
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C2]
+Caption=City:
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C4]
+Caption= Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C5]
+Caption= Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F0]
+Caption=City :
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F1]
+Caption=Logo:
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F3]
+Caption=Manhole Pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F4]
+Caption=Date :
+DataField=NI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F5]
+Caption=Node name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F7]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F8]
+Caption=Node number :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F9]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F10]
+Caption=Present :
+DataField=NI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F12]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F13]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F14]
+Caption=Cleaned :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F15]
+Caption=Rate:
+DataField=N_Rate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C1]
+Caption=C_T
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F0]
+Caption= City:
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F2]
+Caption= Company Info
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F3]
+Caption=Satellite Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F4]
+Caption=Section length :
+DataField=S_Sectionlength
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F5]
+Caption=Counter:
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F6]
+Caption=Section name :
+DataField=S_Sectionname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F7]
+Caption=Street :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F8]
+Caption=Start MH :
+DataField=S_StartNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F9]
+Caption=End MH :
+DataField=S_EndNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F10]
+Caption=Material :
+DataField=S_PipeMaterial
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F11]
+Caption=Size/Shape :
+DataField=S_PipeShape
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F12]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F13]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F14]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F15]
+Caption=VCR # :
+DataField=SI_VCRNumber1
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L6]
+Caption=Rate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F3]
+Caption=Inspection Summary
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F4]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F5]
+Caption=Project Number :
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F9]
+Caption=Place:
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F10]
+Caption=Road:
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F11]
+Caption=Upstr. MH:
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F12]
+Caption=Downstr. MH:
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F13]
+Caption=Pipe shape:
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F14]
+Caption=Pipe size:
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F15]
+Caption=Material
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F16]
+Caption=Lining:
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L7]
+CType=0
+Width=0
+Visible=0
+
+[ClassColorDefault]
+ButtonColor0=32768
+ButtonCaption0=1
+TextA0=Brick: No Structural Defects<vbCrLf>Pipe: No Structural Defects
+TextB0=Acceptable Structural Condition
+TextOrder0=1
+ButtonOrder0=32768
+
+ButtonColor1=16711680
+ButtonCaption1=2
+TextA1=Brick: Minor cracking, Surface mortar loss, Spalling slight, wear slight<vbCrLf>Pipe: Circumfrential crack, Moderate joint defects, Spalling slight, Wear slight
+TextB1=Minor collapse risk in short term but potential for further deterioration
+TextOrder1=2
+ButtonOrder1=16711680
+
+ButtonColor2=33023
+ButtonCaption2=3
+TextA2=Brick: Total mortorloss without other defects, single brick displaced, Deformation up to 5%, Spalling medium, Wear medium<vbCrLf>Pipe: Fractures with deformation up tp 5%, Longitudinal cracking or mulitlpe cracking, Minor loss of level, More severe joint defects, Spalling medium, Wear medium
+TextB2=! Collapse unlikely in near future but future deterioration likely !
+TextOrder2=3
+ButtonOrder2=33023
+
+ButtonColor3=16711935
+ButtonCaption3=4
+TextA3=Brick: Total mortorloss with deformation greater than 10%, Deformation up to 10% and fractured, Displaced/hanging brickwork, Small number of missing bricks<vbCrLf>Pipe: Broken, Deformation up to 10% and broken,, Fractured with deformation 5 - 10%, Multiple fractures, Serious loss of level, spalling large, wear large
+TextB3=!! Collapse likely in foreseeable future !!
+TextOrder3=4
+ButtonOrder3=16711935
+
+ButtonColor4=255
+ButtonCaption4=5
+TextA4=Brick: Already Collapsed, Missing invert, Deformation over 10% and fractured, Displaced/hanging brickwork and deformation over 10%, Extensive missing bricks<vbCrLf>Pipe: Already collapsed,  Deformation over 10% and broken, Extensive areas of fabric missing, Fractured with deformation over 10%
+TextB4=!!! Collapsed or collapse imminent !!!
+TextOrder4=5
+ButtonOrder4=255
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate0]
+TemplateNumber=0
+TemplateName=Color code template 1
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate1]
+TemplateNumber=1
+TemplateName=Color code template 2
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate2]
+TemplateNumber=2
+TemplateName=Color code template 3
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate3]
+TemplateNumber=3
+TemplateName=Color code template 4
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate4]
+TemplateNumber=4
+TemplateName=Color code template 5
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate5]
+TemplateNumber=5
+TemplateName=Color code template 6
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate6]
+TemplateNumber=6
+TemplateName=Color code template 7
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate7]
+TemplateNumber=7
+TemplateName=Color code template 8
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate8]
+TemplateNumber=8
+TemplateName=Color code template 9
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate9]
+TemplateNumber=9
+TemplateName=Color code template 10
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[PipeColors]
+EvaluateField=S_SectionType
+
+
+[ColWidths]
+grid_o=0.036;0.036;0.032;0.037;0.311;0.047;0.186;0.061;0.044;0.05;0.081;0.079
+grid_s=0.059;0.027;0.027;0.112;0.272;0.148;0.059;0.157;0.139
+grid_s_detail(0)=0.044;0.134;0.209;0.113;0.067;0.055;0.088;0.115;0.086;0.089
+grid_s_detail(1)=0,089;0,088;0,102;0,107;0,115;0,122;0,145;0,144;0,088
+grid_s_detail(2)=0,178;0,209;0,115;0,121;0,063;0,082;0,144;0,088
+grid_s_detail(3)=0.125;0.125;0.133;0.617
+grid_s_detail(4)=0.127;0.222;0.13;0.118;0.095;0.079;0.112;0.086;0.031
+grid_s_detail(5)=0.35;0.129;0.119;0.173;0.199;0.03
+grid_s_detail(6)=0.126;0.874
+grid_s_detail(7)=0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
+grid_nls=0.094;0.906
+grid_n_cover=0.126;0.201;0.28;0.182;0.211
+grid_nl=0.046;0.048;0.09;0.064;0.071;0.087;0.16;0.06;0.061;0.23;0.083
+grid_no=0.04;0.053;0.079;0.36;0.065;0.056;0.067;0.073;0.207
+grid_n_detail(0)=0.053;0.143;0.152;0.175;0.174;0.173;0.116;0.014
+grid_n_detail(1)=0.197;0.327;0.174;0.172;0.108;0.083;-0.061
+grid_n_detail(2)=0.197;0.156;0.171;0.174;0.337;0.103;0.003;-0.141
+grid_n_detail(3)=0.197;0.156;0.172;0.174;0.301
+grid_n_detail(4)
+grid_n_detail(5)=0.075;0.107;0.123;0.162;0.072;0.054;0.295;0.147;0.149;0.003;-0.187
+grid_n_detail(6)=0.073;0.234;0.16;0.127;0.094;0.201;0.111
+grid_n_detail(7)=0.132;0.245;0.088;0.131;0.068;0.176;0.059;0.059;0.042
+grid_f_node=0;0
+grid_f_section=0;0;0;0
+grid_reha=0;0;0;0;0;0;0;0;0;0
+grid_reha_n=0;0;0;0;0;0;0
+grid_reha_s=0;0;0;0;0;0;0
+grid_das4=0.111;0.111;0.111;0.111;0.111;0.111;0.111;0.111;0.111
+grid_das5=0.089;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034
+
+[ProfileOSD]
+CurrentProfile=Default
+0=Default
+DefaultH=S_City::S_StartStreet::S_Location:0:S_StartNode:S_SectionFlow:S_EndNode:::-1:S_PipeMaterial:S_PipeShape:S_PipeDia:::-1
+DefaultM=S_Counter:SI_InspDate:S_City:S_StartStreet:S_Location:SI_Weather:SI_ReasonOfInspection:S_PipeMaterial:S_PipeShape:S_PipeDia:S_StartNode:S_SectionFlow:S_EndNode
+[Symbol_Manhole]
+SymbolField=nodename
+[Symbol_Obs]
+SymbolField=opcode
+                                                                                                                                                                                                                                                                                                                          L%ã}yíîûÅ9E≠/—¥¯5{’ÇinÓ¶åd…åF}∞I5ÿi˛”LÔ∫⁄8%^≤ñ$˛´6÷zç§í,Ìû&P«©‰ÁÙã∏5
+,7
+PuÛ2ÈÇ:U(¥ı&<´Y+≥#Qæ“Ù©Õ¨ó“3©Ë«=˝˚V¨ãxC$gÏEH‰ÛÿÉ˙÷∂≥·u‘föËô{é†t©¥=8 í€ãïÛ1Ú¨p~¶Ø≠≈&∑HÛëcoo<≤d#ëfea¯÷ò‘◊SEÛ-cµ¿*©úd◊L˛[;ˇ 2Â„π-—^Bã˘
+√Ò~ô•C»Â˚<ÆyHê0<zı*Ì¸d{Ø‘•–€∏ÇÓ(‚¡˘~MﬁΩh[Ag¨◊∆(ˇ Ñ˛C5ŒÈvB“F[k3®≤ÔëŸQsVÆ&:åôí—U<ùˇ *èa≈k ﬁÛL•}Nû=RﬂÀx¬Iq¸£p#'Æx´6çfèÂ]µ¨¨:@6îıœŸ≈<ëÖ∂àÆ1ÛªÏ'ÈÕoﬁZMn°∫Ú#qÜP«πl–µﬁ&äiÏ«\\€¶&ºö‚˘à·P|Ì˘¢/eáwŸ|?w2uπív€è]∏˛¶¶	¶âˆ%ƒS\/Lt¸pk#ƒWQÃ7‹H®ú®I¿RskM»ﬂõ*j∑r≈tŒ±Ì+JäTè_≠gà¨Y÷Tç¶rrp«8˙ÊØ}ßœ∆	›áﬂ‹pOÊ´J÷r‹´G!∆<ŒÑ˝BIÔbö:=PÇ&"àÑgs%$˛5—Ë^#ùIˇ F∏KbÿRáh?áJƒäoÏÌ-±4Pœåê!ŸÅÌé+œ‚÷Æ€RòG#ï‰ÌsÖ˙Ê•ßˆKäîùÓ}µetq"Ä1ÜëKÙŒxåKjdô°ŒœËq’¬œ∏ö—£sñe8vóıÆ¬˚W∂|‰(8wcÅ¯Rî¥≥gRqG-k¨«–ºœñ8ÇF∆?
+©©€}°ÉF≠n‰Áiá‰sVZa5¸ÆZ2Âd≠O$√âñ^rKéû¥π!ªfR¥∫Îw‰(MÓª>¯à/'Í?Øyf⁄ƒ°Ì¨åïÀO"ÉÎ”ö€Û·ñ"€9«ö0N}ÅıiÕŒÍ◊S€ß dïæF>ùáJVìvFNÒ}åOFgi’La∑±è†´Ú€ÿ\ˇ £Ωºê∆∏⁄Í≠ì◊±≠¶≈∫Äø!y0∆Æ+±øÇ§◊uπ∏YbÑc8@ä1Ôå’ri®FiiàﬂÖ-µp/$øﬁ\qMæ∂—Ù+’∂∂Åßô˛ÙÑ©8«È^´„yÌ4ç1l-8›∆d'>ÿÈ^U7á¶åI1π∂òì∏Ììß‘„&ñ´f∑’êœ8çq[∫∞Ê4`«ØÈZ÷Z[Common]
+Unit=0
+
+[Field C_Name]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Street]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Location]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Phone]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Fax]
+StateBits=4
+DecimalPrecision=0
+
+[Field C_Email]
+StateBits=4
+DecimalPrecision=0
+
+[Field N_AutoNumber]
+StateBits=132
+Header=#
+DecimalPrecision=0
+
+[Field N_NodeName]
+StateBits=5
+Header=Manhole reference
+DecimalPrecision=0
+MaxLength=12
+
+[Field N_Counter]
+StateBits=133
+Header=No.
+DecimalPrecision=0
+
+[Field N_Area]
+StateBits=12
+Header=Area
+DecimalPrecision=0
+
+[Field N_AverageFlow]
+StateBits=64
+Header=Average Flow
+DecimalPrecision=2
+
+[Field N_Benching]
+StateBits=12
+Header=Benching
+DecimalPrecision=0
+
+[Field N_BusinessWaterFlow]
+StateBits=64
+Header=Business Water Flow
+DecimalPrecision=2
+
+[Field N_Chamber]
+Header=Chamber
+DecimalPrecision=0
+
+[Field N_ChamberDia]
+StateBits=132
+Header=Chamber Dia.
+DecimalPrecision=0
+
+[Field N_ChamberHeigth]
+StateBits=64
+Header=Chamber Heigth
+DecimalPrecision=2
+
+[Field N_ChamberMaterial]
+StateBits=4
+Header=Chamber Material
+DecimalPrecision=0
+
+[Field N_ChamberUnit]
+StateBits=12
+Header=Chamber Unit
+DecimalPrecision=0
+
+[Field N_ChamberWidth]
+StateBits=64
+Header=Chamber Width
+DecimalPrecision=2
+
+[Field N_City]
+StateBits=13
+Header=Town or village
+DecimalPrecision=0
+MaxLength=15
+
+[Field N_Coveraltitude]
+StateBits=12
+Header=Cover Altitude
+DecimalPrecision=0
+
+[Field N_CoverDia]
+StateBits=132
+Header=Cover Dia
+DecimalPrecision=0
+
+[Field N_CoverMaterial]
+StateBits=4
+Header=Cover Material
+DecimalPrecision=0
+
+[Field N_CoverPlate]
+StateBits=12
+Header=Cover Plate
+DecimalPrecision=0
+
+[Field N_CoverShape]
+StateBits=4
+Header=Cover Shape
+DecimalPrecision=0
+
+[Field N_CoverType]
+StateBits=12
+Header=Cover Type
+DecimalPrecision=0
+
+[Field N_CoverUnit]
+StateBits=12
+Header=Cover Unit
+DecimalPrecision=0
+
+[Field N_CoverWidth]
+StateBits=132
+Header=Cover Width
+DecimalPrecision=0
+
+[Field N_DepthRef]
+StateBits=12
+Header=Depth Reference
+DecimalPrecision=0
+
+[Field N_DepthToInvert]
+StateBits=68
+Header=Depth to Invert
+DecimalPrecision=2
+
+[Field N_DepthToInvertUnit]
+Header=Depth to Invert Unit
+DecimalPrecision=0
+
+[Field N_DryWeatherWaterFlow]
+StateBits=64
+Header=Dry Weather Water Flow
+DecimalPrecision=2
+
+[Field N_Floor]
+StateBits=12
+Header=Floor
+DecimalPrecision=0
+
+[Field N_ForeignWaterFlow]
+StateBits=64
+Header=Foreign Water Flow
+DecimalPrecision=2
+
+[Field N_GroundType]
+StateBits=4
+Header=Ground Type
+DecimalPrecision=0
+
+[Field N_GroundWaterDistance]
+StateBits=64
+Header=Groundwater Distance
+DecimalPrecision=2
+
+[Field N_IndustrialWaterFlow]
+StateBits=64
+Header=Industrial Water Flow
+DecimalPrecision=2
+
+[Field N_Invertaltitude]
+StateBits=4
+Header=Invert Altitude
+DecimalPrecision=0
+
+[Field N_InvertDia]
+StateBits=68
+Header=Invert Dia.
+DecimalPrecision=2
+
+[Field N_InvertRL]
+StateBits=4
+Header=Invert RL
+DecimalPrecision=0
+
+[Field N_InvertShape]
+StateBits=4
+Header=Invert Shape
+DecimalPrecision=0
+
+[Field N_InvertType]
+StateBits=4
+Header=Invert Type
+DecimalPrecision=0
+
+[Field N_InvertUnit]
+Header=Invert Unit
+DecimalPrecision=0
+
+[Field N_InvertWidth]
+StateBits=64
+Header=Invert Width
+DecimalPrecision=2
+
+[Field N_Location]
+StateBits=4101
+Header=Location type
+DecimalPrecision=0
+MaxLength=3
+ListItem=RD|Road
+ListItem=FWY|A footway beside a road
+ListItem=VG|Verge
+ListItem=PD|Other pedestrian area
+ListItem=FLD|Fields (farmland and other open space)
+ListItem=PR|Property with buildings
+ListItem=GDN|Gardens (with private property)
+ListItem=BLG|Under a permanent building
+ListItem=WLD|Woodland
+ListItem=DIF|Difficult access (motorway, railway, watercourse, inside building,...)
+ListItem=WWY|Under a waterway
+ListItem=Z|Other (state in remarks)
+
+[Field N_LocationDetails]
+StateBits=12
+Header=Location details
+DecimalPrecision=0
+
+[Field N_MapNumber]
+StateBits=4
+Header=Map Number
+DecimalPrecision=0
+
+[Field N_NodeCoord_X]
+StateBits=132
+Header=Coord. X
+DecimalPrecision=0
+
+[Field N_NodeCoord_XZ_Ref]
+StateBits=12
+Header=XZ Ref.
+DecimalPrecision=0
+
+[Field N_NodeCoord_Y]
+StateBits=132
+Header=Coord. Y
+DecimalPrecision=0
+
+[Field N_NodeCoord_Y_Ref]
+StateBits=12
+Header=Y Ref.
+DecimalPrecision=0
+
+[Field N_NodeCoord_Z]
+StateBits=132
+Header=Coord. Z
+DecimalPrecision=0
+
+[Field N_NodeInfo]
+StateBits=12
+Header=Info
+DecimalPrecision=0
+
+[Field N_NodeNumber]
+StateBits=140
+Header=MH Number
+DecimalPrecision=0
+
+[Field N_NodeRemarks]
+Header=Remarks
+DecimalPrecision=0
+
+[Field N_NodeStandard]
+StateBits=12
+Header=Standard
+DecimalPrecision=0
+
+[Field N_NodeStatus]
+StateBits=134
+Header=Status
+DecimalPrecision=0
+
+[Field N_NodeType]
+StateBits=4101
+Header=Critical
+DecimalPrecision=0
+MaxLength=1
+ListItem=A|Category A
+ListItem=B|Category B
+ListItem=C|Category C
+ListItem=Z|Unknow
+
+[Field N_Population]
+StateBits=76
+Header=Population
+DecimalPrecision=2
+
+[Field N_PrivateWaterFlow]
+StateBits=64
+Header=Private Water Flow
+DecimalPrecision=2
+
+[Field N_Protection]
+StateBits=12
+Header=Protection
+DecimalPrecision=0
+
+[Field N_RainWaterFlow]
+StateBits=64
+Header=Rain Water Flow
+DecimalPrecision=2
+
+[Field N_Reference]
+StateBits=12
+Header=Reference
+DecimalPrecision=0
+
+[Field N_Riser]
+StateBits=12
+Header=Riser
+DecimalPrecision=0
+
+[Field N_Roof]
+StateBits=12
+Header=Roof
+DecimalPrecision=0
+
+[Field N_SealingMaterial]
+StateBits=12
+Header=Sealing Material
+DecimalPrecision=0
+
+[Field N_ShaftDia]
+StateBits=133
+Header=Access breadth [mm]
+DecimalPrecision=0
+
+[Field N_ShaftHeigth]
+StateBits=76
+Header=Shaft Height
+DecimalPrecision=2
+
+[Field N_ShaftMaterial]
+StateBits=4101
+Header=Material
+Tooltip=Enter first material (in survey sequence) where mixture of material is used. Enter Z if unknown.
+DecimalPrecision=0
+MaxLength=3
+ListItem=AC|Asbestos cement
+ListItem=BL|Bitumen (lining)
+ListItem=BR|Brick
+ListItem=CI|Cast iron
+ListItem=CL|Cement mortar (lining)
+ListItem=CO|Concrete
+ListItem=CS|Concrete segments
+ListItem=DI|Ductile iron
+ListItem=EP|Epoxy
+ListItem=FC|Fibre cement
+ListItem=FRP|Fibre reinforced plastics
+ListItem=GI|Grey cast iron
+ListItem=PVC|Polyvinyl chloride
+ListItem=PE|Polyethylene
+ListItem=PP|Polypropylene
+ListItem=PS|Polyester
+ListItem=RC|Reinforced concrete
+ListItem=SPC|Sprayed concrete
+ListItem=ST|Steel
+ListItem=VC|Vitrified clay
+ListItem=PF|Pitch fibre
+ListItem=MAC|Masonry - in regular courses
+ListItem=MAR|Masonry - randomly coursed
+ListItem=X|Unidentified material
+ListItem=XI|Unidentified type of iron or steel
+ListItem=XP|Unidentified type of plastics
+ListItem=Z|Other (state in remarks)
+
+[Field N_ShaftShape]
+StateBits=4101
+Header=Access shape
+DecimalPrecision=0
+MaxLength=2
+ListItem=R|rectangular
+ListItem=C|circular
+ListItem=T|triangular
+ListItem=OV|oval
+ListItem=HX|hexagonal
+ListItem=OC|octagonal
+ListItem=Z|other
+
+[Field N_ShaftUnit]
+Header=Shaft Unit
+DecimalPrecision=0
+
+[Field N_ShaftWidth]
+StateBits=133
+Header=Access width [mm]
+DecimalPrecision=0
+
+[Field N_Situation]
+StateBits=4
+Header=Situation
+DecimalPrecision=0
+
+[Field N_Streetname]
+StateBits=5
+Header=Street name
+DecimalPrecision=0
+MaxLength=15
+
+[Field N_SurfaceWater]
+StateBits=64
+Header=Surface Water
+DecimalPrecision=2
+
+[Field N_Taper]
+Header=Taper
+DecimalPrecision=0
+

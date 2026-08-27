@@ -1,0 +1,4763 @@
+Field=N_IndustrialWaterFlow;1
+Field=N_DryWeatherWaterFlow;1
+Field=N_Population;1
+Field=N_WaterUse;1
+Field=N_AverageFlow;1
+Field=N_SurfaceWater;1
+Field=N_Coveraltitude;1
+Field=N_Invertaltitude;1
+Field=N_Protection;1
+Field=NI_InspectionMethod;1
+Field=NI_Operator;1
+Field=NI_Car;1
+Field=NI_JobNumber;1
+Field=NI_RapportNumber;1
+Field=NI_ContractNumber;1
+Field=SI_Counter;1
+Field=NO_Code;1
+Field=NO_OpCode;1
+Field=NO_Observation;1
+Field=NO_ClockPosition1;1
+Field=NO_Rate;1
+Field=NO_RateText;1
+
+[QueryBuilder nodeinspection]
+
+[QueryBuilder nodeobservation]
+
+[QueryBuilder secquery]
+Field=S_Counter;1
+Field=S_PipeMaterial;1
+Field=S_Lining;1
+Field=S_EndStreet;1
+Field=S_PipeDia;1
+Field=S_StartStreet;1
+Field=S_Situation;1
+Field=S_Sectionname;100
+Field=S_SectionType;100
+
+[QueryBuilder inspquery]
+Field=SI_Operator;1
+Field=SI_Vehicle;1
+Field=SI_VCRNumber1;1
+Field=SI_ReasonOfInspection;1
+Field=SI_WorkNumber;100
+Field=SI_Date;100
+Field=SI_VCRNumber2;500
+
+[QueryBuilder obsquery]
+Field=SO_Position;1
+Field=SO_Text;1
+Field=SO_OpCode;1
+Field=SO_VCRPosition;1
+Field=SO_Remark;1
+Field=SO_Rate;1
+Field=SO_PhotoFilename1;1
+Field=SO_PhotoFilename2;1
+Field=SO_RehabFlag;100
+Field=SO_SBLObject;500
+
+[QueryBuilder nodequery]
+Field=N_NodeName;1
+Field=N_NodeStatus;1
+Field=N_NodeType;1
+Field=N_City;1
+Field=N_Location;1
+Field=N_Streetname;1
+Field=N_Zone;1
+Field=N_Area;1
+Field=N_Situation;1
+Field=N_MapNumber;1
+
+[QueryBuilder nodeinspquery]
+
+[QueryBuilder nodeobsquery]
+
+[RptItem P1_T0_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F0]
+Caption=Client :
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F3]
+Caption=Project-information
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F4]
+Caption=Project name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F5]
+Caption=Contract Number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T0_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_C5]
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F3]
+Caption=Defect Grade Description
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F4]
+Caption=Project Name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F5]
+Caption=Contact Number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T1_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F3]
+Caption=Inspection report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F4]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F7]
+Caption=Sewer category:
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F16]
+Caption=Place :
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F17]
+Caption=Road :
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F18]
+Caption=Location
+DataField=S_Location
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F19]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F20]
+Caption=Location details:
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F21]
+Caption=Catchment:
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F22]
+Caption=Tape number :
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F23]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F24]
+Caption=Upstream MH :
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F25]
+Caption=Downstream MH :
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F26]
+Caption=Total length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F27]
+Caption=Pipe length :
+DataField=S_Pipelength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F28]
+Caption=Catchment:
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F29]
+Caption=Year laid :
+DataField=S_YearLayedText
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F30]
+Caption=Purpose :
+DataField=SI_ReasonOfInspection
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F32]
+Caption=Pipe shape :
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F33]
+Caption=Pipe size :
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F34]
+Caption=Pipe material :
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F36]
+Caption=Comment :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L3]
+Caption=VCR
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L4]
+Caption=MPEG
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L5]
+Caption=Photo
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L6]
+Caption=Grade
+DataField=SO_Rate
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F3]
+Caption=Inspection pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F4]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F5]
+Caption=Road :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F6]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F7]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T3_F8]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C3]
+Caption= Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C4]
+Caption= Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F0]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F3]
+Caption=Manhole Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F4]
+Caption=Date :
+DataField=NI_LastModifiedDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F5]
+Caption=Manhole name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F7]
+Caption=Street :
+DataField=N_Streetname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F8]
+Caption=Map #. :
+DataField=N_MapNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F9]
+Caption=VCR # :
+DataField=NI_VCRNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F10]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F12]
+Caption=X Coordinate :
+DataField=N_NodeCoord_X
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F13]
+Caption=Y Coordinate :
+DataField=N_NodeCoord_Y
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F14]
+Caption=Z Coordinate :
+DataField=N_NodeCoord_Z
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F15]
+Caption=Depth:
+DataField=N_DepthToInvert
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F16]
+Caption=Street :
+DataField=N_Streetname
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F17]
+Caption=City :
+DataField=N_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F18]
+Caption=Situation :
+DataField=N_Situation
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F19]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F20]
+Caption=Chamber Diameter:
+DataField=N_ChamberDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F21]
+Caption=Chamber Material:
+DataField=N_ChamberMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F22]
+Caption=Cover Diameter:
+DataField=N_CoverDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F23]
+Caption=Cover Material:
+DataField=N_CoverMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F24]
+Caption=Invert Shape :
+DataField=N_InvertShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F25]
+Caption=Invert Diameter :
+DataField=N_InvertDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F26]
+Caption=Invert RL :
+DataField=N_InvertRL
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F27]
+Caption=Invert Type :
+DataField=N_InvertType
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T4_F36]
+Caption=Remarks :
+DataField=NI_Memo
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F0]
+Caption=City :
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F3]
+Caption=Manhole Pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F4]
+Caption=Date :
+DataField=NI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F5]
+Caption=Node name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F7]
+Caption=Street :
+DataField=N_Streetname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F8]
+Caption=Map No.  :
+DataField=N_MapNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F9]
+Caption=VCR No. :
+DataField=NI_VCRNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F10]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F12]
+Caption=X Coordinate :
+DataField=N_NodeCoord_X
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F13]
+Caption=Y Coordinate :
+DataField=N_NodeCoord_Y
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F14]
+Caption=Z Coordinate :
+DataField=N_NodeCoord_Z
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T5_F15]
+Caption=Level :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C2]
+Caption=Street :
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F3]
+Caption=Inspection Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F4]
+Caption=Date:
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F7]
+Caption=Sewer category :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F16]
+Caption=Place:
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F17]
+Caption=U/S MH:
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F18]
+Caption=Pipe shape:
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F19]
+Caption=Road:
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F20]
+Caption=D/S MH:
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F21]
+Caption=Pipe size:
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F22]
+Caption=Loc. details: :
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F23]
+Caption=Tape no.
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F24]
+Caption=Material:
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F25]
+Caption=Catchment
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F26]
+Caption=Section length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F27]
+Caption=Lining:
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T7_F28]
+Caption=Remark :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C2]
+Caption=Street :
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F0]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F3]
+Caption=Inspection Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F4]
+Caption=Date:
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F7]
+Caption=Sewer category :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F9]
+Caption=PLR suffix :
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F15]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F16]
+Caption=Place :
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F17]
+Caption=U/S MH :
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F18]
+Caption=Pipe shape :
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F19]
+Caption=Road :
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F20]
+Caption=D/S MH :
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F21]
+Caption=Pipe size :
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F22]
+Caption=Loc. details :
+DataField=S_LocationDetails
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F23]
+Caption=Tape no. :
+DataField=SI_MediaNumber1
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F24]
+Caption=Material :
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F25]
+Caption=Catchment :
+DataField=S_Catchment
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F26]
+Caption=Section length :
+DataField=S_Sectionlength
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F27]
+Caption=Lining :
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T8_F28]
+Caption=Remarks :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C3]
+Caption= Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F2]
+Caption=Company Information
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F3]
+Caption=åÆ
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F4]
+Caption=Project name :
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F5]
+Caption=Contract number :
+DataField=SI_ContractNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L0]
+Caption=No.
+DataField=S_Counter
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L1]
+Caption=U/S MH
+DataField=S_StartNode
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L2]
+Caption=D/S MH
+DataField=S_EndNode
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L3]
+Caption=Date
+DataField=SI_InspDate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L4]
+Caption=Road
+DataField=S_StartStreet
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L5]
+Caption=Tape No.
+DataField=SI_MediaNumber1
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L6]
+Caption=Material
+DataField=S_PipeMaterial
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L7]
+Caption=m
+DataField=S_Sectionlength
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T9_L8]
+Caption=(m)
+DataField=SI_InspectedLength
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_C5]
+Caption=Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F0]
+Caption=Place:
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F1]
+Caption= Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F2]
+Caption=Company Info
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F3]
+Caption=Satellite Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F4]
+Caption=Section # :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F5]
+Caption=Section name :
+DataField=S_Sectionname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F6]
+Caption=Section length :
+DataField=S_Sectionlength
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F7]
+Caption=Start MH :
+DataField=S_StartNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F8]
+Caption=End MH
+DataField=S_EndNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F9]
+Caption=Material :
+DataField=S_PipeMaterial
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F10]
+Caption=Shape :
+DataField=S_PipeShape
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F11]
+Caption=Lining :
+DataField=S_Lining
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F12]
+Caption=Section Type :
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F13]
+Caption=City :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F14]
+Caption=Street :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F15]
+Caption=Situation :
+DataField=S_Situation
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F16]
+Caption=VCR # :
+DataField=SI_VCRNumber1
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F17]
+Caption=Date :
+DataField=SI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F18]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F19]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F20]
+Caption=Rate :
+DataField=S_Rate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F21]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F22]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F23]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F24]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F25]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F26]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F27]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F28]
+Caption=Preset :
+DataField=SI_CameraPreset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_F29]
+Caption=Remarks :
+DataField=SI_Memo
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T13_L6]
+Caption=Rate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C2]
+Caption=City:
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F1]
+Caption=Logo :
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F2]
+Caption=Company Info
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F3]
+Caption=Satellite Inspection Picture
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F4]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F5]
+Caption=Road :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F6]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F7]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T14_F8]
+Caption=PLR suffix
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F31]
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_F35]
+Caption=Lining :
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F3]
+Caption=Inspection summary
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F5]
+Caption=Project Number :
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_C5]
+Caption=Email
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L1]
+Caption=Total Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L2]
+Caption=Inspected Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L3]
+Caption=Not inspected Length of sewer network
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L4]
+Caption=Total Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L5]
+Caption=Inspected Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L6]
+Caption=Not inspected Length of house connections (satellite)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L7]
+Caption=Number of Sections
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L8]
+Caption=Number of house connections
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L9]
+Caption=Number of Photos
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L10]
+Caption=Total Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L11]
+Caption=Inspected Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L12]
+Caption=Not inspected Length of sewer network (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_L13]
+Caption=Number of Sections (abandoned)
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T17_F8]
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F6]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F7]
+Caption=Contact:
+DataField=P_InCharge
+Font0=1;8;0
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F3]
+Caption=Table of contents
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_F5]
+Caption=Project Number:
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T18_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T6_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T10_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T11_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T12_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T15_F0]
+Caption=wincanlogo.jpg
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T15_F1]
+Caption=wincanlogo.jpg
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T2_L7]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F0]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F2]
+Caption=Location
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F3]
+Caption=Format
+CType=0
+FreeText=MSCC WRC 3
+Width=0
+Visible=0
+
+[RptItem P1_T19_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F4]
+Caption=Operator
+DataField=SI_Operator
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F5]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F6]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F7]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F8]
+Caption=Contractor
+DataField=C_Name
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F9]
+Caption=Site
+DataField=C_Name
+CType=2
+Width=0
+Visible=0
+
+[RptItem P1_T19_F10]
+Caption=Client
+DataField=C_Name
+CType=1
+Width=0
+Visible=0
+
+[RptItem P1_T19_F11]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F12]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F13]
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F14]
+Caption=Project
+DataField=P_Name
+Font0=4;8;0
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P1_T19_F15]
+Caption=Date
+DataField=P_Date
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F6]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F7]
+Caption=Contact:
+DataField=P_InCharge
+Font0=1;8;0
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F1]
+LogoFile=wincanlogo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F3]
+Caption=Table of contents
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C3]
+Caption=Tel.:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F4]
+Caption=Project Name:
+DataField=P_Name
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_F5]
+Caption=Project number:
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T18_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F0]
+Caption=Place :
+DataField=S_City
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F1]
+Caption=Logo :
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F3]
+Caption=Inspection report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F4]
+Caption=Date :
+DataField=SI_InspDate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F5]
+Caption=Job number :
+DataField=SI_JobNumber
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F6]
+Caption=Weather :
+DataField=SI_Weather
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F7]
+Caption=Sewer category:
+DataField=S_SectionType
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F8]
+Caption=Section number :
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F9]
+Caption=PLR suffix:
+DataField=S_PLR
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F10]
+Caption=Present :
+DataField=SI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F11]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F12]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F13]
+Caption=Preset :
+DataField=SI_Preset
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F14]
+Caption=Cleaned :
+DataField=SI_Cleaned
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_F15]
+Caption=Operator:
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L6]
+Caption=Grade
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C1]
+Caption=Street:
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C2]
+Caption=City:
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C4]
+Caption= Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_C5]
+Caption= Email:
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F0]
+Caption=City :
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F1]
+Caption=Logo:
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F2]
+Font0=2;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F3]
+Caption=Manhole Pictures
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F4]
+Caption=Date :
+DataField=NI_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F5]
+Caption=Node name :
+DataField=N_NodeName
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F6]
+Caption=City :
+DataField=N_City
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F7]
+Caption=Operator :
+DataField=NI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F8]
+Caption=Node number :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F9]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F10]
+Caption=Present :
+DataField=NI_Present
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F11]
+Caption=Vehicle :
+DataField=NI_Car
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F12]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F13]
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F14]
+Caption=Cleaned :
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T4_F15]
+Caption=Rate:
+DataField=N_Rate
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C0]
+DataField=C_Name
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C1]
+Caption=C_T
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F0]
+Caption= City:
+DataField=S_City
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F1]
+Caption=Logo:
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F2]
+Caption= Company Info
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F3]
+Caption=Satellite Report
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F4]
+Caption=Section length :
+DataField=S_Sectionlength
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F5]
+Caption=Counter:
+DataField=S_Counter
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F6]
+Caption=Section name :
+DataField=S_Sectionname
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F7]
+Caption=Street :
+DataField=S_StartStreet
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F8]
+Caption=Start MH :
+DataField=S_StartNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F9]
+Caption=End MH :
+DataField=S_EndNode
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F10]
+Caption=Material :
+DataField=S_PipeMaterial
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F11]
+Caption=Size/Shape :
+DataField=S_PipeShape
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F12]
+Caption=Operator :
+DataField=SI_Operator
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F13]
+Caption=Vehicle :
+DataField=SI_Vehicle
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F14]
+Caption=Camera :
+DataField=SI_Camera
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_F15]
+Caption=VCR # :
+DataField=SI_VCRNumber1
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L0]
+Caption=Position
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L1]
+Caption=Code
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L2]
+Caption=Observation
+Font0=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L3]
+Caption=VCR
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L4]
+Caption=MPEG
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L5]
+Caption=Photo
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T13_L6]
+Caption=Rate
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F1]
+LogoFile=User\logo.jpg
+LogoPositionRight=0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F3]
+Caption=Inspection Summary
+Font0=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F4]
+Caption=Date:
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F5]
+Caption=Project Number :
+DataField=P_Number
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F9]
+Caption=Place:
+DataField=S_City
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F10]
+Caption=Road:
+DataField=S_StartStreet
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F11]
+Caption=Upstr. MH:
+DataField=S_StartNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F12]
+Caption=Downstr. MH:
+DataField=S_EndNode
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F13]
+Caption=Pipe shape:
+DataField=S_PipeShape
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F14]
+Caption=Pipe size:
+DataField=S_PipeDia
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F15]
+Caption=Material
+DataField=S_PipeMaterial
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F16]
+Caption=Lining:
+DataField=S_Lining
+Font1=4;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C0]
+DataField=C_Name
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C1]
+DataField=C_Street
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C2]
+DataField=C_Location
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C3]
+Caption=Tel:
+DataField=C_Phone
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C4]
+Caption=Fax:
+DataField=C_Fax
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_C5]
+Caption=Email:
+DataField=C_Email
+Font0=1;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F6]
+Caption=Contact :
+DataField=P_InCharge
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T17_F7]
+Caption=Date :
+DataField=P_Date
+Font0=1;8;0
+Font1=5;8;0
+CType=0
+Width=0
+Visible=0
+
+[RptItem P2_T2_L7]
+CType=0
+Width=0
+Visible=0
+
+[ClassColorDefault]
+ButtonColor0=32768
+ButtonCaption0=1
+TextA0=Brick: No Structural Defects<vbCrLf>Pipe: No Structural Defects
+TextB0=Acceptable Structural Condition
+TextOrder0=1
+ButtonOrder0=32768
+
+ButtonColor1=16711680
+ButtonCaption1=2
+TextA1=Brick: Minor cracking, Surface mortar loss, Spalling slight, wear slight<vbCrLf>Pipe: Circumfrential crack, Moderate joint defects, Spalling slight, Wear slight
+TextB1=Minor collapse risk in short term but potential for further deterioration
+TextOrder1=2
+ButtonOrder1=16711680
+
+ButtonColor2=33023
+ButtonCaption2=3
+TextA2=Brick: Total mortorloss without other defects, single brick displaced, Deformation up to 5%, Spalling medium, Wear medium<vbCrLf>Pipe: Fractures with deformation up tp 5%, Longitudinal cracking or mulitlpe cracking, Minor loss of level, More severe joint defects, Spalling medium, Wear medium
+TextB2=! Collapse unlikely in near future but future deterioration likely !
+TextOrder2=3
+ButtonOrder2=33023
+
+ButtonColor3=16711935
+ButtonCaption3=4
+TextA3=Brick: Total mortorloss with deformation greater than 10%, Deformation up to 10% and fractured, Displaced/hanging brickwork, Small number of missing bricks<vbCrLf>Pipe: Broken, Deformation up to 10% and broken,, Fractured with deformation 5 - 10%, Multiple fractures, Serious loss of level, spalling large, wear large
+TextB3=!! Collapse likely in foreseeable future !!
+TextOrder3=4
+ButtonOrder3=16711935
+
+ButtonColor4=255
+ButtonCaption4=5
+TextA4=Brick: Already Collapsed, Missing invert, Deformation over 10% and fractured, Displaced/hanging brickwork and deformation over 10%, Extensive missing bricks<vbCrLf>Pipe: Already collapsed,  Deformation over 10% and broken, Extensive areas of fabric missing, Fractured with deformation over 10%
+TextB4=!!! Collapsed or collapse imminent !!!
+TextOrder4=5
+ButtonOrder4=255
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate0]
+TemplateNumber=0
+TemplateName=Color code template 1
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate1]
+TemplateNumber=1
+TemplateName=Color code template 2
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate2]
+TemplateNumber=2
+TemplateName=Color code template 3
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate3]
+TemplateNumber=3
+TemplateName=Color code template 4
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate4]
+TemplateNumber=4
+TemplateName=Color code template 5
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate5]
+TemplateNumber=5
+TemplateName=Color code template 6
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate6]
+TemplateNumber=6
+TemplateName=Color code template 7
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate7]
+TemplateNumber=7
+TemplateName=Color code template 8
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate8]
+TemplateNumber=8
+TemplateName=Color code template 9
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[ClassColorTemplate9]
+TemplateNumber=9
+TemplateName=Color code template 10
+
+ButtonColor0=&HFF00
+ButtonCaption0=1
+TextA0=These codes describe the physical condition of the sewer and the severity of the damage
+TextB0=STRUCTURAL CONDITION
+TextOrder0=1
+ButtonOrder0=&HFF00
+
+ButtonColor1=&H00FF0000
+ButtonCaption1=2
+TextA1=These codes describe the capability of the sewer to meet its service requirements and indicate loss of capacity, potential for blockage and watertightness
+TextB1=SERVICE DEFECTS
+TextOrder1=2
+ButtonOrder1=&H00FF0000
+
+ButtonColor2=&H000080FF
+ButtonCaption2=3
+TextA2=These codes define features relating to the construction of the sewer
+TextB2=CONSTRUCTIONAL FEATURES
+TextOrder2=3
+ButtonOrder2=&H000080FF
+
+ButtonColor3=&H00FF00FF
+ButtonCaption3=4
+TextA3=These codes define general items concerning the sewer
+TextB3=MISCELLANEOUS FEATURES
+TextOrder3=4
+ButtonOrder3=&H00FF00FF
+
+ButtonColor4=&H00808000
+ButtonCaption4=5
+TextA4=Collapsed or collapse imminent
+TextB4=Brick Sewers: Already collapsed, Missing Invert,Deformation >10% and fractured, Displaced/hanging brickwork and deformation <10%, Extensive areas of missing brickwork Clayware, concrete and plastic pipe sewers: Already collapsed, Deformation >10% and broken, Extensive areas of fabric missing, Fracture with deformation 10%
+TextOrder4=5
+ButtonOrder4=&H00808000
+
+ButtonColor5=
+ButtonCaption5=6
+TextA5=
+TextB5=
+TextOrder5=6
+ButtonOrder5=
+
+ButtonColor6=
+ButtonCaption6=7
+TextA6=
+TextB6=
+TextOrder6=7
+ButtonOrder6=
+
+ButtonColor7=
+ButtonCaption7=8
+TextA7=
+TextB7=
+TextOrder7=8
+ButtonOrder7=
+
+ButtonColor8=
+ButtonCaption8=9
+TextA8=
+TextB8=
+TextOrder8=9
+ButtonOrder8=
+
+ButtonColor9=
+ButtonCaption9=10
+TextA9=
+TextB9=
+TextOrder9=10
+ButtonOrder9=
+
+[PipeColors]
+EvaluateField=S_SectionType
+
+
+[ColWidths]
+grid_o=0.036;0.036;0.032;0.037;0.311;0.047;0.186;0.061;0.044;0.05;0.081;0.079
+grid_s=0.059;0.027;0.027;0.112;0.272;0.148;0.059;0.157;0.139
+grid_s_detail(0)=0.044;0.134;0.209;0.113;0.067;0.055;0.088;0.115;0.086;0.089
+grid_s_detail(1)=0,089;0,088;0,102;0,107;0,115;0,122;0,145;0,144;0,088
+grid_s_detail(2)=0,178;0,209;0,115;0,121;0,063;0,082;0,144;0,088
+grid_s_detail(3)=0.125;0.125;0.133;0.617
+grid_s_detail(4)=0.127;0.222;0.13;0.118;0.095;0.079;0.112;0.086;0.031
+grid_s_detail(5)=0.35;0.129;0.119;0.173;0.199;0.03
+grid_s_detail(6)=0.126;0.874
+grid_s_detail(7)=0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1;0.1
+grid_nls=0.094;0.906
+grid_n_cover=0.126;0.201;0.28;0.182;0.211
+grid_nl=0.046;0.048;0.09;0.064;0.071;0.087;0.16;0.06;0.061;0.23;0.083
+grid_no=0.04;0.053;0.079;0.36;0.065;0.056;0.067;0.073;0.207
+grid_n_detail(0)=0.053;0.143;0.152;0.175;0.174;0.173;0.116;0.014
+grid_n_detail(1)=0.197;0.327;0.174;0.172;0.108;0.083;-0.061
+grid_n_detail(2)=0.197;0.156;0.171;0.174;0.337;0.103;0.003;-0.141
+grid_n_detail(3)=0.197;0.156;0.172;0.174;0.301
+grid_n_detail(4)
+grid_n_detail(5)=0.075;0.107;0.123;0.162;0.072;0.054;0.295;0.147;0.149;0.003;-0.187
+grid_n_detail(6)=0.073;0.234;0.16;0.127;0.094;0.201;0.111
+grid_n_detail(7)=0.132;0.245;0.088;0.131;0.068;0.176;0.059;0.059;0.042
+grid_f_node=0;0
+grid_f_section=0;0;0;0
+grid_reha=0;0;0;0;0;0;0;0;0;0
+grid_reha_n=0;0;0;0;0;0;0
+grid_reha_s=0;0;0;0;0;0;0
+grid_das4=0.111;0.111;0.111;0.111;0.111;0.111;0.111;0.111;0.111
+grid_das5=0.089;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034;0.034
+
+[ProfileOSD]
+CurrentProfile=Default
+0=Default
+DefaultH=S_City::S_StartStreet::S_Location:0:S_StartNode:S_SectionFlow:S_EndNode:::-1:S_PipeMaterial:S_PipeShape:S_PipeDia:::-1
+DefaultM=S_Counter:SI_InspDate:S_City:S_StartStreet:S_Location:SI_Weather:SI_ReasonOfInspection:S_PipeMaterial:S_PipeShape:S_PipeDia:S_StartNode:S_SectionFlow:S_EndNode
+[Symbol_Manhole]
+SymbolField=nodename
+[Symbol_Obs]
+SymbolField=opcode
+                                                                                                                                                                                                                                                                                                                                                       ï:=Ÿ$ù¦îuBt§v:Ã¸ÌÉaä`L†T9úƒj¥ä@ˆ§È>`Ì;ÿ …Z…ZIeË’qÊÇh>˜«7NlàC$m!TdŠºµ#otæT¤·F,Q‰™LşL†.Ab2}ñO{ˆYÕ£HßÜC,¾ZıvàÇš·5½°fdT‘AÆğ»©mìEäªƒt—rª9QÛ±ÍrK•îj¥(û¨£pÂ+P%0‰³Ä‘Ûj{p¥<ãpò”\:ÕÙ![;Ø·Äa›;H¿Ş†£}¶k4ªæ  DÈ~¼~”âç5t¬EÉØ§pû"HíÒYY²1…\â«Û$Vsítxş\|ÁØkB8D°=Ë„ür9Ç× `T"Ş6ØñF¦5?8¹lşšmm°¥£²"µ‘DoLM‘æ§ÈsÔ’y¥†8d¶h&eVÄ‘ÆŒAÿ tcé7ÏåÇuëNTıJë$Ê¹\n¤G}¥tå®£…>}YZ.k¥‘ÚÜN í'ğÏ4—71ÌN2Ëû±Nßè*ÔáT»Xãd¸Bqß­$6’]fku9#ÏÛ‰.WÍ&k$ ¶±([hƒóÈÇi19>¦®<ˆ7ógu
+»¨öâœÖŒgÍ¾b91 ü*½ì	âæWvÚÅ¦`OÏì@ëùŠjóW¾‡•Vì‰'º†àÛ¬V6ãå,¯‚GâN*µµ›ù½‘Ú,dDp'×Ş¤T†XêE!…ÛK°U_L`qVÄq»Ç(°o4XeÁÿ pT•Ü™¼œš÷…Sh,itˆ@Ê¢œõæ«¾lX™§eû®¼*ÿ YKa{*‹….z2Ü9©ü§mYUSë"o¯Òšå’\¦\ÎŞê)ƒ€¹óc“ìîCêØ8Ç¹§¦_š44§æfŸ0=2I?¥;t×‘«-¹‰óÂ¨’¿\š{wYRkIH¢à†SôÆ:jTÒvÜU)ó®i=ˆRÉa„	¦vrr¤ôR}Å1æ7ÿ g1‘8 Ÿ_ZpÂÅ»´’ÄMï—ßœ
+µX%yåEe\?Ò¹_4Û4Œô²3æ¶0åÄ‘8 &Ò8?-¸’Õœ¤À£.6ıÜ{rjÔa/juù†æ?€8¦O,R²ºùŒã‘Ãóíš¾k;E–š‡MHvD/†L` zÒ[Û‡‘öä˜ˆÜ€¬áš¿ªß!ù/‘…‰¡ùñêzšU¾Ş/İİù8a4!—?ìŒqW5­vsÍIÎÍçº·’$„ŞÈU‰$Ó&vEáËƒïÇ5d+ÍpfY­˜ày|®qÅ-Ä$òâœ­º1ãÿØÿà JFIF       ÿÛ C ÿÛ CÿÀ è m" ÿÄ           	
+ÿÄ µ   } !1AQa"q2‘¡#B±ÁRÑğ$3br‚	
+%&'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzƒ„…†‡ˆ‰Š’“”•–—˜™š¢£¤¥¦§¨©ª²³´µ¶·¸¹ºÂÃÄÅÆÇÈÉÊÒÓÔÕÖ×ØÙÚáâãäåæçèéêñòóôõö÷øùúÿÄ        	
+ÿÄ µ  w !1AQaq"2B‘¡±Á	#3RğbrÑ
+$4á%ñ&'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyz‚ƒ„…†‡ˆ‰Š’“”•–—˜™š¢£¤¥¦§¨©ª²³´µ¶·¸¹ºÂÃÄÅÆÇÈÉÊÒÓÔÕÖ×ØÙÚâãäåæçèéêòóôõö÷øùúÿÚ   ? ü¿µ¶‘ãf…•³ó\íì=Iÿ _J½g¥Á”tù‰Æ¨P8G'üçƒ[ìWHüˆ¼´Œ“+ğù=IAïUä-dÊñ´¦Wã1œú`ñ_#:·¢Ú³æ•œo«Óºvî»ô>ÖYF¥šÒûkké¯Dßı¼ÿ C>êÎw¡!I@L½~½}ÍSòâXØ•Pèq‘Á8’;“×8üNyŞ6X8ÚFNHİãœŸ§ÿ ^±¤Ş·êÑ¢lmíƒÜızsŒısVªËÙB›ÙZÊşöÊËfûïÓä)4ê_ì9EßMZ¶Ïmß}<úQÎô%AR8ÜÇ gœŸóŞ²/Q<²Ë+3ƒF1Aè}kgQ–5%2O /#éœÿ õºv®~`å°y’9o|_`0k|=uÖ“¶ÊÎïV¢¯£OççÚÄ¹¹V„"›z+­’ºWºòµÒÕèd˜ÂşòC¸®0Fsøã°ïŸ\TJ×3?Ë"ƒÃáÇå×ÛúVÏ pÜ|¸ vê=~™Æ:óŠÑxå„*ÁÚ0[¯ù~Ù®DÚ›Qo™Ù¦´í÷k×üÏKÂ>U{­uÖúk¯gùèsWód>r&Gú¼ãœqŠä%ÔÚW""6®ys¾˜ ûV÷ˆ¡šU ’Kg n>şŸ^&ÛGÔ<ÄƒoâÉÇ^ÀsÓÒºğñ´Rr÷­ßmŸ+k³êxêº„ùøš¶»l£³ë§[o¥‰nŞîâu‘$À\p3‚G§?Ï5Fùµ1.FN€€{wãüñ^ƒ¤éQâGŒ±ê„Œã ò=qÛıjÜEĞ(Ø ÏøŸn˜ôæŠ¸†ß$^×O[ßo3g'¦’ßW³åü¶]_ây”RI†"3×pÀı~µbKx7Œ{ŸÈôéøW£Ç§£1ó"EŒä·§üûtõ¬ùì­’BHAö®¬<jÖ+M¥¯^ı>õøís4ãí{İwşîÏ¢ßKŞÚ½Qô„Ó¬Œ¨#;³‡*£#ÜzçÜ`dñëÙjŒAÆæøÉİêµ¼¢YRHË1q¸c©ÈêúÔ³M*L¤Œ‡ úóØ1^u
+jV´‹º]Ş—ü7ÕÙ­úÓQjJ6Kš×Õ_mwİëÙí±GÉxØªì+•¹êqş¼sYë*Ü ´²åºq™>£ëúU›ËÂÎèÈÑ ù€„rWØóÏ×¯8ËŒÙ²í‰Ü¨$³dç=Iúõíß®u"«4–©5½‹¿–Ú¯lK^í8]»$íÒÖ»ÓV¼Ûô(İMûÀÉ?!Î <Ÿ¯ëúšÊ·‚òt<N¨<“Çû‚şæÔÈËö“xRr<ã?‡µ-–$,¬¡•¸Aù`ôÏ_~ÔèÖ©6ã(µ[[jô·üé'ìmmeew×Nÿ ƒ×NŠí@ÚüÌ~7`G·L~>½ø¨îç‰ÁbÅÎ#ôÁúq×4B°ê í’8§~½‡çPOol§·v8Éúg¿§éÅ,L!í`Ó”º-^Ë¢Óï·VvJ³©ù\¹V¶¾D¿6öKCš¸·7»qUÏ~İsÔÓ+’Öî¦³‹Ê‰İU›9Á ƒ¶;Ÿğ¯GœÛÇœœ`œcí×¯¶+ƒ×.Q£u(¬1´Óû¼üñÏ¦k²rPnË½ï¢Ó·ùv<§F^ÓÚI®[§¥×U¦ÿ ü˜‡U˜§Ë;«ê@'Û¶9ı{Uc¬İG:ÆÓÉ#6®IÏä~‡üqTÈaÄjI'œ™?LŸ|ÖÅ’9WuÚÀg,9 öãÿ ¯Çµh¨ÓŒí£åz´îï§ùuûŸNŠ’“²‹ÓMÖµö¿~¿7Ğ×´×/"dùˆÆ:Ÿç×œV¡iåùŒd{c>ı°*Š,VÅXF$~{Ğñşuui€ […Çr'=úõ½;Ön•¹4½¯m½ªÏğvWFsš‡VŞ—¿}5Zvßå­Ïq´¼‚hT[È£å
+NìKgŒõ=Ç&¦›hAæ;3ò°blóÓ9Èúg'‰¥Gomò‘˜à}ì“»ä:ã?‘5©%Ä+Y¤‰Dg—9§ü}ñÎqåÒœ•H9.X{­é­­¾Ÿ-;.ÇµZå
+m+µyuÒÚù•»'îF„¨bNï›pô#zdãúVõğ…Jùg¢g#$ÿ .8äÖşÈ»–ûÜîç¨ÀŒı}:W3©Än¦!·gŞ#?7©útíâµ©N>×Û(èö‹é¶¯³}WKïª<ÙB*¤ù[”´Zì•–Ïn‰t¾µñ-`kËÃ#¡1““ÆÎcÿ ×÷®¡¢ u¢c?C×œuõéQÚÃ©F•@¹ù°6@O¿¯Z‚yÖI]cpÜä…à{×¿zÎi¹G‘Ùi²ÛÊı^}éÂº«õwÛ£vÙÚÏNß3ÈP/«r“îHë×éïT§ºÀb±0?('9#ğÏOñ¨®'HT“Ÿ”SïÎ{}8úVDåe`Áò§¡-Ÿ^½†O·ø×NŠ…UV_¼œ£}TvWÕï»Óüï„ªÅ+FÉ'vô¾–³Zê’¿ÜÊ÷3Í<¤¯#§9Ûƒ|ÖMüJà¡a¼tàc9ïÛ“ÈÍo4Såut9ÛÏ¾OA×â³LV æyÕ˜Âãû·Óúû×­Vôé¹E--~ÚÛo•¿&âëÙ%{nÖ‹Tº]hŸwDŒ‹KE„"«î9ÎÑÈüˆÿ ©ÍhI)	‚ØÀô=:÷Çùo-Ğb ¤ƒÆâ08úŸAÔtâ£‹S„6éĞm_ †qŒÇ¯jò#RSæ”S»•µù]]÷½Ì*ÉÂ|ÖİSİùt·nûØ±5 H•Õ‰lnädùgóàW1y,é/SÎzgéíú×B·éu# GÓ väŒuÀÁ8ïÔUiíÒWÜ#ÈçzŠô°Ô[=K[K'gÛåu·®º‰A´ìßO/Åym·[³İ#ò—dˆAçÁÏCÀÁ3üŒšÈ½š'‘£
+KãÇP3Ï^Ÿ[^P
+À/È‰¸²<Æ |«ß9ã}åÂ¦G(‡`ÚŠë¼ç b3ƒßúWƒ)ÏÚP„`åt®ú$¹}¿––î÷ê—5ÔS|öŒW÷/oÇò~ˆÏi'b±¢Hø8uÁç'€£ÿ ¬=¹jÛì†aêM
+ƒ–uáÆvõëÇLùæ°ßWP²•‘	İH¹éŞ¡“SšáüµÜ¬Çq‘€©ÏoğôÏUoh¥é+öÛD®“ë¯{–©òó+ŞËW½öº·eå¥÷¶†åÒÃ#:¡(1Ø®Ib ğ	?çœÖKÆ±äFª¹ïèsÏ©99õ’@fR¢YT‚2Kãúã'­f]M ‘ŠÈr	ïÁ<ôÏı­iÒæz-#«%®ß•üµ0½I;-¶²ºÓNÉ}ë½…;ö–qå¶İ£å2ÿ úU  µ]­"ç®wsŸş·\ôäÓîf•a.$Œn'j/_©<{ƒŒóÀÍqz›¤‡l’È¬FFÜ÷ëÏçZĞn½U
+JÜº9o¶’Õİ/ÇEåbkSP‚NÊú¿=¬µ½ºöímIµ‹Ë¨şkIšQŸ¸±îxéôÁëŸJÉ[Ù1!òänI!›1üı*…»N.£„16ûÔÊÇvvç$œGÜû
+öíBo·†b?fûB8ÔG(¡å`>g•ÏrxQÇ'$ïˆU?†§héÌÛW{lôı?;uÑıÕËñ4’}“K—D´Z£ÆÈºÏ,J‚GSôøëô'Ò®¦£o$~[=r}Gù?ãVöı«h(D£•Sœó’HÉıOlVtÖ
+Òª¯MİO'ñëÏ ¬èÒ”dÔ)ó¤¯v÷zYëgı\å’4Û÷§-nß}íÓğû¯®ıŒöÂ3ÊÆ£×'°éÇĞŒvëšÜõ6(„#€>f*§¹Ç¯¹ÎyÍppÙËâÒù¹à§?©Å_‚XH–V# dë~”NuT½çn©+İj¼šzùyo¾S­i7¬»+;m~­tº=§Uñ-½Š4I)‘›ˆÀaÃğ:}AÀüMp·ÅÌ¤eÃ;¶FÉúÀúúq—Äww&[ÁˆÆHU °†Xàõ=Ï=ß$–Á÷@ğ@8İƒÏşsÖ¹ âœ~Ú)%uvôûÛßNËNªÛœ=ë¾kßVıß»õmßS6ûR¸Y“)†SËÉüòWr~½«JÃY{–*à ûåºíÆN8äç5“}$ÆicA =Nzp¼İ~µ‘üw­´ÜeŸD‹1Õ‹tÇqÏ°#“[BŒï®)Á[Ş“²²KK_³ó}uĞÒe$õOW­ŸKmé¢ëç{‰qªíŒ¨.ïŒ*	>À÷j£ö†xòèK¸ëJç§O_§İ*»Y¢¬n²Êì _<tÁ c<ùçÚŸ•–D@x°O®G@?Çšêœ©N–E½%Ë¦ŠÊïk.Ş{m`XˆórÅ]é®é»®Ö¾¶ZwWSÄîÀÛÀÇAŒ}ãÎG·åT/uï!UXcœª3õbFNzò{»Ë},k¥–›ixUDÜÌŞ¼c¡ã'úó…â/Şøe‰ÔÉÀSÔ™ÈÏ#·sšä£V4S4ÛømÛ{jûn¯£üÉä•j‹é¾útVÛşî9Û+–a#’xû»q½x#?ãŒ^’'Éüª{©àõéĞúb£şĞ
+çk/ÉŸ—=8ÇGNN:ÖåÅÔÜ´…0pœõç·éÚ·…
+Õf›V¾¾Im¯Éõß]QÕZĞ§Å­Úè¶é«ÑtÓ×¢Ğšú#˜ ŞBdœş=OÓµT³£ªGeîÍ‘Ïáÿ ê¬Kkƒ(hbR'swõå‰üO^½x«AÒÜògœœúôş½=9æ½jtaF^íüNïEîúë®·ô{Üóe')iª»^VÓå²{î·ß]7»œ°<ä8Ç|sHÏ·Zwêã=òúçüj)¯m¼œ•êF;t~NEs¯$Lìr[qüÿ È®9J„[åNoM—Âî¯®½®5ÓNW“»¶Úk{i¿§mšZíé‰í' ¸éùŒyéëöc±¸\¸"%<’ÄÄvôéÏ8óVåÔ£¶%mâi $—$m ã'İøÔ÷ÎjZ•åÊ8Œ@çnAOà¯ÙIMNz4´ºi'¥¢¼öİıû?GìjKÙE¯zKD“²mnÓo¢ÑõÓ¹§§K| ó€1H	ä—QØ÷sßkÑ¼àËfê‘à±€¨¹¸xˆP£Æ„ãs·|ƒ˜ãÎ4v¸‰•§fVVË3rO|cĞûçğ¯Yƒâ¿oaı™c5½½ºÆb;tY #ibåyfè\óƒ€-t}kš.’æ•—-–©^××mt½¬·9±„at•–—²^õídí·šë×Ec§ñÅ–‹¦¬vZtq—@i©ÛÉr9gî@8^€àWİGç²í–20xÎ§=;T÷ÜO¹®'–Y$%‰-•õ9$òIëŸÀóXÒŞÃöáùb‚„ägƒŸĞâ³TdômÅ>–³W¶ö[öV~«b)Â4ã}¥g¦–Û»¿õ¶×î¼-¯\Gs	2“– ·°V#¯¦NsY~;ñEÇ‰îæö ÑÇ.”m\'9=ù9ÎO$æ¸fÖ%–æP:3“’sØvüñÀäÕY~ßzûQÚ5l–zóĞqş{WuR¦­óMï)zt]5ı{	â!®tåfÒ]×woó_y­¦A¦^¨7Ô ù¶y8ÏQÇ§åïzö-
+ÎÙ×Î2ÊãB§$ç<’N:qêps‘i—ÕC•–`ö<õõêxëŠ¹/†ï–E™PHp9ÉaøğÏ°®iÒ¼åïK¢ì¶·“]—àyõñnnÎJËu;kÓó½º;XäÖHî¦cGbv¨è¤ûg&¯Ì±º*G.1—~¬}öõ<óí^±£ø`İF}“³œ*½~„åÔWskğóKvIjâ@Aã®x tÀÁ<f§ÚûWièßMzÙÚÚ|º%¹ËõªœÊ1N1Vé¾İ}<Ò·Ìùt›Ë¶±¹ôN íş·­]¸Q‚’g¾œ®Gé_VZøBÎÔ€°¸ äöõÇÓ¥hÛMól	Œp çóëş{bµUv·¶êí­5ïÖúß×s¦"»©­ì’OÍwûôÛMS>q[G$”3œ¡äsĞ`şœ[·Ğ®&Àî7¬ÊT;œpkß¬¾%±ğ4 ]»H q’{°ëßŸĞwv‚Ë¶P d©œc’sõ'>ŠkÌ¬ªÕzIS§£”åkÛM’Şı?¤Dqjç”äÕ’ÖV¾d’õww}¬|°|#¨0şnÑ´~'=}ù§Ÿê«TG$gÏn};uÎyãõ´^U mU<|ÊH_^ƒÏN°¦Çáo!
+ªÊÇ—+Éè	àÇa¡4'Ê¡
+4şoâ{+¥mU~–ÔÖx×RÊ	F7M·¬·O§Oşw>JÃ:ëÄÛmÜœã'$}'¯áLÿ „[Ô}‰ÙKÈA
+£cÉüqú×Ü~³Ø"0¯8ÜÁGÜ?—j×ÿ „NİLEã’è¹ı r	í8Â*siNÛ¶›ÖÍ¨§¢ÓoÎÚ˜VÄòÓm7Şû.–½İ¶ó{+3âİ/á}óÊ¬öà¯W$‘^$õà~¦½KMøa¥ù9hÊMĞ€0Oó¾ƒê8ç>útØl‰
+Š[¡
+˜8ü{{ûç<:RÜ8À1ÉÜp¹ïÈÿ õwôÇ<f£?v¦÷“¼«]ìµ×³]j2‚2–·”Ú|©ùy|ÿ §‚Ëğ«G2$²A)Ù‚¤œÃƒ¯Ó'ŸÆ´£ğv™¬9UÀË¨È÷ÀÇşºö¹,Ş%Y×!AUÈ=¸ö÷8'“œô´<;ß:BcÏ*
+åyäzçäç8Ù-4Ù'd»»~ÿ ·³„/'ÊŞ—µ­}6éın¬™æš&j¹HÈ `{vÈ;G¡ëÅÂ—1®9çy'¡ü½°;zQĞóòÆdğ8¿céÛ¯jÒƒÃ±GÃ~P¹Ï»tÏ¶søS§F1|ßŸÎÍ>š¿/-4<Úø´¥h'eÑjÚ|½÷ùh3m%UUÃcØ.}zÿ _OcŠgÙˆãÊn?Ù'ùW²Ÿ¢[ùé%¸È8RU›¡</ ¯^ÕÏM¤º¿
+Ç9åC`ÿ ?ç[òIêÒQîÚ{[§K'¦¿~‡Ÿ:øŠ²÷bí¥¾õ­´~VON†ùğÅ½ï1?“(J«3 \Œ`@MBş¾´$È¡è|`‘|cß1ßC d™DÁ÷ 	ËŒ	ç®xí‘Ö´.-®£âa+!c?z÷íŸ5ÓŒ)sTÑéËİ·u¬¤öZmİõjÇ©
+ñ›»J1I%Í¬¥²ºVÒêÍÀ×Ï!ÒícŒ°N@ÉŞ9$p>Ÿ‰ª­¥°J('%AÁUUÏ`{`W¤Aen	r¹ÈÃRJû‚ÿ «¥^M22»•„kØ*¨Ÿlc· Ï_ZP©­¥ıå«èíÕYoèkÍ%+JMü1J×é«»ëvöÒú+kåÃDğ±½7m`7¤É?
+»i£]F|×;8Âàà{“œ úã¿}sH¡XùÁ€s·=° ?€üjn-£Fß÷ˆÀôÏN9üOçÖ”aNÎS“—œ›VÑk}zèí·•š#ÙN´”ª«B-Z	¾[«ooÇ¾·ìùçğı¼ªIù]†IÁ,Rs×ğ¬ƒ£Äc€Wûçiëéşût®–ëÄV–å–HÌmÈ×Gã¥q÷ÚìR¹"¨9ËIüºg×ê:TÃFİ¦ªËK;]-µì×[§òÔöi%J)Æ”,“oFôZE%~÷z[æL–ÓC#XÜƒş±†@ëŸ¯®sÒ®Ë/Éåº«‘Õ¶?"	úİ«•‘õ[‚ÍÆŞ,@Ç^r}qÏlš?\½`½TŸ›k``w,}?>£8®ˆW­^I(µ.£tšÒş¿=×d´òëÎ›|‘r“oãw]–‹ki÷]^æÜFİ,2Û#¿n¾Ÿ­OpªÑü…Cr2 ı8üÏ®rj;/ºH³•Áêzuúş¦»‹]7N0ª‚fÀòc8Æ	=>¾œÛ»–PŠÕEµkué½¼ú§×©‹¤£ò­6mk·]¶·äìîÏ+’ô@J¤ÒI"ÿ jú‡ÜvÏck“‚TÃ+íà1_ş·ç¾kÛ§J0¶°§÷™TdõïÉç®=¹æ³¤ğµ“±!• P?>ŸçšÃÙÔ©kÍ¥t÷ïkëç_#‚S—= ’[Y-zvWÓï¾NœC*G8wleÃíœ`UÇ¦OBéRäª²˜sóã%ÜİÈ<zà~zÊ wÃCoËáPƒÎy'°ç ş“Ãe¬HDyHâf‘·) vÉÇ^;àz“^l§)è¢›µÛ•ì–½ôIitµÔö)áğÔ”dÚ”ÚMlÚÛWÑv·––1d–8›%$|¡‡Ory<õê>¦{»OİÈHçÁÜÀ (ü9÷ t×>’örÅŒc4ŒK8; <}IÇÖ®	-¨
+¨„d÷ÏÊ:g¸>ãéÂU$£:ñ†ºFnÍYk.¯ÓkŞú;9UW½’]µ“Ó«µï}V›úJL—’à‚B½ºàŸRGaÓ®qPÏ¥^¶ñTdc¸ŒáQÇãÇOlW§Ûød(Üªà+€}ÈäñÇZÕB åÎ}æsò™õşYç5Ó<-jÊ´¬›Káé£W¾é+k¯CUdİÚQŠµİ“oUğÅ/ËoÅøğ¹S%ÛI9ÁÆs^™ëŸZ®†2XÅ+)9õ ØúqØãO_£-ôˆ~èîƒ{gŸ_O§j³&‰¨¢(YJ÷ÎIÏ|İ:c¯ãY¨F*Ê’ŒRIÊnÏ¥•¾õ§NÌ©U”Ò½ôJÜ×]¾›ío=îxM¿†­­cR-‚r¤“ß'?ş¬}krßG·m»Ş˜]£ıóÉ?ZôÙtk’¦2§Ê=H 9Ï?‡^{‘Y©¤¤Símàq€N?©ïÖº!V·-•ÖîÑKm•Ûw¿à¯ÔŠmCVùÚÕE%eªë×®Ÿğ:M>WÉv=K"ãx?§jŠ-Ôœ"È¤¸¸?Nœtÿ õs]ôÖÒ¦DlZ23Óø9çüôçœÏ-Ã‘òä÷ôàúgÖ´ui»;óµm#tºiNŸğÄÎS«&ªISŠÒÉé­»ÛËO¿¥ùìä‰Â‡öÏ9ã®O¨<ÿ *‘à)%8É`¸=‡?^>•³%¡,[,ÇŸº?OÈœSÒÚë! »ÿ Ö?ç4%^¥š‡*{kn«ÍŞÿ ‡ª3\=?ƒYh´¾ú]yí{İ^úXî—J²ù	ˆåpB©Á'¯!1ù}qÓ5®Úm£[–u=j–_Èpsês^V•1göœ°BÌ=6¨8çÓŠ™7C*Æì]¦âIçØvş=üÅ$Õ”ôvÚò“ÛÑGÕ»£H©%Ê®»¶›ÓM_Mú|´z¶A¦ÀFØUAàÚ3é£‡¿5bM.(Fà›¿`®ON½€ãÜVÄvŒW€±‚uÃ¯|~cŒñÍ/*»h p7=É=ºtçĞàUG‘6¹¹›¶âû7éÿ ÖIêQ»ióÍ3m-¶Jß¯OS{2‘ä±£¨ëÔ‘“Œòq©ë	¶€6€:ƒƒØÏçÒºƒ®*wuùqØñÇ×Øóß ¨Ğ$„‘;8ëÓ§<uü»iEÅ](-v{üï¥ÕÖ·ég¾™:­ÊÑ”e+ëµ–Í÷ZyZö¹Ÿl‘¶Cª¨ûgß€9úíÖ§k‰Cyqy;=º9ë¸çxçšt–ÓP @s’n:ôÏÿ 9éMKPÖ’HÀ<›w~x uÏSíXVªÛİMô¶ËkwK¾º&¼Í)Ğ©'z•%%³W²¶ŸüFHo,ãP.`pHÏÓ€2O>¸É§¤6¨ÆÛ-Ü‚½}ÁíœçüÄ°Åb„~èHßß+¸ûä‘Ï'ëÆ*àR£ª è1’Ş¿ş¬sÇ…5.eÏ+m{Y5mí×M›IúNJŠP§ß«êöÕ¶ïåoC”ºğÕã6ø\$yÉŞØãÛ<±ÿ Æk=´/,şù•˜u8ãß#©Ï'§ô®õ`‘ó½ÜçûÙ8Ç^õçŸöÒe‡ğà±=ºtö Ÿ§jìUÕ5îÑWİé£Ñ4ºíßCP­Q9I%&¯~¶ÖÍ½÷¿NÚvÖ“ˆñ×É8ïÏ|vãéÎQ­%^90;…íí]ëiQ·*
+¼©úŸNÿ N9§+ UV×Œ/óøV2ÆÖÙG—nöÒÖ·é½ôî(ÓJÖŠOE=;õëŞÚ˜¿Ù‚ŞRY$71cŠ@Ï<r}x©"ûAMÆÖFp0›†x<õïÆJëÙw‰Bá3ß%WÛ2¿Ö¬ÜÚù‹û¦Ù úŠr1Ôqí‘ÛÎŒ!İ:“’[ı˜ßG¶îÛİ·ĞÒSœô¦ç$ş&ãÊº]í¥¼´µ¬ìqñÁ¨F/ñ nW9Æ1zp	ÏÒ´!·ş"§qÁÚù gŸS×=q~µu­.áÉwS€yÏ\ş}¹â­ÛIÆäËÓi'<àç$õïéÍmÅ7iµªÖ)+l­ëÙúÚúİ;r¨ßÖÍÙÚË}/²[[]-±qÆãlŸ!À }ÇcÛ}:â¬GKÄ„ìJñÇ uÏQîx<šº©­Œ¬H Ç'A8õíÖ¯‹gU1–ÁŠ€z“ïÏsïZ«OHs¯ïMİÚêı´¿N÷¿@„$µäJZËV•·nÚ7ÓæaKm©$±îWhÏ#€{~]z•—p†ùÀKß
+í=GN;ñøóéèÑèªÜ¡ãşzeFG|ı8ÉÏ\SG"A^ç ş½qøoy”'Úr–ŸöïK§~—Û­úô{IJßŠVÒêÖÑikmm/ú´y¤K%ÁıŞaOBÇÿ 23Ï­h¥”Ç0çŒ€8íÇN}¸ÈãÚ»Q¥Z/)€Ë”/ËŸs€ägüd[h£C„ ã>øÀ?®{¸¸inoi/(iÛwf´îí»×SkJ›Kãz$ìÚ[]Ù«·úßS•†ÁY ƒ×éÿ W ­Û{ˆÜÑ€ı;g=Ïsî:Co3>:)Á$¹öõÏùç­jEå[¨;K‚y'Û¿ÇúëíW-£IÆÖZİË¦š«y'§~÷¸ÍÎÍ©uŞö×m/n»ë¢û©¶“€œœô œÀóÇ¯øÕ&ÓİŒœßOóÚº/¶,‡gÙéùõø£ìÎù*¬ÀúcõÏ5‹´¬å
+òÕ­ıvùõv×Ş¶Ék½®İùz5¶¶½•·êsmo,ÎR8¼¤#•ÛÉ'¿o©üñI—=»nÊl<ğ‡#>¬IÇ‡ñëà” .ÊdÚ£ÉVaï“÷}ñ“ëR‘$œ,!”œ“#@ëÀ cñ5Ç¦ÎmAj—-ï¶ú%èİ÷óÖj)Û•7+h´åŠøu·ekè¯oÇ:TrÄdÊÄghÇÎ	n‡Ûüi¶ú<›¹<`pçŸÇ¨ãÛµ†dÚª‘zŒƒ9ÎùZœ(V8Ë A'ŸLİG~´B¥%/‚R¶—vJêÏóÿ -‘œh«.j–•¶QvKKù;tÓµú[–ŠÎÚ”·`2ÇÛ€ıGãW¡Ócw¯•<àœxÿ Çeì¤”³-G'qõÆ ût>j¢-¥¸u‘Ê~èbÇ›AúõõÇS[Æ¢oİQ»¾·Vï¿éê‹å•š‹rÛâé&Ö»Ùşzi³ö«Õ¶y7²2xä *S§]N{GpzıN×?ı|Ô÷m34d‘¾HÈÁ²¯åZĞù³ÂâQœe*1Ç§nş¿…L±#µ§gånMïk«7ëÖÆ~Å·¬ùÛ{7d´Z/5¶½ÈN’2
+¨a€y çÃüCıå©c?¦úøÏ^8<×Ogk+œsó1%¦O°ã¿\ÖÀÑ˜®æ(t°`NsÛ§®{Ò†*¬º%f—NñÖÛßÖ×Ñê7CuöëºJı7ÖÚúèyÓÙ4à¨‡h< }ğ~üŒw¨áÑgSó&åÎGLçØã§jô…Ó
+B‘ïëëÈëV’Ô&ISÏF ÿ ëÏÏœWL*Ni$—ùê¶Wê¼»uÚeRË[ÙvZZéj——Ë¾ş~š6p<ŸqÀçôÏëWcÓJ.øzwàû÷®ş-:I~dÌîFŞ‘ÇĞşY-—L•3ØävÎ>½ÿ ­j¹Ö²z»4Ö»èÓµ¯ê­n»L–‘‹·{»?ËúZDdœÜ¯$`"0Ï!fíÈè:ŠÑŠ	FUWÊ¨uç;@É>¸=úâ«Ø]«9SjƒîÉ ¶}ˆÏãÇjÖkk§ÃÁø# zc¡Õä§{;Ê	ôzhì¶júÛÎú.‡TUW+ÉGE´]íkhú¶­×^İHfò¡Qû ¤ô%KIîsÓ§§#4ÄY†AP g8Æ?ß¹şµymˆå‚Œò±%À÷ßùxÖ·³B…•F:ƒĞ~^óÏ×4ù ßÄöÖîÉêºmÑıúw5x‡²¥M=6r¿Evßü®†L²Í…;Š2`}HïëõÏ5it|8,»×œ  ş¾ßN¢·b€Ûª¾>^ÁTúú_ËµjÀ¬Øhã,xôÏS‚?¹íœUªi[•ÁÅ[FÛ{§ÑhÓü/¥II^z;^ÉéÓ{vÖËüfßC–gB®Fw2äÿ ÀG?‡nNkf]kuWkVˆğCàûãœü~®‰!`~Ÿ18üGQı=êU–î5?¼gŒp¹èzäãœqßµtÂ-%û¸µ{ó7nİooëc'Vqv…8êÒ»Û¦ú;ïo7øsÀê~v
+yÀç8Ç ¡«¢_p¦NqëÓúkuO˜œÅ´„'>Ù8ïÈÎ}8Í:1"°lòz àwç?áÎyÅ5(6’„v¾‰½tÓÏËğ½Åy8ó4¯ä­Úêí_W÷éäRKVAcÎ>â×êúgô­¬ƒ ×¯F\¸oËëÓ·GiödŒa*ä ç¯N„‡ ÅiÚÁ˜ã!ä yëÉgÓÓ­mõˆÓÑ(ÁôÓm¶ÿ >Ÿ–.RzYô]uÛä÷Nı|’0à· ©Éöôã®Ï5§%]ÌŠŞãúŸĞt©‘
+ÙSÜ±'ß¡õÿ =+F;$*
+Œ¸ÈŸl);i)=/k%¯/ôú™ºÕ¹Eu5²zöï½õgË1ià|Ñ’âÈ¡ùÉä‘ØÀ­ìhÈ;)#*ªwcÕˆàó=ùâ»Xã™Èfy•Taˆ<€2G¯CÈ«‚–-³™é°¨ïÕ€×¾:ò1×…PÓŞ¾¶Ö7nÚ'®İ²è®õ:ã[Ÿà•“µÒ]tî»¿Çs…:DAÔ²©fãj°-õltªÚé#a•O* mß€éŒú{}k°û4(QüJqœu8ŸLæ¶"FEB ‘Q¸ŞJ—ö\1“øf¥R£k^‹]Z^ò»v½ú¯Êõi¯y´—eß¥¯§G¾½øè!*<¹FN 'Û'ç¿5±i¥F®Gb§$&î}TË¯jëLµò„…‰‹F'’¸=¹ãŒtôu¥•›´g¶å89=H#ßÓ<f´§*tïËÌïozQJû-Ş½zw¾ì=¢_5Ì÷r’»zmk_üÌ6Ó rv4¬ğ¢8à‚I?:tSN˜ 7ç¦$ “ø?–
+ëbµš‘P²…aŞÃşwÏ¶*À°ÍÜğFç8ë×ğâªUµÜZÑµòV»zkøşpG+»/;­VšooUÚç;h¢0©%±“¦0½û_s[­¦Ã<BU¶(FÀ6ş IíZ‘é¤ 78ù›dşÿ ëõªü67Á”¼3õÓüsÒ¦U'm,–š¦ßo+Ù÷½İ¼ÑiÙZM¯…İ´ûy+Zt9˜ìQˆY-@UäİŸóı}«V(#„pŸ Æ8Àüÿ _8Ïa×YéÚI:Äz’ù
+ ™<ö«>kf9ã™z ‘½À=9éÇLBŠ–³›w¶¿v]ŸŞ¾ësU¨â¥­»'Û]mı79HÖÊf G–êx !×üô­ÛxT&OŒmcóüªf²‘XáR{·	ç·§éZ¶ö’„ù™ôRïş{WJXx-›vZıİ>ëì—§:uj]óÊÖZµ¦Ëo½JïÂ“E+Ã¼TLsÂü¸'Ÿ_Ã¥9ô#(ß	l(ùÕ¹%\AüF=+±±ÓàVŞe .r¬íÏ¿ÌØÇ|÷?\–(cmé‰³ÀPAP:˜d?j‰=,¦¢’V\Ö}7WJúÀg\Uÿ .æ¶[¤–‘Ê—Kß[é©ç£N‘~íß×æU ƒÔ€?Ÿé]­›9™—z1É8²O^Ÿá[¥—V\g’©†e'GæGóÍJ–à4lFïÔŸÓô®YE·vÜ´ÑE$ú_Ş½Ş–z§¡~Ò)½dû-5V]Sı:ZëB‰¶†Ddn:‡Œ*‘õ$çõÏ|QöDB¿2”êB“ŸøQıUÒÛXÃ"‚\ägøöÏÍÈïŠ·1ıÁæû£ s×™ç×š¸*ŸÈä¿½«wK}u}´ÿ ƒnT¹oÉ}7iõµ·}ï²Ó§w–ìQV$‰xÈcxôİsë×Ö’Z¨ 8ÀÚrO©?Ï&´—LÜT¬Á[g9ú`sjC¦N~Y6°<€Àäç§8ı?\f´½DŸî{}4·m{nÿ –NŠ“»JÚİ¶öiZÛşOäskh£,³=û“ì	ëéÇ?€§Ea)mÁŞ^ÿ 0ãœ~3Û×5Õ68`Ù Œtägúgò«1ØÉâB›G÷W¡Ïùö©»Û•Çşİµ¯nïüíÙê°ŸÃS¶Şvó^ªŞªìÂŠÊpS×·~ßıoÎ®ıšR¸''×¯ÿ [¯?Òµâ·Gù0Àö8?áïúJÑ‡Jl‚äí>€g¯×¿Z‡M·w'e¯®ß†›¿ÊÆk/’³Mî¶û­ëäõ9È­Y†Ò@'¡Èãğ'ÿ ­úÖ¼Z<Ì…Â€yÁeéÇóÒºh4;W;„;Ÿäî×ñúşUwşù:«aOA•8üÎh÷Ö‘m]÷\ªİìíéÓ^‚E¢K~©®«Êû5óõ±óˆ‚THËïFAÁşğùÀçÿ ¬Q[Å§î˜0á1e>å‡·rNiªğ[¡æ¹èSnáÈç«tì8Ï­[´[\ºÕxç©Àãç?¥œSµ“é¬×¯_]/§ŞÎ×JN:tZZéïÖííu§NŒ• şZŒ(Éãêİyæ­Áen3Ãæ£c¦åÇ¯B?_ÿ Y§6äà`‚3éøõàı:V­¼ŠV&pê~è'Àt§øô§û·m#ukİ½ôïuè–ç4§
+m©îûió¾ŸÒŞÌË¸µEy$D@ äg·<?Ï\UÛXga8åGaØ}ò{úWAöÈ'ÍVldG·¡ú•'ùiööŠ§ç
+¹ãÉêzztªWvq’_;^ö²İÛNÛ^ıEí!º¶½9œ­·Dì¼ú¿‘“,Âù9$ğOAšèíAq	b£ƒÊ20=ÿ Î*Sg…~}ùÚ}»ŒŸÇ9Å\ƒK‹ ¢VVn=qùV‘»ÒUMKZü½_ùë}ûqÔ©·jnW¶üË·Ÿ[zi®†d–şl¥–VEÏşË“ùãëWâ³„miÄØşöÂAÙ ŸËV;“É2ÈxÁUe8ÈêpIàó
+Ü‡NvO)7L§8ä±Æqø~5»ÖíÊı[]£µ•÷ü¨Ôç-—*Ñ´´Úİ[¿}=têcÃoÚ`åù™v’>„1ßéŠĞ*¿1<q´ã=û~gÿ ­]‹:šPxQ€9ã§;v­Ó¤„ôŒ¶xØKúÿ GæS•$¬º6Òzé¶ú_§ü9Ó³ŠÖ+¦¾Ñ/åµí¾·ÓÉ%İäÁo,j¡×ÃğıyïZÚ‡\´‡<™ü³şO¥hÛÛÎLn@ãOüzØŠÑˆ%Óğ
+qôÀÇíY}bÙ¤¯Ñy«=Ö¾šém‡õ‰Í¾YB7µù­gğé»ç}UÏ­í!•6?rØ ×åäçèOläUõÓ>Ï‰•òpbÇº’?—×§Ó[èòFÒ  …ÛÎsŒÃ zç¯×Go¥[È‘í\A}ëÜûç€?ŠSÒ|ÑOFì´{y[¾Ô¬â›I·Ú1¶­oŞŞ·ïÑ_L±²¸T«†F@R}äÇ òp8é›Âm[ÜÆ¼"(r1Ã)Ç?AéŠÚ‹ÃáÊ:„®íÀîvRÃ¶qÛÚµŸL¹
+° (0 ‘ÆØÈãœğyÀÎ¥U9«ZM.ªi·µº>·³ò_/9Õ…IZq›õWkek$¾oÓTqcLxĞª¤R8î¡÷g¿Q™Çâ)ébûv½¾â{¨É_|cæÿ ÕïéúnŒ‚=ÒIÈÌ0Ãw|9=ø?Jé-4;²Dl‰6Aô
+X÷Æ9¯Ö±©RkøqrVÓÜqom–ËÍíù›BÓäšZYÆV{-lşoÏòòM.ÈŠw¡yl6÷ä(fÏôıwSÃ)n1ºx@ÎPq½‚?.õèöÚ!·£•W'îÆ2Y½ÆAÏ}jô:w•0-¨¤ãçˆ•éıÒH98ê9)ó|I§Õ5®¶Ù[úéØÖiBŒ[Z/y];Ùë¾›İïùlº$xZFÆ	R‹ùœóÔõú÷­{k"v²²ô”œ÷ôqùw¯UdàÀÇÆÙú`u”ËM-ÖM™•TğHN9Ç¿å]<KÜnÛ»-ÑhÓÙoıiÆªN2oÙÆ××k%uÓoø3±Ğg1BJœpá‰ø'ü?*éĞÉXI_\útõÇozôh4Æò‚®vc±ã¿ùÈ÷dzY‰årH7/ŸÈŒ;çô¤©Ô|»ZûJ:ì¯«]?.ŠÇDjS–E7ÛİzZû+%÷õ×¿i Ş ÉÙƒÔ†äØƒÓ¦?^Õu4’sæF0 ×¸ÿ 9ÍwI»tİÄqĞƒùıMCı•p .¤“ß ôı;ûV‘Ã]]*7n«£ş½n“‰Ğ„Ÿº­ª½İö¶únµj÷ül|5jf@Ğ²H¨Üù‘í0<eJ±#èvŸašét»HÑr å˜yRÈNxÚÀ±;‰ï·¸5~ÓO{RÄ[sŒ—
+£9ÎH$`l{âµ¬ôÈn¤PÙÜàÀU>¡F9=ñŞ¼èÖæv©;«ÛŞNÛ¯‡M|š¡94ı¤t]4•÷Zlï¯á±b+!å%À eTãØ0É§lóô®ÆÏN·Õ K"ÅvŸr7*¡½?Œg'œÏ§ªéú^Q$.cÚ>u\è	 óÇ¥vQh0YKÎ»ˆ?1S´©ë÷±¼;zí§5tÕ®ºÂ<©ü=´¶ši£¿pPqi6ÛşnkvO}:ÚÖô9ğä¶Û|ä—z•áPQ¹î7ozQ‘Ê…`Ë)˜ıN éÏ©®òáî..lK„¸Y}UÇ¾Î*Ì~GÌ¹š›°19¢.?Q®kIV­öy÷[Æú+u¶Í%ùú·)Á$ãÌ­£M_[nš¾­o!–ö°êPD­h–÷(¹ó>mùàûq×>õ1‰mÊÅu$!‡
+ò÷3ƒêsÇ­i[i²B¢HHè"buÎ±œúŒ{VŸöL	™£¼IU•è~úœóÃšˆFU5š’wVvJÏM´¶ß…ŒJ—¿´VŞÒZ­•’·—Êİš2×ìè«æFÀò¼;FŞŸ6F=‰ñ4«%»HYÈ9ó	]§ÜŒ=zö®¶ÆÅ?/
+Ñ€®püÇå’zçšœiîÂ"©Îyc?‰útã5ÛNƒI]ó/ñ+ßKÿ “Şß3HÉÊŞõ&»uÙzm·õ¥+t‰bîqü*[>€ßP1Ç­0½‘p³áş<l?Lm?=9®†;eŒtà Ûd~]:uëOh£l«B72©ïÎÜş_kkS…¯	ZéY´ÓÖ7¶›ym³&Q–¿Ã[km[şWEkt‡ËÄ.¸  Êsé×§¿'¨ƒÅ»çh?ınİªØ‚ùT	şèÇùôÿ ëš	€s:ş_áô©•J+jJÊÉZÎú­ûùÙöó¾_¼OIét·V¾—×wıt½şRƒHÌB¾Sg÷|sŸ¼Tã cÿ ¯Ş¯Éái£™|ˆ\£á¿w‡¼§OË‚º(íş	'?»…#ºHÛ å¢d—l×Oge.È|Ë§Æ6‡ Î;d#drNG_\W(şñrÆ»‹iÙB-jÖ¼¶Vï¼j»¹§§ÙæVVµéï·M.rš}„‘|‡tmËÁKcĞƒ’s’sƒ]½¼bê¶Q @7FË’õÜ£?†{sUWM¸K²²G$Ñ’)“½GßUrÃƒÈ#xÏNÂÒÕ¢PDjÏ·¢'Ê}›qÀ'îôç¿­uªN	>I¥ºÒİ®í®¾Ÿ†¢r’º…G=›‹Oä–é>šù“AdÆ¾\£å	\şXı;ôç§AaU¾A"mvi7¨ë‘‚2yéZÂ8®:Ú­¼ëÿ =T2¶8şùë×#XvU
+²¬@Œ0^sƒŸ¯@9÷­¡
+i&§%-.œ¬ììı5~WÛÊÔª¸[II[TİõÒÍ&›]Õ›üt–`#±Âœãê~™«?*• 0<ç¯oğüN=é‰G/8à«?_Ç¹«!q3ÀÏ~~§yç $Œæ©òÉ8µvšÕk–¶ÑßñÔÕ×4Î)ÆîŞWÓ×ç¦” y<Ğîç	ïØœŸ_¨éÒ­¢•ş@±çğãĞjLôã‡·ëè;œà{™õê¯SŸSÛ?Qß{6¬ã+[T¥}vë’}·ëxÓii·¼¢Õß»}4¿ÏÓÈ€<„Ì˜Áàyõÿ =êPrH>¿y<{`:PJŒŒËœçÛ¶=ÁàƒÖšQxÁç9ãOõïÀõô#R¬]š‹WÒíYìºìŸ“Ñ´Œ¤“zNëM´kUòÕş6òCÆîyò ~‡·o­DÅ³Ğ“î@ÇJxÂäIöÀÿ <ç=)Û—¡-øwÿ ÇíÆs]IÑš^Ò*/M—Ñ$ÚywİÕşñ$šÕİõZm×îûîyı¾ƒo–šÚò`JÍb±:‘Ô®@Ï¦A8'ÅjÁ¢[ˆ–)¼ÆPK'-òdU·dtÀçÿ ¯6÷¯+ò:Àb8ä3pO5ĞÛF(¤²AŒóÁÇNÇ¿9¯&8Š•\\XË»º[Çíjúìõµö·kŒ¹}×ÒùôZ'm<¾ã,hğ."º«³nĞóœş|}+V('>f9@}ş¾ş†§x‹ªâ<ã€‡?Nß‚yÃ¾åÀÏ¦I½A#ù
+êçrİÍµµçénÛ½İÿ W#u%-m~éêŞ7{ùï¶ÌvÀ1fÿ lmÃ®9ÆpHçê¸ljÇØíÁô÷'=óĞÓ–$ ‚®­Óx#sŒà¼õäät¥1²€C‚Nü¹íÇ_ÒµjRŠj5¬î§ı›µ~İ­ù””•¹š¾Ÿ
+kªÕèÿ 7ù$j±ğÓ=@ïÏÿ XúTÛ—O8î8'õüøÏ3M0£è3Ó©ê8àuÇ¾ŠxÇ#$ûñ\t=Ç8ÍaÏ$íË8­­(§m•ïª×º·M®k	Oe$“¾M]ºß}õùÏR2y÷ÀÈÏ©şYŒv*zG·¡ãóç‘Œ~D´ a¸ãÔvp2?ÀıiH~ÄwàŒséôúç±íÎéİk-zİkméÙëk'¿Q·QYJ-i¤¢ù•´zk/ó×’3AI=¸Èúzu§à ŸLçñçüœSrË÷‡¡'9úóÓ¦ŸaJæÏAŒg¸ëè}Ïá[Bë8¥ÑJí|Ş½·ÑéÕíŒ¤´N	éºZÿ Ã»onšu±€p{úc;{ãœà8ÈÂ…oïcÛÇ· ü?¥8äƒÎŞõëÏàGjC·¸?gõ÷«t ş	^ÛIZÖKo.ş]wr’i5ü­®­Z¾¶Ùé-@Îçó†H$’w$0ãØIcƒÀ#I8ÿ 9=jÁA—œòzg>qÏ~ƒ¥4EŸ˜·'¦Ü‘À=?ç§çòÔ”sRòƒÓùvºwş­ĞŞ.¬ZR‚z&›–«m9¯·ÃT;=0£¶3Áöıs×=³“JÄ‚1ù¿_®;z»1ßŸ ~xöÓŒšEIÃ±îCà¨ç ÈÈëÈ=ñœàÕS¥)ÇVÕ÷²×¢µ®õnÚÙ-/ØRi»µ(»ïİ»/¼›]w ı˜Ï8ı{çÓµ/ÇÎHüq×;cÀc*pq028ps“ëÛœöêi¤ÉcÌvéÛ¨Ş´Qt¥Ë)hör‹Z+jœtß]Û0Mü\ªkE×U§{Iê€•ÀÀÇR;ûö#ÿ Ô;Ôe°rN×Ûè=?È©A<–L÷çŒ~®{O>µ&şFN;ÿ N9ösQ:•¥N¬^©ÙÊÎöM'~ı¶ÓÍÔŒ¶ŠO{J=´vÓõ]/±"’@ÉÏNÙüsÇë“ß ïç ãÛßü€ry¨6²	$pqê@ïŸÄqS(nÌ@ÇOëÇŒŸp*iº×å©nÍ4ì¬µn:=­·ÈˆŞNÉÉw¶Ú¥ßUmú]é`İŸ¼vã§äxıIÈ¦Aôç>àq~ı½EMœuÁÀõïëşpp U³µBôÈÇ_óÏ°ô®Út¹–’ÿ ·$µé»jÏo]/}JI=²KFÕô×KõWüz àuã$¯|qçHIŒçıu?AƒÚ¤T{pxõ÷ã ïĞãĞSüñÛŸÏ<ç×=:t¬çE'vœ[ëÒñíÑ«6¶]…ÍÉkNÚ®šÛÉí§­­Ô¬²ó´“‘ÜgS®{c Ì§wmØ=r;ÿ 21ß#§Ò£(’•Ú{È=yã× ƒêƒ)À Ş¾àg»ñÎxÇ#8aZ’›N÷N/]£«O¢ı/é›¬Óq¶ší-U¬›I«¯Ë³ê¬n`A Îwqôãxã¯c”$qĞdı1½óÀüjI (ÁéĞŸ®8ä™ç¶	d0ãœmöïOQÇ¾rkJŠT¤¥*š?´•­¶Ú>Íµ›°FiËU+4´Jï[z4½5ûô—rıÓ×¹Î2õ<óôéÎ3NÈ uëîyÏ|öïÏjŒ2¶2SÉÈê3Çâzò:ãŠv  ş> }	 gÓüš%í$–¼ğviÆWíÒÏ_øk£TšwƒºÒğjÒ[-®Ş¶ûı ğ:n×ƒ×¼qè=N@9ùFø>¸çùvÇ¸õ§³•ĞGøwÇ'×"šO#n9ê~œò}ñÓÚ¢/•¥~Vìí(Ú:mf“¾¯Òàù•›NÍ¦Ö»Yk×ª¶®ÿ Š$mGL|Ã¯NqÈíøı=cbGn0?a‡§?Oj‘vÿ qÁôÏÓßëŸ~´Œ¸ç¨ëÇqÇ\ä}zê¤dõåNÚŞô{zyi»6Œ Òº³Jİ<•´·—NİtœĞóŒõÆsØzã=^1ÈëÇ|ãñ>Üäç®Bî!‡çßƒŸÃ°ÏãéÍ‚G#“ĞŸCÎsÏ#†Šu§ngÓFµÖË~Ÿ5×vg;&“ºMôiÿ .öÿ ƒÛ]ˆ÷9'§éÇ§=:ëÜvÉ$ãĞd`œpsŸéG|ş<œ‚{ç°#O\NÓ>ù8ü:~9ÿ ]¯z6{¦Öûh½}7²~y¸]_âWV}zi«oÉÛîD‘òã½G|ş$ƒøœ3-Ÿ˜téÜzĞûúqÔbŸ³$‚ô=€ süş¾´*9n8éß8Æ:óØpµaRek§ºÅİÇk]~}µßr/gf­k5u¥´îíéÛÖã÷ôÀãÓ§ø÷çüò„£äu<Äò:94›r{Ç9ú×Rjo”<àŒàçúG8¬"«'Ê§	üítÔti»ú§­÷E«èâ”“{[D´¾—¿§[-|Ş»p7§‚8ÇBq×Óı°+(ê¹>Ä{gƒÜ~­5ŒƒÈ¦zôş@ûvé“‰0 À÷$tôÿ Õ;`Vôc(]Jémº­Wg~‹W·DÍÜ}è/)-´½Õµµß]×ÌU8`9Ï_CüóÇÿ _'–2¯U%AÎ?öóŸL~™qEaÉ9#=2{œş½4d¸N?\úñÎ3×è;Ö“¥Y=#x¾Úm³ééÓ×Eš¬¥¬z«ì´Ûğò¶â( õlsƒŒƒÏ~3ÇN?>õ),y$c×§Ëêxü1IŒÜtÎG±íÇó¤àpôè_ÃÇ×f•:u”šåºvv{ôÛUÓ®í-µ-J½›iµ£é·ëmU›ÒÈ:õàœ¨çèHüàhägŸ^G×ùÀ¯ Œd‚pNA$cŞ¾Ùï1Œú`R`g$èl®üxpsJtùZnévOm¯ë¸™Jïİ—+óZ;5»WïÕu·šv3ì}rNŸÏ¡ã¯±.ÚÙ `÷üúwúäÒ*œvïÔûäõÁ?—®iã##iü	ËüñZF1•šk[^êÍZÚ/òÒş†ğrQQ”7¶İvÙ[õ"Æ=ÁqÛ£$ğ üº) mÙ8è9çùqéÏ¹Î1Õ{`ƒÜwÏq×>¹8Ç¾3H¡—$r}ssœ}:ú‘ŒçšU9¬¦ù“ÚQoŞvJıÓµ·Şß4òŒâàãk÷Ş÷n;_FŸËºÜAÜä€r1ø	Æ;qé¸¤0A:>£°<ojqlsïÆr8Áì2zúãÛÈ¬2Á$};7Ã¯=ùçe;6ívígº]öOïÒîÓMJö‹I-ydôÖÍy®ÚtÕµ{‹‘‚sœñÎ3Qş×áĞâ›¸’H<œpsÿ êãı†p¡Tuê	=zqéıGR1A6;ã3øuã=G\ö5ÚÍ^œš¶©7Ş×³éò}wÜÕNË–KKÚéìôKw÷§gÕ• 8lò1ÆO·¯|ñÏ4‹ÜqÜÇ¡àw5È ûúgß¯É=3ÈéS™âsÇá“Ç\`òrkµ¬£;»=µR[lö{yİë³3Rƒ“KK­Õ»~oqİ}Æ~½Aôúûå0?1ÁÇrxãê9útå¥½T½Èş]ZzóœtÏŸaëĞ~=sÒ¶…Z‰«Êñè¤­(Û–êï¶öw]CN‰yõ¾«g¿¥ÚNıD1·?.8ã·aî9Ç=r}ò¸<§×¾O¦FN8ñ€9?‡oĞı8ÈÅ1¸$Œ{çI#××’+YIJÜÉ­­g{½­ùYş–%Ó‚³NVµÿ -õÓeköÕvPÅxqè8ÏqŸ§<õ¥Îz0ß¯ãŸO^sŸjj@Î ?3CëÉõÏ&1ÓğÏò#ßÖ’ŒRVŠ•ŞéÙÛMÿ öïv©»%Ë>döW³KMú«Ù]éò+Î:Ó$ã=úsôàsÓ¬İ"dv=±Çz~|ïÖœT0ã ã¯¦L÷ÿ õuéG ëê=»óÇ^8Î{ÖiNÍósE=c}bÒ[kw³ò¶šuÆÉI_İow­®ígÑ'åİémnĞÄdz~áOn:vr8ü@ `d`úŒt<c©éŠLàsƒÜ}G¾9Ï cŸj2 ã “=;Ğ{g5¢¨”W¸§e¥šèšvÙ·ß[èi«î­êşíÛÛÏ`Æœ“Ó¯§Q×<Œã ƒ-€xºöş¾ãÚŸ“nİ8Ç8À c<Ø§2»”ç$wçœõ>ÿ #ÔSötc~]¶ÑÅ¶¬úwÙèšv°J3“ºm~OU{§Õvz]i±\zÈ>äò?1×·Ozr2CO¯Ã¨Ï§n”«ÁSÇõçÿ Õ‡¸ÇAN+Wƒã©÷wü¤ÃŞºvœ6×I/G£Ñm¾ì¯fÚM+JÉ8­×kk4¾~¶¹!ÁO|¼tèsõ${ĞŞ:}88ú~={uô¨ î$~‡·n¿ïš\7Şº‘Çùú~\šn+T­(»&ëmš×½·»ÜªNÎÍ'ÒïWm4¶÷í¸¥•õı}2x±ü¸4ÒAè0~¿Ï×¯®i äù góÓñ9ï8¹Û®Nzşã¶8úTid“iëmŸm;i÷ùõ[¸ÚúÙyëmW[i÷ë×ºhÁéÁëùqøØãğ=úşG·oóøv¨ÎáïÛëÇ§\÷È'ú( sÿ Öü=·äaÌã¥şw]-çùY[Ê×ˆÑö_Ÿnútß^äqÁÿ gÿ Ô>œ*-¬I!‰€äõäç?ëïËqÈëÆGSßOøg·¦¡ˆ$`qßğÏb}:g×#5ÑÉe8©YÙI+©'¦©¿‰5®¿{95•ù•´Z­ìŞÖ{ôzõ½Ã‡8;}Î—SØğZ@T2Ã·=ºc=óŸÏó§ÅA$ç°äç¾=8É=sC Ç múşş¼õı1IÒ”%zNñKµİŸ]oÕë÷iÉÅ4ïÊíª¶—ïtïÛ]®ı;úgòÎ{äã¸¤'i#9êë“QÎàr)Ár§æÆOoåÛ×ü1–  ’==û@è{úûBU9[ø“Ş=uåé÷ì¾óEõ³ÓKm~]·Vº~K¥ì¹õÈ#ƒÉ8'ÓLÓ<ôéz¯·×Û¥ş3×>£GÓùc5©z|d~'ŒúgØqiÑÕè’¾úìôºê­¹l\¢ïß­®Õ–İ~ıGŒÓŒ€G@IÇ¿¿nƒ¯j•<ôéÇÇ|<Ÿÿ SJ’¤çN¤zÙíÔf¢ âÆp:dg>øéïß§ Òœ¥Mµ²ó{­5Nö×½½¤[NëÍ-š¿-|“wNxçßñÏ3Æ2üzäôó8ƒÿ ­éÖ“O89äóÆ1Áş„àSH8ş"zpÀä{r9ã§Zçuo-ìûë®Ş¥µ»¿]=Ù%y_Îö{.ı¯ı;©'=»qß=qï¹ÈzóA$v'¿‡ÿ _ß™Å+’¹ö'ùJ2ÀN3~ŸçüUM95¾÷·Tí­¯¾ı|ŞÔš¶f¼´ºßoø;NI$@Îr2pO_n},òòóÏLõÏN£ĞsÛëQœƒÇB1îAè?>¾;Ô00Fïn¼tç¾xè^k·ÚÉIEÅ©$¼´i¦ú+i}zÜâ¦ì¥­ößUªZ;¶µ¾®ûmä¡Æ
+ŒcèGNq“øç¨üI«A#‘úÀ¹íßğôck 9Ï=OíßŸOPMX#€Ütôçç9ì+XÉÊ.m6Öëí-»YµUÓsh)¨ét®šÖéí{[ú×Êãs°‘Œy$qÛ<çÎ}º¸1Î}:ƒòÇ“üı¨+¼Æ?Lr9ôã“Ô~mÛœ‘Ï¨ã¾zã¯¯#=:¥%¤¯kik;½–Ú$Ÿ¥–÷í«ª]l¬÷ÓO.šHàäà.Onş™ã=8à`üSW§ÍŒß¹‘9üø8â6Ö<cûƒ¿¶}s:b† ’AÇôéƒùğ=3X¹¨¶Ö—Öú¤ÖzuŞúõb~ô;4íÍ¯—OÏ¸ıì8<?—oÿ W¸£;ºŒcßŒ{œvÇo~œQ„õôéÈç©@ô¥,zdpp8ÏSß=F}À™K)½é·éu}íó·}ÁZv¾-îµëëß]?É¼ÏÍÔàgŸp}¸À c9íš@I9ÆŞsƒĞúş ÷CÆ2ìwéÔvã©ìzgœËŒÈæ=zıFAÇÙ¦¯}VîV¶Ú_ÇË¹gÊí®›ê´ï½¿¥®€Hçè§·=ùÆ Ü=>€ûãÓÓ=»S¸è}}øçügƒè3ÏQ”Á£ß€O×¯J‡MË³¶úí²Zéßä\NÜÖvZ^ı´IıûoÓk"®C3ïÆ0}Oş¿LSÊüÄaIÁäcğã·§ä( ¶3Ï¯_|p8ãÓ¹õ ¹È>¸=ıùtõÀÇJï~úMüqZ>ë­ö]ºÛæ±,c+tÑüígv¿šú:œ‚1Ü0ç'éïê{O¢íf?x‚G^ÿ —àOzb09ë×3è1Ü…\švpq½H=Ï·¯sÜ} 4BQiÙÚJú;_ÒÏOé;ô7£>h-~«=İ­nºYtÑj¶$8*Hs“ÓÔÿ ^{cŒSrG ¶zc×§`8ãØzıWhêpN8¤‘Çnüõã§ª²‚ §LuÇaİ3Œ)ZQìÚµŸ—å¶~¢œ“¦ìô×[o®½uüm»K 3‚}ñÛ;>¿Jn{İ{œ Iïì{óõ£ôã}sı³Œ~=zpŒä9wãûÙqõÇÓŠR¿»fÚÚïDŞö²¶¶×ªì‹iY¾ö»]t[v»KV¯ø
+ Î8ıIüzgœwÈ
+®r@=88=ã±.	9éõõéİªBb¼ç$øôêO|ú~ÚœU›Ûe­õ³Ñ|ºô¿Baï+>›5çmöWkÉùl/ döÉúŒNÃéšPOa=}¿şÁÉâ£äõÇĞĞÏL€?Pzä(lñƒØõ½ò?™õéWœS½¶Zßµ¿NÖ]î+(½u]/u£²ó{Úÿ p ŸNàdz;uà½z]Øê=¸öéÇ<ƒüºõïÛÛéİ4ÜœıNqïOCÎrxÍgÎâí'ÕY­›ZiÖ×ù_s9ÙOİzé­ûôv_å÷Œ#i®O ãIÏN»ğyÍJX’7`Œàc9ô=ûŒsÎy¨ÙA<Û#Ôõïùâœ ®I'ñë™Ç¯#ô=I58Ó¾‰İ=š½êÚ>©îºvÂÎ.ûÆJÍjûo}^½µ^Z]®ŒŒ“Ç¶O×ò§*ïç;{uäœsƒŒç§øSXNrçsĞÿ /Ô`cŠT8œıá×ÓGóŒsé×J”ãí Ûå“¶«i5dïæ¾ë»_Mw¦š’¶ÎÛiµ¿&íëèHÇF>„ı3Ÿ^Çò),W ãÓÛ 'Œ{tÆzB)Æ2 ëÇ×^øïLê¤t#ëÓ¿Ô~|XÍ8ÍÚí-ıtïÙ|µV¾†ò»is%{;4›Z«é¯~ı{–Æï‚p×ÓÓ=Ïå1œäÀ98ñçŒ{c¡¦¡ óÔñœñôÿ >Ø§u$‚qÓŒóê{ûœ‘×šå—Åu§U½ºk½¾û»ù¦‰æÖI««5ÖÚYjİşO¿ÍˆÀpF9ç'=8êsïùp:©ãÄpOõ§OÃ Î#bAäÜ~'‘ÔvãğàÔ€®1Çéß>¾Ü¸Ï$òj½«|ªJíÚíy[WéßqÅ(ÆëKëg}Õ­eeù~ tôö8#éĞvıx¦• ğ~3’yÇNøÏóÈ§}î2	Ó¿˜ùÀÏ­éïêsêzÔ‚==yÆ©Ù5Ñ¥kÀôÒıı/”§Í$¤¯²¾›;y5Ô #úqÈ'ŸÃ¶	8ç²ã9Ïã ?Ïğì8ÇQŠBH9Ûõ=3>¿@sô4ğI#–?Çğ¬ùu³Õ+Y»÷VZ?ë±§"ÒÏK/•šµüõm.¾}¤œõà½}{cùcê8§c
+z`ß ùõéŠddmÁÏ^yíùó×ÿ ¯N,qŒd{Ÿèrzg>ùí]°“‚½¢ß2ë®‰^ïMô}z.¦0Ö.é¦Úİú=µümæ¬ dxçœvãÇÀëĞÒ`ğCvyë¾ÙêA<Sòp	'¯åÓ¸üMFrà°!q×œz{zÉìkWË7Í-au½Ó‹im{Ù^îÚo÷m¢\¾}öòëÕş">áÎN:ã‘úôçßÎ…''Œàõ8ı:síı
+³ÆAÆ}{öÀ=@ëõÀ¹é@Ç<‡'ƒŸ~k²kšQVÙ&¶’Ó²Öı´ü&×¶\²Ñ=löÛM<Şh<†ïÓ==úÇ=8{tÏ tı=øÁàöÍ \‚IÏ©ëÏL¼c¨À«c#'×#<??~¤g8ëšãv^òÙî¶Kkêÿ >–ÓS¡M´õ×Ki§Mo×òı ‚?CŒã=xçëƒÎ	=Hôàç×Ÿ¨Æ9ëÈã­)ä~#§9ìOáøŒfŒ“““İ†zñØãÛŒi(+E¤Òi6ô²¿E~şnÈÎæ|³ò·KZÊÖºé{üÄ?ê2=»ç8 ¤ĞN:õíŒ÷ïØqÏúgƒJÃàwüÏsÛÔÒ®ÓŒzÿ ú Ç·Çİ“Mİwè–^¾mz³H¨ëıÖ•Û¾ö¿¯®Ú«ˆ{tê3ÏöÎGãß—r:cóÆ>˜š|à~dãŒŸQÇn½=T^~ƒ=8ÏŒã§×Â¹¬Ú}îŸİÛÉ'²]–œ]ù¬´[¿5Õ-<ì€© m cÜ~9ëÇtÏ\aÌ9ş.¼ãúóÍ+dc `ã9ìzİsÆ3×‚œ…ç¸È=v÷'§¯êk¹B2r†±Öñwë¥÷ùÛ­–ıylÚIZÏMTšMyßKy÷i¦0) tÎ3×zg:wéÓ4‡=·qßôäõı84¸n9‡'ŸÓ¸ÏãOÈO|÷#=Ló×¥i%Èšvµ—3ï¶ëÉk£İ6h£kï]§×Ë¢¿¯İ~å}£'æçÛëø=úñR(ÀëGëê8Æ?
+>PpHìà=ùëH»$dtàõÇ×ŒwÇëÆeR­¹ ãtÖ‹v¶ı{özê`©Ú£œÓii{­ºZúwÛÈRyÆqÛı@yı:şŒ»øÏ¸<õ'±ì8 cß]´8#œ~]»{ı}éIÇLwòOî3‚qß<ŸJãq÷“ÒÚhşí«­¿Ë¦œÊW¶šßªi[nÎÿ ğ.'E#“Œú:§ßüôyÀÈçŸLsÆ	ızu§g§\ägORaçœuúR =Fx9>‡×¯¦^Aì)¶´Wåò·uÒİÓE¸”b¯5{K=®ú®ş[j1à‘ïŒç8öÆO¾:ñ@ÈÇÔŒÃ g¶}sßğL€xÀã¦{ûç9ÎHíßyéÜ~\?ëık	%vö½µÛ³{éÛuv­r£%½›]M×gæ7 çèãëƒÎF:Î3œpìzçó>ƒéşyïHFAíÓÈöç¹ÏNGoÆ£ÚÇÜ}úıø5qM[í&•µÿ ¯ò·ü0$©é½Òv¾ökW~Öè¿Èä’G ¹ş¿9íÍ+©ÊçÔûñÜz~´¸,Fßpy»œqÇ®8/Ğe³ÜõÏâxÃôï^ƒqR»MÊ÷Z5k%ëk~zõCq]Zv²·Wk?×¦ÚnÀáB‚3ÆzŸĞûtëéQÎx œgïÛéÏlâœÄéØ?æqÎ9Ç¦)Ärº<Şk9Ü±ò/ ázdà{u©ºŸ4\µi5~Ek+[ví¿ß¤½RoİJÎñÒök»vKóêYg< xçëÔò1úëõÂ‚Bò ôä~9éøöô¦¶Ò@vãŸN½=ú}8¦0 €@ÿ ëqüúw=ÅsÊ)´å´4İ-­{w×_ø:ŠJ[é·vôµõûÒÓ«½ÇÇ<€zç¦ã××G# ¥œsŒ“Ó>Ÿ_R=qÛŠA÷rGLöëq“qÈ==0iË‚F8Ç=ı¼g$ÀÁæ¹İOy»s]÷ìÓïn·Òë~…Á®U®İ®ß]—ùúŒ}Oôã }?©Î2 nÛ˜d”rN28`zóÆ1úõü3Å1ğÏBãØzyç SŒ­-zß~š¤Ş›wû¯¶–â¾RNêö¶ëk~oQØã8\zûäz‡Ó¨äqÒ”€qøàŸld;zàñè
+óÇcŸËíúşœRñ’O§^€8Ï®yõı*¤¯µwµÛzïé­È•âÔ›Vµ´_áûÓÒöüvH§#±Ç¾zwüzŠN?Ù#¶HôÇ?şª7˜ãÜã=¿‹·êzúÒpyÛÏãôì=±Óñ'8ÏšIY;;§¥ü¯ê¾âc4ıëßk=õºé{÷^·õ$-È  ôç9üÏä8äÓ	È'‘’:ñƒŞœséúŠ^[å‡N¿ş¯§•—Ã§\õôçÙçÓ×Ó¨’v[ËU¾ŠÚ÷ïßÈRR~íÕ’Zé«Ñ;kÓeºÓæ“ƒqÓ$}½3ô¨¼˜üã6ÌÉ‚»ò	Á0N0¨ô©	 ‚Iú€qì~?ÎHİƒ‚z¾üçƒëÖ²¦×´¿V´M¥Û×¦º~£~òŒ[¶½–·×ÊÛnúh3¶H=†1ÏìIã=:Û®j"Å°ëş@?9éœc™Ê‚2qìçò=?üt¨ˆØÀòy÷éÓéùtëÜÕNŸ2Mè­¯GÑ}İ_}{˜84ÔÓºÙ[egí¦µZÛÌ'Ïn¿\òxü=»j@N=sË>ŞŞôÄÁbFrs¼sÆ?Èç‘ÇE<2;7>ã‘Î¿Ÿ.Ñ¼RQüŞ«îîÿ ÌŞİ6•ÖšíªZ¾İ¼÷Èèy<¨y^8 ààõì}{ú}·\gŠ2ä ONİsş<ŒvÇ@8j`F^½}¸Ç§ù7t“Jÿ zí¶öÓ§š¾†÷}WŞ›Zï¯—gÔsmõõéøúş½
+ 	ÆF0:uÈö'ëïÀÁ¡·dä;g§óûöçN#ß=¸êF}ŸZÖ
+“Òş¿İ½­ùzt½ñç$œtV¶¶·m;ÿ ÀÕôÎ:uÉ<ñÈãÛ®G¨£=1ü˜	ã×~¾‚š:rN=Aƒ½ñÔf¹G‡?Ê¦Oß»O–×í}¶ëß×ñ-F1è£¦¯vím/£ı4i†HÈÏ œ‘ÜŸ§q×·æ€íÛ9½2 ç¿Ğb”á° Œzóı9ş]ĞN:s9÷Æ3Î={r2+Ñås´_ºã½7jÏWªëeÍi-Æ/ºº]ÖnÛù[ådO8àñ×ÿ ÕŸÏ:ŠLI<s:rü¸ÏëIôêÁÁÎ3€0?ıc8â‚ÌÀ$ç ÜuõÏ¢ãÏ/k{İv×ğK}ˆ‚sMÉÚ>›½?úùu<c€}òO±Ï<õõ¯Zpù‡¯_Är9õõè>•g#}úc2?,uÎ8ætløÆ <öı=úö&åyIÚ+V¯¾«×Ë§¢)ÛİŒuZu³w¶¿%em:İéÓ‡·ä:wã>£9İ£¯#wr?¯O~¾ôc$±ts‘ıxƒéÎN ‚0xëÛ¾yëzúÓšoš¢ÓGeÕ­,÷],û¢ãYsi{>¾šÿ _4›¸„¼vÀãÓ¿^O>„ñ†§
+8?—ÿ ¨}(?O×œàöÇñF8ê9>½01ØsŸB;$­dûß[Jé|»üNN\±µ–íßÉ/½éÖÛ=@P0sÏcèsÇóÉŒĞsøóÀöÏ9>¤ÔëÊğx<çØàOÃ¯oÊš=r\ŸSÇ<œ‘9¥){‘mÿ -oëUä>U{ë£VVK['}]ö½úîÓ’}Àíø`õÇp3ÔÇÿ ¯œã§òÇ§²óíÓ“‚xüz÷<çÜw*8íù ?BÇÖªRŒc•Ú[»>Úîş_ŸyzÉóh´²í·ü;ÛÒû©Œãê@ãß=z÷ü&ß—+ÄñÃŒş' g9'ğÃğBŒ“øAëÎ2'·oÄSçœ{Fy÷Æ:õü;õÎOVÓ\ŞêJ÷¶Ûïv»w³ÔÎJí_²~I{º}Û´ú-ô…ç cç©ÇÔööíM œç“ùõÏ:xÅ4¶~÷İÏ=	#§Ó±=ıéØ/€=ğ>ş2}+–[Æ1İêßİòù^ı6ES•ÓKH¥£ë­´Mè›K¸ª	'  :}}±×À´™ ŸA“ÎrzàséÏëF{21øúg ÷ÓƒœñNÇ=yÇ_~½{zçªfåeM]İêÖÛ®­íæ¶ù#H¥tŞ¾mYiòï£ì­dÓÓ9Ï¯¿ïéÆ}„ÛŸ®xö‡Lfó‘œ 1˜ëĞãß=xëHØÏ?Éÿ úÆsVÕ“¶¶I_K^Ş}/ê×ú5®—µ´v_Šùt€Ã¿çı¹ÁÆFO<qÉ£ lóïÆ0G=ûãñ£' ×Ğÿ AÀ÷õàÒ$’x ş¹Ï>İ¾ŸJ§)FËK»Ùi¢¶÷ûªïæÈœáµ“JËO/»Ï¦¢€=†#¨ç#Ë°#§sHwçG8àt†:ÏÖÔàc9ê1Øõùê1Å=9ê=±Ïa×Rjj(¤¢µkV×}5ê®´¶š»½
+‚“JRz»;_ü:ü·µ–½ ğ	=ıÀ'¡àrzdóÇN_'€ÔtúsÎ§ÖO‡¨À$pzœg¶êi¿/®qÆ~\ŸO½×Ó=ñS(¶£¦ÉkÕÚÏek­m¶}Eı¯?yzoßúí¬ªÀg'£ Àã8²:gôƒæÜÄàzqæxç9Ï wÇ®qƒĞöäŸÅIP8Îï9ÿ '·¯9îÖjòmY]¾«i]n·İôT·I.Íêìúë§ŸUç İŠp€ =Ç\ş¤ßÎ€Hà ôàu9ü½Gôe˜˜Æyã8Éë×ğéQ¹n8ïÏ§<ğO¾{ğ+%yuZv[m½ßÎİ÷vÉ¶¬’¿kl¯e«ëkkªÓÌv çiãœñÇ§ =rÁFsÉÀ½z÷Éçõã¯¹ Ï9ÉãqôÇl~|äö¦¶GNø#üÆyïÇsejÜ¾¼îÖšÛ§w¶—¹MÎ+İ^óVækD´Ù_üíòÔcœÜÄ}Oñ” ¨ g’G·§aÉüy¤Ùê!œóÛØàØ3ÎF;’0~€ñüûúš’i·£Wåëgo/Í»tÜhÅóu•­Úíi¦¾{_ÈR…KØ8ëéî?—¯z]À`ú{t8Ï#õé×!\ztÏ>¾§íÁÏs’ `Çpzp	çÿ ¯Ç`Gµ¼›wIh•šì£¯MÓ½îTi%«W~og§[ôïkïåwdãœœç'Ğz÷w<ŸÄS7óŒdsŒœ{‘sŸ öã“Ğã Øü_Ó¿½.G\Œ‘ü¿<şFsSÏwv®ŞÊÖí«è÷¾ë¢ébŞË[YvÖÚuëòën¨_ÿ WÓ>çßéØc¥7h9ëÁ#ëß¿^¿ısÅ¸àêz‡’wHş­br¨ßÓ§·jÕ6Òr²vÙì•Õÿ KyúÙD.Û²Ok7òwş¯·ªÄß/¨õäqøŒúc>ÔÁÏğHÀ=?Ó§$
+P7`dà{c¶:åÉ=y©†Ğ0 ÎS½ı:g­vÊ*nM{±Ñ/“K»ß§Íi}9×5F´Ò×vé{i¾®ï¥şí›’ƒ
+ßLàuş^¼œ~İ¤a›Œ‘ÉéÇ_ #÷ãNc´ò{gŸO§Nù<ĞÃpË ?‘Çà3Ÿn¹îq;´´÷t]ôkW×«~–vÕ?wIYÛn¶Û¿Ÿ¯]†à=y;qÆ üOÄôÉ›Oby'ƒô?Ìz{‘Fä½qÁ·~¾§ò#“JyÏ^ıÆN0 ï×Û€N:×=D””c}7{ë¦‰v²ï§Êä]É)=›ê—Km·ew­¶M=@®s××b#×¿LtåxààN9äö®OÓ'˜ÇS§$œÆxê8ü¿Q€zã§o_Lqœã×¨æ§—™óNÑ}w¾ß;Û§ŸÈ¦Û´¢®•’¾‹[|ÿ '}%OsïÉé’}	>Ütî9|À˜è\ŒsFOç¢€Og¾à’¨ÁÇ|g·gv1§?ç?–zÖn.M~	/¿]:ëÓ®ÄB£æÖò²Wi´Ú^Ûoë÷ŠFs£ÿ ¯ííÚà›©äsĞdp	8íúô¥È~‡½G>Àäzœ£«ÌG\gË§Ç¯cÕÒ©ò$®›ÒımÕ%¯ü7ÜT“©+ÚËÖÉ½4zZß{×E nÁ8ävöús‘ß'#éØH	Ç$®Ã‘ÜvãŞ“‚rIãè}º¹õÉi,Iã§°'©ö?¡ÿ ë´×WÛ­–ë³o­­ç×K×+²WåK¥íµµºÕşKaÀ·L`“Á'ßŸÓ¹ş.¨1’rI½zôàœtÉüº´’8 ç×ÓÎOáƒé×­ –Î	q}zc¨üø¥w(©Ê÷~îÉ§»¶­in©]¤ü®Îi&ÔšvµŞé^éì—uµûm©&üñÀ?İç¯ÏşgÓÀ'–ïĞF=ú.:…Bç‚I¡ÏÇQ½şy§†bH9üz`Ã=øî{zTÏ’êÕµ­·º¶—µµ·‘¤'Ìù§ª¶‹¦ÊÖÓ®ı¶µ˜ü¹a£·Ó¯éÇ~Ø§ˆÙGNO~3ß§^€g<õãœ8ÀŒvcŸ^H:õãÜÓ‹€qp ç9õïÏğzóÒ¹Ô,¿½&“µ“²µõé¿ft¨sÅIü[ö]–ş¼­©ÖÎI c®{zøsùœ÷€nù'¨ÏLcÜg;{õ§–fè1Çí“Óôş€úSp éŒc ãê	õÁ<læ±›I¨Ås5»kg¦½—àşâ¬•”Ş–].¬“kË¾Ÿ˜£æ=ñÜÓ×¨ Ó~PHã>üzg‘Ç<óÆ}§c$qÆs‘Æ8Ï×¿±$ç 2sÜ“ƒÏztã8â³Š—Äù¯m-½ì¶z´—ÍhjÚ5¢Õ­.ô]ÏK¾·ĞP9ëÆpr3Ôôüxéõ8àPÀ·CÆ{9ÉäŒÿ úˆ9äĞ†9Æ{c¸Ïnÿ SÇ§º– ã¸9è3×õäÿ œF
