@@ -115,5 +115,24 @@ namespace AssetManagement.Controllers
 
             return PhysicalFile(imagePath, mimeType);
         }
+
+        //[HttpGet]
+        //public IActionResult CheckMissingPictures()
+        //{
+        //    try
+        //    {
+        //        var missingIds = _mapService.CheckMissingPictures();
+
+        //        return Json(new
+        //        {
+        //            Count = missingIds.Count,
+        //            MissingOBJKeys = missingIds
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.ToString());
+        //    }
+        //}
     }
 }

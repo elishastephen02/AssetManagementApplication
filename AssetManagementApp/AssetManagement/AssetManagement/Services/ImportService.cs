@@ -163,6 +163,7 @@ namespace AssetManagement.Services
             //{
             //    _logger.LogInformation($"SEGID {segId} already exists. Skipping.");
             //    return;
+
             //}
 
             //Existing record - update only missing data

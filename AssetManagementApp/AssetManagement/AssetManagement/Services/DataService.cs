@@ -16,7 +16,7 @@ namespace AssetManagement.Services
         public IEnumerable<dynamic> Query(string sql, object parameters = null)
         {
             using IDbConnection db = new SqlConnection(_connectionString);
-            return db.Query(sql, parameters).ToList();
+            return db.Query(sql, parameters, commandTimeout: 600).ToList();
         }
 
         public int Execute(string sql, object param = null)

@@ -2,16 +2,20 @@
 using NetTopologySuite.Features;
 using NetTopologySuite.IO;
 using static System.Collections.Specialized.BitVector32;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AssetManagement.Services
 {
     public class MapService
     {
         private readonly DataService _db;
+        private readonly IWebHostEnvironment _environment;
 
-        public MapService(DataService db)
+        public MapService(DataService db, IWebHostEnvironment environment)
         {
             _db = db;
+            _environment = environment;
         }
 
         public object GetMapData(double north, double south, double east, double west)
@@ -173,6 +177,7 @@ namespace AssetManagement.Services
                         WHERE OMM_Observation_FK_Key IN (SELECT value FROM STRING_SPLIT(@obsIdsCsv, ','))
                     ", new { obsIdsCsv }).ToList())
                     {
+
                         string key = Convert.ToString(m.ObsId ?? "");
                         if (string.IsNullOrEmpty(key)) continue;
                         if (!mediaLookup.ContainsKey(key)) mediaLookup[key] = new List<dynamic>();
@@ -561,5 +566,130 @@ namespace AssetManagement.Services
                 _ => "N/A"
             };
         }
+
+        //public List<object> CheckMissingPictures()
+        //{
+        //    string pictureFolder = Path.Combine(
+        //        _environment.WebRootPath,
+        //        "Picture"
+        //    );
+
+        //    Console.WriteLine();
+        //    Console.WriteLine("==================================================");
+        //    Console.WriteLine("BLOCKS WITH MISSING PICTURES");
+        //    Console.WriteLine("==================================================");
+        //    Console.WriteLine($"Picture folder: {pictureFolder}");
+        //    Console.WriteLine();
+
+        //    if (!Directory.Exists(pictureFolder))
+        //    {
+        //        Console.WriteLine("ERROR: Picture folder does not exist.");
+        //        return new List<object>();
+        //    }
+
+        //    // Get database pictures and their pipe/SEGID.
+        //    var rows = _db.Query(@"
+        //        SELECT DISTINCT
+        //            s.OBJ_Key AS SEGID,
+        //            om.OMM_FileName AS FileName
+        //        FROM SECOBSMM om
+        //        INNER JOIN SECOBS o
+        //            ON om.OMM_Observation_FK_Key = o.OBS_PK_Key
+        //        INNER JOIN SECINSP si
+        //            ON o.OBS_Inspection_FK_Key = si.INS_PK_Key
+        //        INNER JOIN SECTION s
+        //            ON si.INS_Section_FK_Key = s.OBJ_PK
+        //        WHERE om.OMM_FileName IS NOT NULL
+        //          AND LTRIM(RTRIM(om.OMM_FileName)) <> ''
+        //    ").ToList();
+
+        //    Console.WriteLine(
+        //        $"Database picture records: {rows.Count}"
+        //    );
+
+        //    // Find SEGIDs whose picture file is missing.
+        //    var missingSegIds = new HashSet<string>(
+        //        StringComparer.OrdinalIgnoreCase
+        //    );
+
+        //    foreach (var row in rows)
+        //    {
+        //        string segId =
+        //            Convert.ToString(row.SEGID ?? "").Trim();
+
+        //        string fileName =
+        //            Convert.ToString(row.FileName ?? "").Trim();
+
+        //        if (string.IsNullOrWhiteSpace(segId))
+        //            continue;
+
+        //        if (string.IsNullOrWhiteSpace(fileName))
+        //            continue;
+
+        //        string filePath = Path.Combine(
+        //            pictureFolder,
+        //            fileName
+        //        ); 
+
+        //        if (!File.Exists(filePath))
+        //        {
+        //            missingSegIds.Add(segId);
+        //        }
+        //    }
+
+        //    Console.WriteLine(
+        //        $"Pipes with missing pictures: {missingSegIds.Count}"
+        //    );
+
+        //    if (!missingSegIds.Any())
+        //    {
+        //        Console.WriteLine("NO MISSING PICTURES FOUND.");
+        //        return new List<object>();
+        //    }
+
+        //    // Convert SEGIDs to CSV for SQL Server.
+        //    string segIdsCsv = string.Join(",", missingSegIds);
+
+        //    // Get ONLY distinct blocks belonging to pipes
+        //    // that have missing pictures.
+        //    var blockRows = _db.Query(@"
+        //        SELECT DISTINCT
+        //            LTRIM(RTRIM(BlockName)) AS BlockName
+        //        FROM GEOJSON
+        //        WHERE SEGID IN
+        //        (
+        //            SELECT LTRIM(RTRIM(value))
+        //            FROM STRING_SPLIT(@segIdsCsv, ',')
+        //        )
+        //        AND BlockName IS NOT NULL
+        //        AND LTRIM(RTRIM(BlockName)) <> ''
+        //        ORDER BY LTRIM(RTRIM(BlockName))
+        //    ", new
+        //    {
+        //        segIdsCsv
+        //    }).ToList();
+
+        //    // Log the distinct blocks.
+        //    Console.WriteLine();
+        //    Console.WriteLine("==================================================");
+        //    Console.WriteLine("DISTINCT BLOCKS WITH MISSING PICTURES");
+        //    Console.WriteLine("==================================================");
+
+        //    foreach (var row in blockRows)
+        //    {
+        //        string blockName =
+        //            Convert.ToString(row.BlockName ?? "").Trim();
+
+        //        Console.WriteLine(blockName);
+        //    }
+
+        //    return blockRows
+        //        .Select(x => new
+        //        {
+        //            BlockName = Convert.ToString(x.BlockName ?? "").Trim()
+        //        })
+        //        .Cast<object>()
+        //        .ToList();
+        //}
     }
 }
